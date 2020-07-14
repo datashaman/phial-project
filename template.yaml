@@ -14,7 +14,7 @@ Resources:
             Method: get
       Handler: App\Handler
       Layers:
-        - !Ref PhpLayer
+        - arn:aws:lambda:eu-west-1:342976508163:layer:PhialPhp73:3
       Runtime: provided
     Metadata:
       BuildMethod: makefile

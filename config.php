@@ -2,6 +2,8 @@
 
 use GuzzleHttp\Client;
 
+use Http\Factory\Guzzle\RequestFactory;
+
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\StreamHandler;
 use Monolog\Processor\PsrLogMessageProcessor;
@@ -9,6 +11,7 @@ use Monolog\Logger;
 
 use Psr\Container\ContainerInterface;
 use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Log\LoggerInterface;
 
 return [
@@ -25,4 +28,6 @@ return [
 
         return $logger;
     },
+
+    RequestFactoryInterface::class => DI\create(RequestFactory::class),
 ];

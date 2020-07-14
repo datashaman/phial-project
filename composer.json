@@ -3,6 +3,7 @@
     "require": {
         "datashaman/phial-handler": "dev-master",
         "monolog/monolog": "^2.1",
+        "http-interop/http-factory-guzzle": "^1.0",
         "guzzlehttp/guzzle": "^7.0"
     },
     "autoload": {
