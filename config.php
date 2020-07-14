@@ -3,6 +3,7 @@
 use GuzzleHttp\Client;
 
 use Http\Factory\Guzzle\RequestFactory;
+use Http\Factory\Guzzle\StreamFactory;
 
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\StreamHandler;
@@ -12,6 +13,7 @@ use Monolog\Logger;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
+use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Log\LoggerInterface;
 
 return [
@@ -30,4 +32,5 @@ return [
     },
 
     RequestFactoryInterface::class => DI\create(RequestFactory::class),
+    StreamFactoryInterface::class => DI\create(StreamFactory::class),
 ];

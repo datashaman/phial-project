@@ -16,7 +16,8 @@ final class Handler
                 [
                     'message' => 'hello world',
                     'functionName' => $context->getFunctionName(),
-                ]
+                ],
+                JSON_THROW_ON_ERROR
             )
         ];
     }
