@@ -1,3 +1,3 @@
 # phial-project
 
-Template project for phial.
+Example project for phial.
