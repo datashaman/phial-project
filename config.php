@@ -1,5 +1,8 @@
 <?php
 
+use Datashaman\Phial\RuntimeHandler;
+use Datashaman\Phial\RuntimeHandlerInterface;
+
 use GuzzleHttp\Client;
 
 use Http\Factory\Guzzle\RequestFactory;
@@ -17,9 +20,7 @@ use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Log\LoggerInterface;
 
 return [
-    ClientInterface::class => function (ContainerInterface $container) {
-        return new Client();
-    },
+    ClientInterface::class => DI\autowire(Client::class),
 
     LoggerInterface::class => function (ContainerInterface $container) {
         $logger = new Logger('phial-handler');
@@ -32,5 +33,6 @@ return [
     },
 
     RequestFactoryInterface::class => DI\create(RequestFactory::class),
+    RuntimeHandlerInterface::class => DI\autowire(RuntimeHandler::class),
     StreamFactoryInterface::class => DI\create(StreamFactory::class),
 ];
