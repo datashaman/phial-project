@@ -3,6 +3,14 @@ Transform: AWS::Serverless-2016-10-31
 Description: phial-project
 
 Resources:
+  Runtime:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      CompatibleRuntimes:
+        - provided
+      ContentUri: .
+    Metadata:
+      BuildMethod: makefile
   HelloWorldFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -14,18 +22,18 @@ Resources:
             Method: get
       Handler: App\Handler
       Layers:
-        - arn:aws:lambda:eu-west-1:342976508163:layer:PhialPhp73:8
+        - !Ref Runtime
       Runtime: provided
     Metadata:
       BuildMethod: makefile
 
 Outputs:
   HelloWorldApi:
-    Description: "API Gateway endpoint URL for Prod stage for Hello World function"
+    Description: "API Gateway endpoint URL for Prod stage for Hello World Function"
     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
   HelloWorldFunction:
     Description: "Hello World Lambda Function ARN"
     Value: !GetAtt HelloWorldFunction.Arn
   HelloWorldFunctionIamRole:
-    Description: "Implicit IAM Role created for Hello World function"
+    Description: "Implicit IAM Role created for Hello World Function"
     Value: !GetAtt HelloWorldFunctionRole.Arn

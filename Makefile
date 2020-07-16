@@ -1,7 +1,17 @@
-DIR := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
+build:
+	sam build
+
+invoke:
+	sam local invoke
+
+deploy:
+	sam deploy
+
+build-Runtime:
+	./build-runtime.sh
 
 build-HelloWorldFunction:
-	$(DIR)/build.sh
+	./build-function.sh
 
 rector:
 	docker run --rm \
