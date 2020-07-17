@@ -1,5 +1,8 @@
 include .settings
 
+sam-api:
+	sam local start-api
+
 sam-build:
 	sam build
 
@@ -10,10 +13,10 @@ sam-deploy:
 	sam deploy
 
 build-Runtime:
-	PHP_PACKAGE=$(PHP_PACKAGE) ./build-runtime.sh
+	PHP_PACKAGE=$(PHP_PACKAGE) ./build-Runtime.sh
 
 build-HelloWorldFunction:
-	./build-function.sh
+	PHP_PACKAGE=$(PHP_PACKAGE) ./build-HelloWorldFunction.sh
 
 docker-build:
 	docker build --build-arg PHP_PACKAGE=$(PHP_PACKAGE) -t phial-project .

@@ -1,2 +1,2 @@
-*
-!php.ini
+/.aws-sam/
+/vendor/

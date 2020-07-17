@@ -16,11 +16,14 @@ final class Handler
             'statusCode' => 200,
             'body' => json_encode(
                 [
-                    'message' => 'hello world',
+                    'message' => 'hello you world',
                     'functionName' => $context->getFunctionName(),
                 ],
                 JSON_THROW_ON_ERROR
-            )
+            ),
+            'headers' => [
+                'Content-Type' => 'application/json',
+            ],
         ];
     }
 }

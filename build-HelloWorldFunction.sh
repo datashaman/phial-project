@@ -12,6 +12,8 @@ fi
 
 mkdir -p "${ARTIFACTS_DIR}"
 
-cp -a app bootstrap* composer.* config.php container.php "${ARTIFACTS_DIR}"
+cp -a bootstrap* composer.* config.php container.php "${ARTIFACTS_DIR}"
+cp -a function "${ARTIFACTS_DIR}"
+
 # composer install --no-dev --optimize-autoloader --working-dir="${ARTIFACTS_DIR}"
 composer install --working-dir="${ARTIFACTS_DIR}"
