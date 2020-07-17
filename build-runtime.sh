@@ -8,11 +8,10 @@ fi
 
 mkdir -p "${ARTIFACTS_DIR}"
 
-docker build -t phial-project .
+docker build --build-arg PHP_PACKAGE -t phial-project .
 
 CONTAINER_ID=$(docker run --detach --tty phial-project bash)
 
-docker cp "${CONTAINER_ID}:/opt/bin" "${ARTIFACTS_DIR}/bin"
-docker cp "${CONTAINER_ID}:/opt/lib" "${ARTIFACTS_DIR}/lib"
+docker cp "${CONTAINER_ID}:/opt/${PHP_PACKAGE}" "${ARTIFACTS_DIR}"
 
 docker rm --force ${CONTAINER_ID}

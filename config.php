@@ -1,5 +1,8 @@
 <?php
 
+use Datashaman\Phial\ContextFactory;
+use Datashaman\Phial\ContextFactoryInterface;
+
 use Datashaman\Phial\RuntimeHandler;
 use Datashaman\Phial\RuntimeHandlerInterface;
 
@@ -21,6 +24,7 @@ use Psr\Log\LoggerInterface;
 
 return [
     ClientInterface::class => DI\autowire(Client::class),
+    ContextFactoryInterface::class => DI\create(ContextFactory::class),
 
     LoggerInterface::class => function (ContainerInterface $container) {
         $logger = new Logger('phial-handler');

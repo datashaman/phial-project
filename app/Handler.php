@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App;
 
+use Exception;
+
 final class Handler
 {
     function __invoke($event, $context = null)

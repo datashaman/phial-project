@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/datashaman/phial-handler.git",
-                "reference": "3f005da2e48732007ad7bf3a9ddabaa3156059c1"
+                "reference": "18a1553872a286b518af19e7fd8b9ce8d1b52e30"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/datashaman/phial-handler/zipball/3f005da2e48732007ad7bf3a9ddabaa3156059c1",
-                "reference": "3f005da2e48732007ad7bf3a9ddabaa3156059c1",
+                "url": "https://api.github.com/repos/datashaman/phial-handler/zipball/18a1553872a286b518af19e7fd8b9ce8d1b52e30",
+                "reference": "18a1553872a286b518af19e7fd8b9ce8d1b52e30",
                 "shasum": ""
             },
             "require": {
@@ -34,7 +34,7 @@
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
-            "time": "2020-07-16T22:48:09+00:00"
+            "time": "2020-07-17T11:20:19+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
