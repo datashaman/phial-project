@@ -11,16 +11,16 @@ Resources:
       ContentUri: .
     Metadata:
       BuildMethod: makefile
-  HelloWorldFunction:
+  Hello:
     Type: AWS::Serverless::Function
     Properties:
       Events:
-        HelloWorld:
+        Hello:
           Type: Api
           Properties:
             Path: /hello
             Method: get
-      Handler: App\Handler
+      Handler: App\HelloHandler
       Layers:
         - !Ref Runtime
       Runtime: provided
@@ -28,12 +28,12 @@ Resources:
       BuildMethod: makefile
 
 Outputs:
-  HelloWorldApi:
+  HelloApi:
     Description: "API Gateway endpoint URL for Prod stage for Hello World Function"
     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
-  HelloWorldFunction:
+  Hello:
     Description: "Hello World Lambda Function ARN"
-    Value: !GetAtt HelloWorldFunction.Arn
-  HelloWorldFunctionIamRole:
+    Value: !GetAtt Hello.Arn
+  HelloIamRole:
     Description: "Implicit IAM Role created for Hello World Function"
-    Value: !GetAtt HelloWorldFunctionRole.Arn
+    Value: !GetAtt HelloRole.Arn

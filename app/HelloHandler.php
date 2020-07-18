@@ -7,7 +7,7 @@ namespace App;
 use Datashaman\Phial\ContextInterface;
 use Exception;
 
-final class Handler extends AbstractHandler
+final class HelloHandler extends AbstractHandler
 {
     /**
      * @param array<string|array> $event
