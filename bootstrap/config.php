@@ -9,6 +9,7 @@ use Datashaman\Phial\RuntimeHandlerInterface;
 use GuzzleHttp\Client;
 
 use Http\Factory\Guzzle\RequestFactory;
+use Http\Factory\Guzzle\ServerRequestFactory;
 use Http\Factory\Guzzle\StreamFactory;
 
 use Monolog\Formatter\LineFormatter;
@@ -19,6 +20,7 @@ use Monolog\Logger;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
+use Psr\Http\Message\ServerRequestFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Log\LoggerInterface;
 
@@ -38,5 +40,6 @@ return [
 
     RequestFactoryInterface::class => DI\create(RequestFactory::class),
     RuntimeHandlerInterface::class => DI\autowire(RuntimeHandler::class),
+    ServerRequestFactoryInterface::class => DI\create(ServerRequestFactory::class),
     StreamFactoryInterface::class => DI\create(StreamFactory::class),
 ];

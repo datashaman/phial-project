@@ -1,6 +1,6 @@
 include .settings
 
-default: sam-build local-invoke-queue local-invoke-hello
+default: docker-Runtime sam-build local-invoke-queue local-invoke-hello
 
 ARTIFACTS_DIR ?= /tmp/artifacts
 
@@ -27,7 +27,6 @@ $(ARTIFACTS_DIR)/vendor: $(BASE_ARTIFACTS)
 	composer install --working-dir="${ARTIFACTS_DIR}"
 
 $(RUNTIME_ARTIFACTS): $(RUNTIME_SOURCES)
-	docker build --build-arg PHP_PACKAGE=$(PHP_PACKAGE) --pull -t phial-project .
 	CONTAINER_ID=$(shell docker run --detach --tty phial-project bash) \
 		bash -c 'docker cp "$${CONTAINER_ID}:/opt/$(PHP_PACKAGE)" $(ARTIFACTS_DIR); docker cp "$${CONTAINER_ID}:/opt/bootstrap" $(ARTIFACTS_DIR); docker rm --force $${CONTAINER_ID}'
 
@@ -50,7 +49,7 @@ build-QueueHandler: $(ARTIFACTS_DIR)/vendor $(SHARED_ARTIFACTS) $(QUEUE_ARTIFACT
 clean:
 	rm -rf $(ARTIFACTS_DIR)/*
 
-docker-build:
+docker-Runtime:
 	docker build --build-arg PHP_PACKAGE=$(PHP_PACKAGE) --pull -t phial-project .
 
 local-api:
