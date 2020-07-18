@@ -24,6 +24,7 @@ Resources:
       Layers:
         - !Ref Runtime
       Runtime: provided
+      Tracing: Active
     Metadata:
       BuildMethod: makefile
   QueueHandler:
@@ -38,16 +39,29 @@ Resources:
       Layers:
         - !Ref Runtime
       Runtime: provided
+      Tracing: Active
     Metadata:
       BuildMethod: makefile
+  Topic:
+    Type: AWS::SNS::Topic
+    Properties:
+      DisplayName: phial-project
   Queue:
     Type: AWS::SQS::Queue
-  QueuePermission:
-    Type: AWS::Lambda::Permission
+  QueuePolicy:
+    Type: AWS::Lambda::QueuePolicy
     Properties:
-      Action: lambda:InvokeFunction
-      FunctionName: !GetAtt QueueHandler.Arn
-      Principal: "sqs.amazonaws.com"
+      Queues:
+        - !Ref Queue
+      PolicyDocument:
+        Statement:
+          Effect: Allow
+          Principal: "*"
+          Action: "sqs:*"
+          Resource: "*"
+          Condition:
+            ArnEquals:
+              "aws:SourceArn": !Ref Topic
 
 Outputs:
   HelloHandlerApi:
