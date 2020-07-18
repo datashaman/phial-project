@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App;
 
 use Datashaman\Phial\ContextInterface;
+use Invoker\InvokerInterface;
 use Negotiation\Negotiator;
 
 abstract class AbstractHandler
@@ -14,30 +15,72 @@ abstract class AbstractHandler
      */
     private $negotiator;
 
+    /**
+     * @var InvokerInterface
+     */
+    private $invoker;
+
     public function __construct(
-        Negotiator $negotiator
+        Negotiator $negotiator,
+        InvokerInterface $invoker
     ) {
         $this->negotiator = $negotiator;
+        $this->invoker = $invoker;
     }
 
-    private function negotiate(
+    /**
+     * @param array<string|array> $event
+     * @param array<string, array<int, callable|string>> $priorities
+     *
+     * @return array<string|array>
+     */
+    protected function negotiate(
+        array $event,
         ContextInterface $context,
-        string $acceptHeader,
-        array $priorities
+        array $priorities,
+        string $default
     ): array {
-        $acceptsType = $this
+        $accept = $this->accept($event, $default);
+        $context->getLogger()->debug('Content Negotation', ['accept' => $accept]);
+
+        /** @var callable $callable */
+        $callable = $priorities[$accept];
+
+        return $this->invoker->call(
+            $callable,
+            [
+                'event' => $event,
+                'context' => $context,
+            ]
+        );
+    }
+
+    /**
+     * @param array<string|array> $event
+     */
+    private function accept(
+        array $event,
+        string $default
+    ): string {
+        if (isset($event['headers'])) {
+            $headers = $event['headers'];
+            $header = isset($headers['Accept']) ? $headers['accept'] : '';
+        }
+
+        $best = $this
             ->negotiator
             ->getBest(
-                $acceptHeader,
+                $event['headers']['Accept'],
                 [
                     'text/html',
                     'application/json',
                 ]
-            )
-            ->getType();
+            );
 
-        $context->getLogger()->debug('Accept Negotation', ['acceptHeader' => $acceptHeader, 'acceptsType' => $acceptsType]);
+        if (!$best) {
+            return $default;
+        }
 
-        return call_user_func($priorities[$acceptsType], $context);
+        return $best->getType();
     }
 }

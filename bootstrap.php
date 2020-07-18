@@ -8,7 +8,7 @@ use Invoker\Invoker;
 use Invoker\ParameterResolver\Container\ParameterNameContainerResolver;
 use Invoker\ParameterResolver\Container\TypeHintContainerResolver;
 
-function task_path(string $path)
+function task_path(string $path): ?string
 {
     return realpath(
         sprintf(
@@ -17,7 +17,7 @@ function task_path(string $path)
             DIRECTORY_SEPARATOR,
             $path
         )
-    );
+    ) ?: null;
 }
 
 $container = ($containerPath = task_path('container.php'))
@@ -36,4 +36,7 @@ if ($container) {
     );
 }
 
-$invoker->call(RuntimeHandlerInterface::class);
+/** @var callable $callable */
+$callable = RuntimeHandlerInterface::class;
+
+$invoker->call($callable);
