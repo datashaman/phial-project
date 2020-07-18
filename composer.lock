@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4078b3d803838299d2d52c7573bbb4fb",
+    "content-hash": "866ebb9a82bd6be051390960208c42ae",
     "packages": [
         {
             "name": "datashaman/phial-handler",
@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/datashaman/phial-handler.git",
-                "reference": "f7542f06fe00dce0789808a7088fbea27e12d62b"
+                "reference": "2c4ffac97a4223de417df9d37ff6e6a285988257"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/datashaman/phial-handler/zipball/f7542f06fe00dce0789808a7088fbea27e12d62b",
-                "reference": "f7542f06fe00dce0789808a7088fbea27e12d62b",
+                "url": "https://api.github.com/repos/datashaman/phial-handler/zipball/2c4ffac97a4223de417df9d37ff6e6a285988257",
+                "reference": "2c4ffac97a4223de417df9d37ff6e6a285988257",
                 "shasum": ""
             },
             "require": {
@@ -34,7 +34,7 @@
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
-            "time": "2020-07-17T20:02:08+00:00"
+            "time": "2020-07-18T06:29:17+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -859,6 +859,58 @@
             ],
             "description": "A polyfill for getallheaders.",
             "time": "2019-03-08T08:55:37+00:00"
+        },
+        {
+            "name": "willdurand/negotiation",
+            "version": "v2.3.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/willdurand/Negotiation.git",
+                "reference": "03436ededa67c6e83b9b12defac15384cb399dc9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/willdurand/Negotiation/zipball/03436ededa67c6e83b9b12defac15384cb399dc9",
+                "reference": "03436ededa67c6e83b9b12defac15384cb399dc9",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.5"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.3-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Negotiation\\": "src/Negotiation"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "William Durand",
+                    "email": "will+git@drnd.me"
+                }
+            ],
+            "description": "Content Negotiation tools for PHP provided as a standalone library.",
+            "homepage": "http://williamdurand.fr/Negotiation/",
+            "keywords": [
+                "accept",
+                "content",
+                "format",
+                "header",
+                "negotiation"
+            ],
+            "time": "2017-05-14T17:21:12+00:00"
         }
     ],
     "packages-dev": [
