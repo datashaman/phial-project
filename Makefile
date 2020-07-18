@@ -53,6 +53,9 @@ sam-api:
 sam-build:
 	sam build
 
+sam-deploy:
+	sam deploy
+
 sam-invoke-hello:
 	sam local invoke HelloHandler
 

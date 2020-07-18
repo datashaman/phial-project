@@ -35,7 +35,7 @@ abstract class AbstractHandler
         $event,
         ContextInterface $context
     ): string {
-        $context->getLogger()->debug('Handle event', ['event' => $event, 'env' => getenv()]);
+        $context->getLogger()->debug('Handle event', ['event' => $event]);
 
         return json_encode(
             $this->negotiate(

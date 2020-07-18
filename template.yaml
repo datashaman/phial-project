@@ -33,7 +33,7 @@ Resources:
         HelloEvent:
           Type: SQS
           Properties:
-            Queue: !GetAtt QueueHandler.
+            Queue: !GetAtt QueueHandler.Arn
       Handler: App\QueueHandler
       Layers:
         - !Ref Runtime
@@ -42,20 +42,14 @@ Resources:
       BuildMethod: makefile
   Queue:
     Type: AWS::SQS::Queue
+  QueuePermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !GetAtt QueueHandler.Arn
+      Principal: "sqs.amazonaws.com"
 
 Outputs:
   HelloHandlerApi:
     Description: "HelloHandler URL"
     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
-  HelloHandler:
-    Description: "HelloHandler ARN"
-    Value: !GetAtt HelloHandler.Arn
-  HelloHandlerROle:
-    Description: "HelloHandler Role"
-    Value: !GetAtt HelloHandlerRole.Arn
-  QueueHandler:
-    Description: "HelloHandler ARN"
-    Value: !GetAtt QueueHandler.Arn
-  QueueHandlerROle:
-    Description: "HelloHandler Role"
-    Value: !GetAtt QueueHandlerRole.Arn
