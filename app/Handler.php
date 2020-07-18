@@ -6,26 +6,14 @@ namespace App;
 
 use Datashaman\Phial\ContextInterface;
 use Exception;
-use Negotiation\Negotiator;
 
 final class Handler
 {
-    /**
-     * @var Negotiator
-     */
-    private $negotiator;
-
-    public function __construct(
-        Negotiator $negotiator
-    ) {
-        $this->negotiator = $negotiator;
-    }
-
     function __invoke(
         $event,
         ContextInterface $context
     ): array {
-        $context->getLogger()->debug('Handle event', ['event' => $event]);
+        $context->getLogger()->debug('Handle event', ['event' => $event, 'env' => getenv()]);
 
         if (isset($event['headers']['Accept'])) {
             return $this->negotiate(
@@ -40,28 +28,6 @@ final class Handler
 
         return $this->json($context);
     }
-
-    private function negotiate(
-        ContextInterface $context,
-        string $acceptHeader,
-        array $priorities
-    ): array {
-        $acceptsType = $this
-            ->negotiator
-            ->getBest(
-                $acceptHeader,
-                [
-                    'text/html',
-                    'application/json',
-                ]
-            )
-            ->getType();
-
-        $context->getLogger()->debug('Accept Negotation', ['acceptHeader' => $acceptHeader, 'acceptsType' => $acceptsType]);
-
-        return call_user_func($priorities[$acceptsType], $context);
-    }
-
     private function html(ContextInterface $context)
     {
         return [
