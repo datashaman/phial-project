@@ -30,23 +30,23 @@ abstract class AbstractHandler
 
     /**
      * @param array<string|array> $event
-     *
-     * @return array<string|array>
      */
     function __invoke(
         $event,
         ContextInterface $context
-    ): array {
+    ): string {
         $context->getLogger()->debug('Handle event', ['event' => $event, 'env' => getenv()]);
 
-        return $this->negotiate(
-            $event,
-            $context,
-            [
-                'application/json' => [$this, 'json'],
-                'text/html' => [$this, 'html'],
-            ],
-            'application/json'
+        return json_encode(
+            $this->negotiate(
+                $event,
+                $context,
+                [
+                    'application/json' => [$this, 'json'],
+                    'text/html' => [$this, 'html'],
+                ],
+                'application/json'
+            ), JSON_THROW_ON_ERROR
         );
     }
 

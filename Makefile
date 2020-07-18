@@ -17,7 +17,7 @@ HELLO_SOURCES = app/HelloHandler.php
 HELLO_ARTIFACTS = $(patsubst %,$(ARTIFACTS_DIR)/%,$(HELLO_SOURCES))
 
 QUEUE_SOURCES = app/QueueHandler.php
-QUEUE_ARTIFACTS = $(patsubst %,$(ARTIFACTS_DIR)/%,$(HELLO_SOURCES))
+QUEUE_ARTIFACTS = $(patsubst %,$(ARTIFACTS_DIR)/%,$(QUEUE_SOURCES))
 
 $(BASE_ARTIFACTS): $(ARTIFACTS_DIR)/%: %
 	@mkdir -p $(dir $@)
@@ -69,7 +69,7 @@ docker-build:
 	docker build --build-arg PHP_PACKAGE=$(PHP_PACKAGE) --pull -t phial-project .
 
 phpstan:
-	phpstan analyse --level 8 app/ bootstrap.php config.php container.php
+	phpstan analyse --level 8 app/ bootstrap/
 
 rector:
 	docker run --rm \
