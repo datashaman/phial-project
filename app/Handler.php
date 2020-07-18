@@ -12,31 +12,9 @@ final class Handler extends AbstractHandler
     /**
      * @param array<string|array> $event
      *
-     * @return array<string|array>
-     */
-    function __invoke(
-        $event,
-        ContextInterface $context
-    ): array {
-        $context->getLogger()->debug('Handle event', ['event' => $event, 'env' => getenv()]);
-
-        return $this->negotiate(
-            $event,
-            $context,
-            [
-                'application/json' => [$this, 'json'],
-                'text/html' => [$this, 'html'],
-            ],
-            'application/json'
-        );
-    }
-
-    /**
-     * @param array<string|array> $event
-     *
      * @return array<string, array<string, string>|int|string>
      */
-    protected function html($event, ContextInterface $context): array
+    public function html($event, ContextInterface $context): array
     {
         return [
             'statusCode' => 200,
@@ -52,7 +30,7 @@ final class Handler extends AbstractHandler
      *
      * @return array<string, array<string, string>|int|string>
      */
-    protected function json($event, ContextInterface $context): array
+    public function json($event, ContextInterface $context): array
     {
         return [
             'statusCode' => 200,

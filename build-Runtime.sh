@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+set -euo allexport pipefail
+source .settings
+
 : "${ARTIFACTS_DIR:=/tmp/artifacts}"
 
 if [ -e "${ARTIFACTS_DIR}" ]; then

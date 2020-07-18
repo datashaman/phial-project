@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-set -e
+set -euo allexport pipefail
+source .settings
 
 DIR="$(dirname "${BASH_SOURCE[0]}")"
 

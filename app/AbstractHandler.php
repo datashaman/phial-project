@@ -30,6 +30,28 @@ abstract class AbstractHandler
 
     /**
      * @param array<string|array> $event
+     *
+     * @return array<string|array>
+     */
+    function __invoke(
+        $event,
+        ContextInterface $context
+    ): array {
+        $context->getLogger()->debug('Handle event', ['event' => $event, 'env' => getenv()]);
+
+        return $this->negotiate(
+            $event,
+            $context,
+            [
+                'application/json' => [$this, 'json'],
+                'text/html' => [$this, 'html'],
+            ],
+            'application/json'
+        );
+    }
+
+    /**
+     * @param array<string|array> $event
      * @param array<string, array<int, callable|string>> $priorities
      *
      * @return array<string|array>
@@ -62,15 +84,13 @@ abstract class AbstractHandler
         array $event,
         string $default
     ): string {
-        if (isset($event['headers'])) {
-            $headers = $event['headers'];
-            $header = isset($headers['Accept']) ? $headers['accept'] : '';
-        }
+        $headers = $event['headers'] ?? [];
+        $header = $headers['Accept'] ?? $default;
 
         $best = $this
             ->negotiator
             ->getBest(
-                $event['headers']['Accept'],
+                $header,
                 [
                     'text/html',
                     'application/json',
