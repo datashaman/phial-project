@@ -10,13 +10,22 @@ use Negotiation\Negotiator;
 
 final class Handler
 {
+    /**
+     * @var Negotiator
+     */
+    private $negotiator;
+
+    public function __construct(
+        Negotiator $negotiator
+    ) {
+        $this->negotiator = $negotiator;
+    }
+
     function __invoke(
         $event,
-        ContextInterface $context,
-        Negotiator $negotiator
+        ContextInterface $context
     ): array {
-        $logger = $context->getLogger();
-        $logger->debug('Handle event', ['event' => $event]);
+        $context->getLogger()->debug('Handle event', ['event' => $event]);
 
         if (isset($event['headers']['Accept'])) {
             return $this->negotiate(
@@ -25,8 +34,7 @@ final class Handler
                 [
                     'application/json' => [$this, 'json'],
                     'text/html' => [$this, 'html'],
-                ],
-                $negotiator
+                ]
             );
         }
 
@@ -36,18 +44,18 @@ final class Handler
     private function negotiate(
         ContextInterface $context,
         string $acceptHeader,
-        array $priorities,
-        Negotiator $negotiator
+        array $priorities
     ): array {
-        $accepts = $negotiator->getBest(
-            $acceptHeader,
-            [
-                'text/html',
-                'application/json',
-            ]
-        );
-
-        $acceptsType = $accepts->getType();
+        $acceptsType = $this
+            ->negotiator
+            ->getBest(
+                $acceptHeader,
+                [
+                    'text/html',
+                    'application/json',
+                ]
+            )
+            ->getType();
 
         $context->getLogger()->debug('Accept Negotation', ['acceptHeader' => $acceptHeader, 'acceptsType' => $acceptsType]);
 
