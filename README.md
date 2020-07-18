@@ -10,16 +10,19 @@ Example project for phial.
 
 ## instructions
 
-* Define your _composer_ requirements using the usual methods.
-* Adapt _PHP_ invocation in `bootstrap` to suit your needs.
-* Adapt bootstrap process in `bootstrap.php` to suit your needs.
-* Set your function _handler_ in `template.yaml` to be anything invokable.
-* The invoked code must return an array response.
+* Define version of PHP in _.settings_.
+* Add any system and PHP packages in _Dockerfile_. PHP module packages are installed like `yum install -y php74-php-gd`.
+* Edit _php.ini_ to configure PHP or enable modules.
+* Define your _composer_ dependencies using the usual methods.
+* Add a `bootstrap` script in _composer.json_ that runs the handler.
+* Adapt bootstrap process in _bootstrap/handler.php_ to suit your needs.
+* Set your function _handler_ in _template.yaml_ to be anything invokable.
 
 ## workflow
 
 ```
 sam build
+sam local start-api
 sam local invoke
 sam deploy --guided
 ```
@@ -28,13 +31,13 @@ sam deploy --guided
 
 You do not _have_ to use a _DI_ container, but it does make things easier. Any _PSR-11_ implementation will do. The _PHP-DI_ invoker which invokes the handler code will handle _DI_ or no _DI_, it doesn't care.
 
-To replace the _DI_ container with another implementation, build one in _container.php_ and return it. You can also replace all this logic by rewriting _bootstrap.php_.
+To replace the _DI_ container with another implementation, build one in _bootstrap/handler.php_ and pass it into the invoker construction.
 
 ### PSR standards supported
 
-The following PSR interfaces are supported; any compatible implementation can be used, just pass parameters into the handler constructor or use your DI container to autowire it up.
+The following _PSR_ interfaces are supported; any compatible implementation can be used, just pass parameters into the handler constructor or use your DI container to autowire it up.
 
-Also listed is the implementation used in this project. The implementations are wired up in _config.php_.
+Also listed is the implementation used in this project. The implementations are wired up in _bootstrap/config.php_.
 
 * [PSR-3 Logger Interface](https://www.php-fig.org/psr/psr-3) - [monolog/monolog](https://packagist.org/packages/monolog/monolog)
 * [PSR-7 HTTP Message Interface](https://www.php-fig.org/psr/psr-7) - [guzzlehttp/guzzle](https://packagist.org/packages/guzzlehttp/guzzle)

@@ -11,7 +11,7 @@ Resources:
       ContentUri: .
     Metadata:
       BuildMethod: makefile
-  Hello:
+  HelloHandler:
     Type: AWS::Serverless::Function
     Properties:
       Events:
@@ -26,14 +26,36 @@ Resources:
       Runtime: provided
     Metadata:
       BuildMethod: makefile
+  QueueHandler:
+    Type: AWS::Serverless::Function
+    Properties:
+      Events:
+        HelloEvent:
+          Type: SQS
+          Properties:
+            Queue: !GetAtt QueueHandler.
+      Handler: App\QueueHandler
+      Layers:
+        - !Ref Runtime
+      Runtime: provided
+    Metadata:
+      BuildMethod: makefile
+  Queue:
+    Type: AWS::SQS::Queue
 
 Outputs:
-  HelloApi:
-    Description: "API Gateway endpoint URL for Prod stage for Hello World Function"
+  HelloHandlerApi:
+    Description: "HelloHandler URL"
     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
-  Hello:
-    Description: "Hello World Lambda Function ARN"
-    Value: !GetAtt Hello.Arn
-  HelloIamRole:
-    Description: "Implicit IAM Role created for Hello World Function"
-    Value: !GetAtt HelloRole.Arn
+  HelloHandler:
+    Description: "HelloHandler ARN"
+    Value: !GetAtt HelloHandler.Arn
+  HelloHandlerROle:
+    Description: "HelloHandler Role"
+    Value: !GetAtt HelloHandlerRole.Arn
+  QueueHandler:
+    Description: "HelloHandler ARN"
+    Value: !GetAtt QueueHandler.Arn
+  QueueHandlerROle:
+    Description: "HelloHandler Role"
+    Value: !GetAtt QueueHandlerRole.Arn
