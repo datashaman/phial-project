@@ -1,6 +1,6 @@
 include .settings
 
-default: sam-build sam-invoke-queue sam-invoke-hello
+default: sam-build local-invoke-queue local-invoke-hello
 
 ARTIFACTS_DIR ?= /tmp/artifacts
 
@@ -8,7 +8,7 @@ BASE_SOURCES = $(wildcard bootstrap/*) $(wildcard composer.*)
 BASE_ARTIFACTS = $(patsubst %,$(ARTIFACTS_DIR)/%,$(BASE_SOURCES))
 
 RUNTIME_SOURCES = .dockerignore Dockerfile php.ini .settings
-RUNTIME_ARTIFACTS = $(ARTIFACTS_DIR)/php74
+RUNTIME_ARTIFACTS = $(ARTIFACTS_DIR)/${PHP_PACKAGE}
 
 SHARED_SOURCES = app/AbstractHandler.php
 SHARED_ARTIFACTS = $(patsubst %,$(ARTIFACTS_DIR)/%,$(SHARED_SOURCES))
@@ -47,29 +47,20 @@ build-Runtime: $(RUNTIME_ARTIFACTS)
 build-HelloHandler: $(ARTIFACTS_DIR)/vendor $(SHARED_ARTIFACTS) $(HELLO_ARTIFACTS)
 build-QueueHandler: $(ARTIFACTS_DIR)/vendor $(SHARED_ARTIFACTS) $(QUEUE_ARTIFACTS)
 
-sam-api:
-	sam local start-api
-
-sam-build:
-	sam build
-
-sam-deploy:
-	sam deploy
-
-sam-invoke-hello:
-	sam local invoke HelloHandler
-
-sam-invoke-queue:
-	sam local invoke QueueHandler
-
-sam-deploy:
-	sam deploy
-
 clean:
 	rm -rf $(ARTIFACTS_DIR)/*
 
 docker-build:
 	docker build --build-arg PHP_PACKAGE=$(PHP_PACKAGE) --pull -t phial-project .
+
+local-api:
+	sam local start-api
+
+local-invoke-hello:
+	sam local invoke HelloHandler
+
+local-invoke-queue:
+	sam local invoke QueueHandler
 
 phpstan:
 	phpstan analyse --level 8 app/ bootstrap/
@@ -83,3 +74,9 @@ rector:
 
 run:
 	docker run -it --rm phial-project bash
+
+sam-build:
+	sam build
+
+sam-deploy: sam-build
+	sam deploy

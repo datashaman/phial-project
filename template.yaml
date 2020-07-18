@@ -24,7 +24,6 @@ Resources:
       Layers:
         - !Ref Runtime
       Runtime: provided
-      Tracing: Active
     Metadata:
       BuildMethod: makefile
   QueueHandler:
@@ -34,36 +33,17 @@ Resources:
         HelloEvent:
           Type: SQS
           Properties:
-            Queue: !GetAtt QueueHandler.Arn
+            Queue: !GetAtt Queue.Arn
       Handler: App\QueueHandler
       Layers:
         - !Ref Runtime
       Runtime: provided
-      Tracing: Active
     Metadata:
       BuildMethod: makefile
-  Topic:
-    Type: AWS::SNS::Topic
-    Properties:
-      DisplayName: phial-project
   Queue:
     Type: AWS::SQS::Queue
-  QueuePolicy:
-    Type: AWS::Lambda::QueuePolicy
-    Properties:
-      Queues:
-        - !Ref Queue
-      PolicyDocument:
-        Statement:
-          Effect: Allow
-          Principal: "*"
-          Action: "sqs:*"
-          Resource: "*"
-          Condition:
-            ArnEquals:
-              "aws:SourceArn": !Ref Topic
 
 Outputs:
   HelloHandlerApi:
-    Description: "HelloHandler URL"
+    Description: "HelloHandler API"
     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
