@@ -10,13 +10,10 @@ BASE_ARTIFACTS = $(patsubst %,$(ARTIFACTS_DIR)/%,$(BASE_SOURCES))
 RUNTIME_SOURCES = .dockerignore Dockerfile php.ini .settings
 RUNTIME_ARTIFACTS = $(ARTIFACTS_DIR)/${PHP_PACKAGE}
 
-SHARED_SOURCES = app/AbstractHandler.php
-SHARED_ARTIFACTS = $(patsubst %,$(ARTIFACTS_DIR)/%,$(SHARED_SOURCES))
-
-HELLO_SOURCES = app/HelloHandler.php
+HELLO_SOURCES = $(wildcard app/Abstract*) app/HelloHandler.php
 HELLO_ARTIFACTS = $(patsubst %,$(ARTIFACTS_DIR)/%,$(HELLO_SOURCES))
 
-QUEUE_SOURCES = app/QueueHandler.php
+QUEUE_SOURCES = $(wildcard app/Abstract*) app/QueueHandler.php
 QUEUE_ARTIFACTS = $(patsubst %,$(ARTIFACTS_DIR)/%,$(QUEUE_SOURCES))
 
 $(BASE_ARTIFACTS): $(ARTIFACTS_DIR)/%: %
@@ -43,8 +40,8 @@ $(QUEUE_ARTIFACTS): $(ARTIFACTS_DIR)/%: %
 	cp $< $@
 
 build-Runtime: $(RUNTIME_ARTIFACTS)
-build-HelloHandler: $(ARTIFACTS_DIR)/vendor $(SHARED_ARTIFACTS) $(HELLO_ARTIFACTS)
-build-QueueHandler: $(ARTIFACTS_DIR)/vendor $(SHARED_ARTIFACTS) $(QUEUE_ARTIFACTS)
+build-HelloHandler: $(ARTIFACTS_DIR)/vendor $(HELLO_ARTIFACTS)
+build-QueueHandler: $(ARTIFACTS_DIR)/vendor $(QUEUE_ARTIFACTS)
 
 clean:
 	rm -rf $(ARTIFACTS_DIR)/*
@@ -70,6 +67,9 @@ rector:
 		rector/rector:latest process /project/app \
 		--config /project/rector.yaml \
 		--autoload-file /project/vendor/autoload.php
+
+require-handler:
+	composer require --no-cache datashaman/phial-handler:dev-master
 
 run:
 	docker run -it --rm phial-project bash

@@ -7,7 +7,7 @@ namespace App;
 use Datashaman\Phial\ContextInterface;
 use Psr\Http\Message\ServerRequestFactoryInterface;
 
-abstract class ApiGatewayHandler extends AbstractHandler
+abstract class AbstractApiGatewayHandler extends AbstractHandler
 {
     /**
      * @param array<string|array> $event
@@ -17,9 +17,7 @@ abstract class ApiGatewayHandler extends AbstractHandler
         ContextInterface $context,
         ServerRequestFactoryInterface $serverRequestFactory
     ): string {
-        $request = $serverRequestFactory->createRequest(
-            $event['httpMethod'],
-        );
+        // $request = $serverRequestFactory->createServerRequest($event['httpMethod']);
 
         $context->getLogger()->debug('Handle event', ['event' => $event]);
 
