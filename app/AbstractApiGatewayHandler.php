@@ -33,7 +33,7 @@ abstract class AbstractApiGatewayHandler extends AbstractHandler
         array $event,
         ContextInterface $context
     ): string {
-        $context->getLogger()->debug('Handle event', ['event' => $event]);
+        $context->getLogger()->debug('Handle event', ['event' => $event, 'context' => $context->toArray()]);
 
         return json_encode(
             $this->negotiate(
