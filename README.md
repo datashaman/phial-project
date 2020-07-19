@@ -14,8 +14,7 @@ Example project for phial.
 * Add any system and PHP packages in _Dockerfile_. PHP module packages are installed like `yum install -y php74-php-gd`.
 * Edit _php.ini_ to configure PHP or enable modules.
 * Define your _composer_ dependencies using the usual methods.
-* Add a `bootstrap` script in _composer.json_ that runs the handler.
-* Adapt bootstrap process in _bootstrap/handler.php_ to suit your needs.
+* Adapt bootstrap process in _bootstrap.php_ to suit your needs.
 * Set your function _handler_ in _template.yaml_ to be anything invokable.
 
 ## workflow

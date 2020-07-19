@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/../vendor/autoload.php';
+require_once 'vendor/autoload.php';
 
 use Datashaman\Phial\RuntimeHandlerInterface;
 use DI\ContainerBuilder;
@@ -9,7 +9,7 @@ use Invoker\ParameterResolver\Container\ParameterNameContainerResolver;
 use Invoker\ParameterResolver\Container\TypeHintContainerResolver;
 
 $builder = new ContainerBuilder();
-$builder->addDefinitions(__DIR__ . '/config.php');
+$builder->addDefinitions('config.php');
 $container = $builder->build();
 $invoker = new Invoker(null, $container);
 

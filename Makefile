@@ -4,7 +4,7 @@ default: docker-Runtime sam-build local-invoke-hello local-invoke-queue
 
 ARTIFACTS_DIR ?= /tmp/artifacts
 
-BASE_SOURCES = $(wildcard bootstrap/*) $(wildcard composer.*)
+BASE_SOURCES = bootstrap.php config.php $(wildcard bootstrap/*) $(wildcard composer.*)
 BASE_ARTIFACTS = $(patsubst %,$(ARTIFACTS_DIR)/%,$(BASE_SOURCES))
 
 RUNTIME_SOURCES = .dockerignore Dockerfile php.ini .settings
@@ -71,7 +71,8 @@ rector:
 		--autoload-file /project/vendor/autoload.php
 
 require-handler:
-	composer require --no-cache datashaman/phial-handler:dev-master
+	composer clear-cache
+	composer require datashaman/phial-handler:dev-master
 
 run:
 	docker run -it --rm phial-project bash
