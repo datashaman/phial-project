@@ -1,6 +1,6 @@
 include .settings
 
-default: docker-Runtime sam-build local-invoke-queue local-invoke-hello
+default: docker-Runtime sam-build local-invoke-hello local-invoke-queue
 
 ARTIFACTS_DIR ?= /tmp/artifacts
 
@@ -53,10 +53,12 @@ local-api:
 	sam local start-api
 
 local-invoke-hello:
-	sam local invoke HelloHandler
+	sam local generate-event apigateway aws-proxy --path hello > events/hello.json
+	sam local invoke --event events/hello.json HelloHandler
 
 local-invoke-queue:
-	sam local invoke QueueHandler
+	sam local generate-event sqs receive-message --queue-name Queue > events/queue.json
+	sam local invoke --event events/queue.json QueueHandler
 
 phpstan:
 	phpstan analyse --level 8 app/ bootstrap/

@@ -17,9 +17,12 @@ abstract class AbstractApiGatewayHandler extends AbstractHandler
         ContextInterface $context,
         ServerRequestFactoryInterface $serverRequestFactory
     ): string {
-        // $request = $serverRequestFactory->createServerRequest($event['httpMethod']);
-
         $context->getLogger()->debug('Handle event', ['event' => $event]);
+
+        $request = $serverRequestFactory->createServerRequest(
+            $event['httpMethod'],
+            $event['path']
+        );
 
         return json_encode(
             $this->negotiate(
