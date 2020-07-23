@@ -1,6 +1,6 @@
 include .settings
 
-default: docker-Runtime sam-build local-invoke-hello local-invoke-queue
+default: docker-Runtime sam-build # local-invoke-hello local-invoke-queue
 
 ARTIFACTS_DIR ?= /tmp/artifacts
 

@@ -5,45 +5,25 @@ declare(strict_types=1);
 namespace App;
 
 use Datashaman\Phial\ContextInterface;
-use Exception;
+use Laminas\Diactoros\Response\HtmlResponse;
+use Laminas\Diactoros\Response\JsonResponse;
+use Laminas\Diactoros\Response\XmlResponse;
+use Psr\Http\Message\ServerRequestInterface;
 
 final class HelloHandler extends AbstractApiGatewayHandler
 {
-    /**
-     * @param array<string|array> $event
-     *
-     * @return array<string, array<string, string>|int|string>
-     */
-    public function html($event, ContextInterface $context): array
+    public function html(ServerRequestInterface $request, ContextInterface $context): HtmlResponse
     {
-        return [
-            'statusCode' => 200,
-            'body' => 'hello world',
-            'headers' => [
-                'Content-Type' => 'text/html',
-            ],
-        ];
+        return new HtmlResponse('hello world');
     }
 
-    /**
-     * @param array<string|array> $event
-     *
-     * @return array<string, array<string, string>|int|string>
-     */
-    public function json($event, ContextInterface $context): array
+    public function json(ServerRequestInterface $request, ContextInterface $context): JsonResponse
     {
-        return [
-            'statusCode' => 200,
-            'body' => json_encode(
-                [
-                    'message' => 'hello world',
-                    'functionName' => $context->getFunctionName(),
-                ],
-                JSON_THROW_ON_ERROR
-            ),
-            'headers' => [
-                'Content-Type' => 'application/json',
-            ],
-        ];
+        return new JsonResponse('hello world');
+    }
+
+    public function xml(ServerRequestInterface $request, ContextInterface $context): XmlResponse
+    {
+        return new XmlResponse('<hello name="world"/>');
     }
 }

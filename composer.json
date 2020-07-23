@@ -3,7 +3,7 @@
     "require": {
         "datashaman/phial-handler": "dev-master",
         "guzzlehttp/guzzle": "^7.0",
-        "http-interop/http-factory-guzzle": "^1.0",
+        "laminas/laminas-diactoros": "^2.3",
         "monolog/monolog": "^2.1",
         "php-di/php-di": "^6.2",
         "willdurand/negotiation": "^2.3"

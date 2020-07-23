@@ -8,9 +8,9 @@ use Datashaman\Phial\RuntimeHandlerInterface;
 
 use GuzzleHttp\Client;
 
-use Http\Factory\Guzzle\RequestFactory;
-use Http\Factory\Guzzle\ServerRequestFactory;
-use Http\Factory\Guzzle\StreamFactory;
+use Laminas\Diactoros\RequestFactory;
+use Laminas\Diactoros\ServerRequestFactory;
+use Laminas\Diactoros\StreamFactory;
 
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\StreamHandler;
