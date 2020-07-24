@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace App;
 
 use Datashaman\Phial\ContextInterface;
+use Exception;
 use Invoker\InvokerInterface;
 use Laminas\Diactoros\Response\HtmlResponse;
 use Laminas\Diactoros\Response\JsonResponse;
 use Laminas\Diactoros\Response\XmlResponse;
+use Negotiation\Accept;
 use Negotiation\Negotiator;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestFactoryInterface;
@@ -18,20 +20,11 @@ use Psr\Log\LoggerInterface;
 
 abstract class AbstractApiGatewayHandler extends AbstractHandler
 {
-    /**
-     * @var Negotiator
-     */
-    private $negotiator;
+    private \Negotiation\Negotiator $negotiator;
 
-    /**
-     * @var ServerRequestFactoryInterface
-     */
-    private $serverRequestFactory;
+    private \Psr\Http\Message\ServerRequestFactoryInterface $serverRequestFactory;
 
-    /**
-     * @var StreamFactoryInterface
-     */
-    private $streamFactory;
+    private \Psr\Http\Message\StreamFactoryInterface $streamFactory;
 
     public function __construct(
         InvokerInterface $invoker,
@@ -62,7 +55,7 @@ abstract class AbstractApiGatewayHandler extends AbstractHandler
     }
 
     /**
-     * @param array<string|array> $event
+     * @param array<string,mixed> $event
      */
     function __invoke(
         array $event,
@@ -103,9 +96,12 @@ abstract class AbstractApiGatewayHandler extends AbstractHandler
             'headers' => $headers,
         ];
 
-        return json_encode($payload);
+        return json_encode($payload, JSON_THROW_ON_ERROR);
     }
 
+    /**
+     * @param array<string,mixed> $event
+     */
     private function createServerRequest(
         array $event,
         ContextInterface $context
@@ -165,14 +161,19 @@ abstract class AbstractApiGatewayHandler extends AbstractHandler
         return $request;
     }
 
+    /**
+     * @param array<string,mixed> $event
+     *
+     * @return array<string,mixed>
+     */
     private function generateServerParams(
-        $event,
+        array $event,
         ContextInterface $context
     ): array {
         return [];
     }
 
-    private function endsWith($haystack, $needle): bool
+    private function endsWith(string $haystack, string $needle): bool
     {
         $length = strlen($needle);
 
@@ -184,10 +185,7 @@ abstract class AbstractApiGatewayHandler extends AbstractHandler
     }
 
     /**
-     * @param array<string|array> $event
-     * @param array<string, array<int, callable|string>> $priorities
-     *
-     * @return array<string|array>
+     * @param array<string,array<int,callable|string>> $priorities
      */
     protected function negotiate(
         ServerRequestInterface $request,
@@ -210,15 +208,13 @@ abstract class AbstractApiGatewayHandler extends AbstractHandler
         );
     }
 
-    /**
-     * @param array<string|array> $event
-     */
     private function accept(
         ServerRequestInterface $request,
         string $default
     ): string {
         $header = $request->getHeaderLine('Accept') ?? $default;
 
+	/** @var Accept|null */
         $best = $this
             ->negotiator
             ->getBest(

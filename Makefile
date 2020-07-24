@@ -60,15 +60,13 @@ local-invoke-queue:
 	sam local generate-event sqs receive-message --queue-name Queue > events/queue.json
 	sam local invoke --event events/queue.json QueueHandler
 
+clean-code: phpstan rector
+
 phpstan:
-	phpstan analyse --level 8 app/ bootstrap/
+	phpstan analyse --level max app/
 
 rector:
-	docker run --rm \
-		-v $(shell pwd):/project \
-		rector/rector:latest process /project/app \
-		--config /project/rector.yaml \
-		--autoload-file /project/vendor/autoload.php
+	rector process app/
 
 require-handler:
 	composer clear-cache

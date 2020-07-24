@@ -9,6 +9,7 @@
         "willdurand/negotiation": "^2.3"
     },
     "require-dev": {
+        "ergebnis/composer-normalize": "^2.6",
         "symfony/var-dumper": "^5.1"
     },
     "autoload": {

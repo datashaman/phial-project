@@ -8,10 +8,7 @@ use Invoker\InvokerInterface;
 
 abstract class AbstractHandler
 {
-    /**
-     * @var InvokerInterface
-     */
-    protected $invoker;
+    protected \Invoker\InvokerInterface $invoker;
 
     public function __construct(
         InvokerInterface $invoker
