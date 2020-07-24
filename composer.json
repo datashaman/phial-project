@@ -1,5 +1,6 @@
 {
     "name": "datashaman/phial-project",
+    "license": "MIT",
     "require": {
         "datashaman/phial-handler": "dev-master",
         "guzzlehttp/guzzle": "^7.0",
