@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4dbc4c1b2f2be36b73e7cdecde205a65",
+    "content-hash": "683ee5ab3186e769bc5fd9bb57fdb869",
     "packages": [
         {
             "name": "datashaman/phial-handler",
@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/datashaman/phial-handler.git",
-                "reference": "0bad9c0f64cec946307f87b6da58fa963bf3b9e6"
+                "reference": "ba2827fb11a96d362e650c67639697f26f33761e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/datashaman/phial-handler/zipball/0bad9c0f64cec946307f87b6da58fa963bf3b9e6",
-                "reference": "0bad9c0f64cec946307f87b6da58fa963bf3b9e6",
+                "url": "https://api.github.com/repos/datashaman/phial-handler/zipball/ba2827fb11a96d362e650c67639697f26f33761e",
+                "reference": "ba2827fb11a96d362e650c67639697f26f33761e",
                 "shasum": ""
             },
             "require": {
@@ -27,6 +27,9 @@
                 "psr/http-message": "^1.0",
                 "psr/log": "^1.1"
             },
+            "require-dev": {
+                "ergebnis/composer-normalize": "^2.6"
+            },
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -34,7 +37,7 @@
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
-            "time": "2020-07-24T03:25:20+00:00"
+            "time": "2020-07-24T04:13:45+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -393,16 +396,16 @@
         },
         {
             "name": "monolog/monolog",
-            "version": "2.1.0",
+            "version": "2.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "38914429aac460e8e4616c8cb486ecb40ec90bb1"
+                "reference": "f9eee5cec93dfb313a38b6b288741e84e53f02d5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/38914429aac460e8e4616c8cb486ecb40ec90bb1",
-                "reference": "38914429aac460e8e4616c8cb486ecb40ec90bb1",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/f9eee5cec93dfb313a38b6b288741e84e53f02d5",
+                "reference": "f9eee5cec93dfb313a38b6b288741e84e53f02d5",
                 "shasum": ""
             },
             "require": {
@@ -470,7 +473,17 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2020-05-22T08:12:19+00:00"
+            "funding": [
+                {
+                    "url": "https://github.com/Seldaek",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/monolog/monolog",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2020-07-23T08:41:23+00:00"
         },
         {
             "name": "opis/closure",
@@ -1638,11 +1651,11 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "stability-flags": {
         "datashaman/phial-handler": 20
     },
-    "prefer-stable": false,
+    "prefer-stable": true,
     "prefer-lowest": false,
     "platform": [],
     "platform-dev": [],
