@@ -39,7 +39,7 @@ The following _PSR_ interfaces are supported; any compatible implementation can 
 Also listed is the implementation used in this project. The implementations are wired up in _bootstrap/config.php_.
 
 * [PSR-3 Logger Interface](https://www.php-fig.org/psr/psr-3) - [monolog/monolog](https://packagist.org/packages/monolog/monolog)
-* [PSR-7 HTTP Message Interface](https://www.php-fig.org/psr/psr-7) - [guzzlehttp/guzzle](https://packagist.org/packages/guzzlehttp/guzzle)
+* [PSR-7 HTTP Message Interface](https://www.php-fig.org/psr/psr-7) - [laminas/laminas-diactoros](https://packagist.org/packages/laminas/laminas-diactoros)
 * [PSR-11 Container Interface](https://www.php-fig.org/psr/psr-11) - [php-di/php-di](https://packagist.org/packages/php-di/php-di)
-* [PSR-17 HTTP Factories](https://www.php-fig.org/psr/psr-17) - [http-interop/http-factory-guzzle](https://packagist.org/packages/http-interop/http-factory-guzzle)
+* [PSR-17 HTTP Factories](https://www.php-fig.org/psr/psr-17) - [laminas/laminas-diactoros](https://packagist.org/packages/laminas/laminas-diactoros)
 * [PSR-18 HTTP Client](https://www.php-fig.org/psr/psr-18) - [guzzlehttp/guzzle](https://packagist.org/packages/guzzlehttp/guzzle)
