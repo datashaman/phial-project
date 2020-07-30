@@ -1,1 +1,2 @@
-PHP_PACKAGE=php74
+export DOCKER_BUILDKIT=1
+export PHP_PACKAGE=php74

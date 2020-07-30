@@ -19,7 +19,7 @@ final class HelloHandler extends AbstractApiGatewayHandler
 
     public function json(ServerRequestInterface $request, ContextInterface $context): JsonResponse
     {
-        return new JsonResponse('hello world');
+        return new JsonResponse(['message' => 'hello', 'name' => 'world']);
     }
 
     public function xml(ServerRequestInterface $request, ContextInterface $context): XmlResponse

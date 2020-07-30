@@ -47,7 +47,7 @@ clean:
 	rm -rf $(ARTIFACTS_DIR)/*
 
 docker-Runtime:
-	DOCKER_BUILDKIT=1 docker build --build-arg PHP_PACKAGE=$(PHP_PACKAGE) --pull -t phial-project .
+	docker build --build-arg PHP_PACKAGE=$(PHP_PACKAGE) --pull -t phial-project .
 
 local-api:
 	sam local start-api
