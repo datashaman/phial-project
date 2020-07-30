@@ -36,7 +36,7 @@ To replace the _DI_ container with another implementation, build one in _bootstr
 
 The following _PSR_ interfaces are supported; any compatible implementation can be used, just pass parameters into the handler constructor or use your DI container to autowire it up.
 
-Also listed is the implementation used in this project. The implementations are wired up in _bootstrap/config.php_.
+Also listed is the implementation used in this project. The implementations are wired up in _config.php_.
 
 * [PSR-3 Logger Interface](https://www.php-fig.org/psr/psr-3) - [monolog/monolog](https://packagist.org/packages/monolog/monolog)
 * [PSR-7 HTTP Message Interface](https://www.php-fig.org/psr/psr-7) - [laminas/laminas-diactoros](https://packagist.org/packages/laminas/laminas-diactoros)
