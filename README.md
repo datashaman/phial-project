@@ -30,13 +30,13 @@ sam deploy --guided
 
 You do not _have_ to use a _DI_ container, but it does make things easier. Any _PSR-11_ implementation will do. The _PHP-DI_ invoker which invokes the handler code will handle _DI_ or no _DI_, it doesn't care.
 
-To replace the _DI_ container with another implementation, build one in _bootstrap.php_ and pass it into the invoker construction.
+To replace the _DI_ container with another implementation, build one in [bootstrap.php](bootstrap.php) and pass it into the invoker construction.
 
 ### PSR standards supported
 
 The following _PSR_ interfaces are supported; any compatible implementation can be used, just pass parameters into the handler constructor or use your DI container to autowire it up.
 
-Also listed is the implementation used in this project. The implementations are wired up in _config.php_.
+Also listed is the implementation used in this project. The implementations are wired up in [config.php](config.php).
 
 * [PSR-3 Logger Interface](https://www.php-fig.org/psr/psr-3) - [monolog/monolog](https://packagist.org/packages/monolog/monolog)
 * [PSR-7 HTTP Message Interface](https://www.php-fig.org/psr/psr-7) - [laminas/laminas-diactoros](https://packagist.org/packages/laminas/laminas-diactoros)
