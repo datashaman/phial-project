@@ -1,7 +1,5 @@
 <?php
 
-require_once __DIR__ . '/../vendor/autoload.php';
-
 use Datashaman\Phial\RuntimeHandlerInterface;
 use DI\ContainerBuilder;
 use Invoker\Invoker;
@@ -21,7 +19,9 @@ $parameterResolver->prependResolver(
     new TypeHintContainerResolver($container)
 );
 
-/** @var callable $callable */
+/**
+ * @var callable $callable 
+*/
 $callable = RuntimeHandlerInterface::class;
 
 $invoker->call($callable);

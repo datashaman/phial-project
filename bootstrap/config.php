@@ -2,6 +2,7 @@
 
 use App\Listeners\RequestEventListener;
 use App\Listeners\StartEventListener;
+use App\Router as AppRouter;
 use App\Strategy\ApplicationStrategy;
 
 use Circli\EventDispatcher\EventDispatcher;
@@ -22,7 +23,7 @@ use Laminas\Diactoros\RequestFactory;
 use Laminas\Diactoros\ServerRequestFactory;
 use Laminas\Diactoros\StreamFactory;
 
-use League\Route\Router;
+use League\Route\RouteCollectionInterface;
 use League\Route\Strategy\StrategyInterface;
 
 use Monolog\Formatter\LineFormatter;
@@ -50,27 +51,32 @@ return [
     'log.level' => Logger::DEBUG,
     'log.stream' => 'php://stderr',
 
-    ClientInterface::class => DI\autowire(Client::class),
-    ContextFactoryInterface::class => DI\create(ContextFactory::class),
+    AppRouter::class => DI\create()
+        ->method('setStrategy', DI\get(StrategyInterface::class)),
+    RequestHandlerInterface::class => DI\get(AppRouter::class),
+    RouteCollectionInterface::class => DI\get(AppRouter::class),
+    StrategyInterface::class => DI\autowire(ApplicationStrategy::class)
+        ->method('setContainer', DI\get(ContainerInterface::class)),
+
     EventDispatcherInterface::class => DI\autowire(EventDispatcher::class),
-    LineFormatter::class => DI\create(LineFormatter::class)
-        ->constructor(DI\get('log.format'), null, false, true),
     ListenerProviderInterface::class => DI\autowire(ContainerListenerProvider::class)
         ->method('addService', StartEvent::class, StartEventListener::class)
         ->method('addService', RequestEvent::class, RequestEventListener::class),
+
+    LineFormatter::class => DI\create(LineFormatter::class)
+        ->constructor(DI\get('log.format'), null, false, true),
     LoggerInterface::class => DI\create(Logger::class)
         ->constructor(DI\get('app.id'))
         ->method('pushHandler', DI\get(StreamHandler::class)),
-    RequestFactoryInterface::class => DI\create(RequestFactory::class),
-    RequestHandlerInterface::class => DI\get(Router::class),
-    Router::class => DI\create(Router::class)
-        ->method('setStrategy' , DI\get(StrategyInterface::class)),
-    RuntimeHandlerInterface::class => DI\autowire(RuntimeHandler::class),
-    ServerRequestFactoryInterface::class => DI\create(ServerRequestFactory::class),
-    StrategyInterface::class => DI\autowire(ApplicationStrategy::class)
-        ->method('setContainer', DI\get(ContainerInterface::class)),
-    StreamFactoryInterface::class => DI\create(StreamFactory::class),
     StreamHandler::class => DI\create()
         ->constructor(DI\get('log.stream'), DI\get('log.level'))
         ->method('setFormatter', DI\get(LineFormatter::class)),
+
+    ClientInterface::class => DI\autowire(Client::class),
+    ContextFactoryInterface::class => DI\create(ContextFactory::class),
+    RuntimeHandlerInterface::class => DI\autowire(RuntimeHandler::class),
+
+    RequestFactoryInterface::class => DI\create(RequestFactory::class),
+    ServerRequestFactoryInterface::class => DI\create(ServerRequestFactory::class),
+    StreamFactoryInterface::class => DI\create(StreamFactory::class),
 ];

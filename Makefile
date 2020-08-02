@@ -51,10 +51,10 @@ local-invoke-handler:
 code-quality: code-phpstan code-rector
 
 code-phpstan:
-	phpstan analyse --level max app/
+	phpstan analyse --level max app/ bootstrap/
 
 code-rector:
-	rector process app/
+	rector process app/ bootstrap/
 
 require-handler:
 	composer clear-cache

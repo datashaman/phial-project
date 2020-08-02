@@ -5,19 +5,16 @@ declare(strict_types=1);
 namespace App\Listeners;
 
 use App\Controllers\HomeController;
-use Datashaman\Phial\ContextInterface;
 use Datashaman\Phial\Events\StartEvent;
-use DI\Container;
-use League\Route\Router;
-use Psr\Http\Message\ServerRequestInterface;
+use League\Route\RouteCollectionInterface;
 use Psr\Log\LoggerInterface;
 
 class StartEventListener
 {
-    private Router $router;
+    private RouteCollectionInterface $router;
     private LoggerInterface $logger;
 
-    public function __construct(Router $router, LoggerInterface $logger)
+    public function __construct(RouteCollectionInterface $router, LoggerInterface $logger)
     {
         $this->router = $router;
         $this->logger = $logger;
