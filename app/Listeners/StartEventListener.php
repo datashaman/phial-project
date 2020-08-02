@@ -10,18 +10,22 @@ use Datashaman\Phial\Events\StartEvent;
 use DI\Container;
 use League\Route\Router;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Log\LoggerInterface;
 
 class StartEventListener
 {
     private Router $router;
+    private LoggerInterface $logger;
 
-    public function __construct(Router $router)
+    public function __construct(Router $router, LoggerInterface $logger)
     {
         $this->router = $router;
+        $this->logger = $logger;
     }
 
     public function __invoke(StartEvent $event): void
     {
+        $this->logger->debug('Received start event, adding routes');
         $this->router->map('GET', '/', [HomeController::class, 'hello']);
     }
 }
