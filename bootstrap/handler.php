@@ -36,6 +36,4 @@ class Strategy extends ApplicationStrategy
 $strategy = $container->get(ApplicationStrategy::class)->setContainer($container);
 $router = (new Router())->setStrategy($strategy);
 
-require_once __DIR__ . '/routes.php';
-
 return $router;

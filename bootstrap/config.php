@@ -1,6 +1,7 @@
 <?php
 
 use App\Listeners\RequestEventListener;
+use App\Listeners\StartEventListener;
 
 use Circli\EventDispatcher\EventDispatcher;
 use Circli\EventDispatcher\ListenerProvider\ContainerListenerProvider;
@@ -42,6 +43,8 @@ return [
 
     EventDispatcherInterface::class => function (ContainerInterface $container) {
         $provider = new ContainerListenerProvider($container);
+
+        $provider->addService(StartEvent::class, StartEventListener::class);
         $provider->addService(RequestEvent::class, RequestEventListener::class);
 
         return new EventDispatcher($provider);
