@@ -4,13 +4,13 @@ default: docker-Runtime sam-build local-invoke-handler
 
 ARTIFACTS_DIR ?= /tmp/artifacts
 
-BASE_SOURCES = bootstrap.php $(wildcard bootstrap/*) $(wildcard composer.*)
+BASE_SOURCES = composer.json composer.lock
 BASE_ARTIFACTS = $(patsubst %,$(ARTIFACTS_DIR)/%,$(BASE_SOURCES))
 
 RUNTIME_SOURCES = .dockerignore Dockerfile php.ini .settings
 RUNTIME_ARTIFACTS = $(ARTIFACTS_DIR)/${PHP_PACKAGE}
 
-APP_SOURCES = $(shell find app -type f)
+APP_SOURCES = bootstrap.php $(shell find app config -type f)
 APP_ARTIFACTS = $(patsubst %,$(ARTIFACTS_DIR)/%,$(APP_SOURCES))
 
 $(BASE_ARTIFACTS): $(ARTIFACTS_DIR)/%: %
@@ -18,7 +18,7 @@ $(BASE_ARTIFACTS): $(ARTIFACTS_DIR)/%: %
 	cp $< $@
 
 $(ARTIFACTS_DIR)/vendor: $(BASE_ARTIFACTS)
-	composer install --working-dir="${ARTIFACTS_DIR}"
+	composer install --optimize-autoloader --working-dir="${ARTIFACTS_DIR}"
 
 $(RUNTIME_ARTIFACTS): $(RUNTIME_SOURCES)
 	CONTAINER_ID=$(shell docker run --detach --tty phial-project bash) \
