@@ -55,7 +55,7 @@ return [
     EventDispatcherInterface::class => DI\autowire(EventDispatcher::class),
     LineFormatter::class => DI\create(LineFormatter::class)
         ->constructor(DI\get('log.format'), null, false, true),
-    ListenerProviderInterface::class => DI\autowire()
+    ListenerProviderInterface::class => DI\autowire(ContainerListenerProvider::class)
         ->method('addService', StartEvent::class, StartEventListener::class)
         ->method('addService', RequestEvent::class, RequestEventListener::class),
     LoggerInterface::class => DI\create(Logger::class)
