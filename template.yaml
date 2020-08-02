@@ -18,6 +18,11 @@ Resources:
         ProxyApi:
           Type: Api
           Properties:
+            Path: /
+            Method: ANY
+        ProxyApiGreedy:
+          Type: Api
+          Properties:
             Path: /{proxy+}
             Method: ANY
       Handler: Datashaman\Phial\RequestHandlerAdapter
@@ -31,5 +36,4 @@ Resources:
 
 Outputs:
   RequestHandlerApi:
-    Description: "RequestHandler API"
     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
