@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Listeners;
 
 use Datashaman\Phial\ContextInterface;
-use Datashaman\Phial\RequestEvent;
+use Datashaman\Phial\Events\RequestEvent;
 use DI\Container;
 use Psr\Http\Message\ServerRequestInterface;
 

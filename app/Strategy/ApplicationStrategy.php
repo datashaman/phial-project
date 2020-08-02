@@ -1,16 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
+namespace App\Strategy;
+
 use Datashaman\Phial\ContextInterface;
 use Invoker\InvokerInterface;
 use Laminas\Diactoros\Response\TextResponse;
 use League\Route\Route;
-use League\Route\Router;
-use League\Route\Strategy\ApplicationStrategy;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Container\ContainerInterface;
 
-class Strategy extends ApplicationStrategy
+class ApplicationStrategy extends \League\Route\Strategy\ApplicationStrategy
 {
     private InvokerInterface $invoker;
 
@@ -32,8 +34,3 @@ class Strategy extends ApplicationStrategy
         return $response;
     }
 }
-
-$strategy = $container->get(ApplicationStrategy::class)->setContainer($container);
-$router = (new Router())->setStrategy($strategy);
-
-return $router;

@@ -4,23 +4,24 @@ declare(strict_types=1);
 
 namespace App\Listeners;
 
+use App\Controllers\HomeController;
 use Datashaman\Phial\ContextInterface;
-use Datashaman\Phial\RequestEvent;
+use Datashaman\Phial\Events\StartEvent;
 use DI\Container;
+use League\Route\Router;
 use Psr\Http\Message\ServerRequestInterface;
 
-class RequestEventListener
+class StartEventListener
 {
-    private Container $container;
+    private Router $router;
 
-    public function __construct(Container $container)
+    public function __construct(Router $router)
     {
-        $this->container = $container;
+        $this->router = $router;
     }
 
-    public function __invoke(RequestEvent $event): void
+    public function __invoke(StartEvent $event): void
     {
-        $this->container->set(ServerRequestInterface::class, $event->request);
-        $this->container->set(ContextInterface::class, $event->context);
+        $this->router->map('GET', '/', [HomeController::class, 'hello']);
     }
 }
