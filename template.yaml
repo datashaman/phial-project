@@ -11,30 +11,16 @@ Resources:
       ContentUri: .
     Metadata:
       BuildMethod: makefile
-  HelloHandler:
+  RequestHandler:
     Type: AWS::Serverless::Function
     Properties:
       Events:
-        Hello:
+        ProxyApi:
           Type: Api
           Properties:
-            Path: /hello
-            Method: get
-      Handler: App\HelloHandler
-      Layers:
-        - !Ref Runtime
-      Runtime: provided
-    Metadata:
-      BuildMethod: makefile
-  QueueHandler:
-    Type: AWS::Serverless::Function
-    Properties:
-      Events:
-        HelloEvent:
-          Type: SQS
-          Properties:
-            Queue: !GetAtt Queue.Arn
-      Handler: App\QueueHandler
+            Path: /{proxy+}
+            Method: ANY
+      Handler: Datashaman\Phial\RequestHandlerAdapter
       Layers:
         - !Ref Runtime
       Runtime: provided
@@ -44,6 +30,6 @@ Resources:
     Type: AWS::SQS::Queue
 
 Outputs:
-  HelloHandlerApi:
-    Description: "HelloHandler API"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
+  RequestHandlerApi:
+    Description: "RequestHandler API"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"

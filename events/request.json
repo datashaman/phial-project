@@ -1,8 +1,8 @@
 {
   "body": "eyJ0ZXN0IjoiYm9keSJ9",
   "resource": "/{proxy+}",
-  "path": "/hello",
-  "httpMethod": "POST",
+  "path": "/",
+  "httpMethod": "GET",
   "isBase64Encoded": true,
   "queryStringParameters": {
     "foo": "bar"
@@ -13,7 +13,7 @@
     ]
   },
   "pathParameters": {
-    "proxy": "/hello"
+    "proxy": "/"
   },
   "stageVariables": {
     "baz": "qux"
@@ -114,9 +114,9 @@
       "userAgent": "Custom User Agent String",
       "user": null
     },
-    "path": "/prod/hello",
+    "path": "/prod/",
     "resourcePath": "/{proxy+}",
-    "httpMethod": "POST",
+    "httpMethod": "GET",
     "apiId": "1234567890",
     "protocol": "HTTP/1.1"
   }
