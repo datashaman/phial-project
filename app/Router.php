@@ -16,7 +16,9 @@ class Router extends \League\Route\Router
      */
     protected function prepRoutes(ServerRequestInterface $request): void
     {
-        if ($this->dataGenerator->getData() !== [[], []]) {
+        $data = array_filter($this->getData());
+
+        if (!$data) {
             parent::prepRoutes($request);
         }
     }

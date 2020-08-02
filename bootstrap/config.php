@@ -2,7 +2,7 @@
 
 use App\Listeners\RequestEventListener;
 use App\Listeners\StartEventListener;
-use App\Router as AppRouter;
+use App\Router;
 use App\Strategy\ApplicationStrategy;
 
 use Circli\EventDispatcher\EventDispatcher;
@@ -23,7 +23,6 @@ use Laminas\Diactoros\RequestFactory;
 use Laminas\Diactoros\ServerRequestFactory;
 use Laminas\Diactoros\StreamFactory;
 
-use League\Route\RouteCollectionInterface;
 use League\Route\Strategy\StrategyInterface;
 
 use Monolog\Formatter\LineFormatter;
@@ -51,10 +50,9 @@ return [
     'log.level' => Logger::DEBUG,
     'log.stream' => 'php://stderr',
 
-    AppRouter::class => DI\create()
+    Router::class => DI\create(Router::class)
         ->method('setStrategy', DI\get(StrategyInterface::class)),
-    RequestHandlerInterface::class => DI\get(AppRouter::class),
-    RouteCollectionInterface::class => DI\get(AppRouter::class),
+    RequestHandlerInterface::class => DI\get(Router::class),
     StrategyInterface::class => DI\autowire(ApplicationStrategy::class)
         ->method('setContainer', DI\get(ContainerInterface::class)),
 

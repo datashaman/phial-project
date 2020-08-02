@@ -10,7 +10,7 @@ BASE_ARTIFACTS = $(patsubst %,$(ARTIFACTS_DIR)/%,$(BASE_SOURCES))
 RUNTIME_SOURCES = .dockerignore Dockerfile php.ini .settings
 RUNTIME_ARTIFACTS = $(ARTIFACTS_DIR)/${PHP_PACKAGE}
 
-APP_SOURCES = $(wildcard app/**/*)
+APP_SOURCES = $(shell find app -type f)
 APP_ARTIFACTS = $(patsubst %,$(ARTIFACTS_DIR)/%,$(APP_SOURCES))
 
 $(BASE_ARTIFACTS): $(ARTIFACTS_DIR)/%: %
