@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7028195703031da63163459015d4cc11",
+    "content-hash": "5f84f958f26a6d4b9a8a7bb02cb383a1",
     "packages": [
         {
             "name": "circli/event-dispatcher",
@@ -55,6 +55,37 @@
                 "psr-14"
             ],
             "time": "2020-06-04T13:00:30+00:00"
+        },
+        {
+            "name": "container-interop/service-provider",
+            "version": "v0.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/container-interop/service-provider.git",
+                "reference": "4969b9e49460690b7430b3f1a87cab07be61418a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/container-interop/service-provider/zipball/4969b9e49460690b7430b3f1a87cab07be61418a",
+                "reference": "4969b9e49460690b7430b3f1a87cab07be61418a",
+                "shasum": ""
+            },
+            "require": {
+                "psr/container": "^1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Interop\\Container\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Promoting container interoperability through standard service providers",
+            "homepage": "https://github.com/container-interop/service-provider",
+            "time": "2017-09-20T14:13:36+00:00"
         },
         {
             "name": "datashaman/phial-handler",

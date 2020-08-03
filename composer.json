@@ -3,6 +3,7 @@
     "license": "MIT",
     "require": {
         "circli/event-dispatcher": "^2.2",
+        "container-interop/service-provider": "^0.4.0",
         "datashaman/phial-handler": "dev-master",
         "guzzlehttp/guzzle": "^7.0",
         "laminas/laminas-diactoros": "^2.3",
