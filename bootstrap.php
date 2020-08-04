@@ -17,6 +17,7 @@ use Psr\Container\ContainerInterface;
 $builder = new ContainerBuilder();
 
 $builder->enableCompilation('/tmp');
+$builder->enableDefinitionCache();
 $builder->writeProxiesToFile(true, '/tmp/proxies');
 
 $directory = new RecursiveDirectoryIterator(
