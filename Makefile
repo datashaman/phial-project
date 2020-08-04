@@ -1,8 +1,7 @@
 include .settings
 
-default: docker-Runtime sam-build local-invoke-handler
-
 ARTIFACTS_DIR ?= /tmp/artifacts
+STACK_NAME ?= phial-project
 
 BASE_SOURCES = composer.json composer.lock
 BASE_ARTIFACTS = $(patsubst %,$(ARTIFACTS_DIR)/%,$(BASE_SOURCES))
@@ -75,3 +74,6 @@ sam-build:
 
 sam-deploy: sam-build
 	sam deploy
+
+sam-logs:
+	sam logs --name RequestHandler --stack-name $(STACK_NAME)

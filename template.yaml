@@ -32,8 +32,6 @@ Resources:
       Tracing: Active
     Metadata:
       BuildMethod: makefile
-  Queue:
-    Type: AWS::SQS::Queue
 
 Outputs:
   RequestHandlerApi:
