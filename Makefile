@@ -48,13 +48,19 @@ local-invoke-handler:
 	sam local generate-event apigateway aws-proxy --method GET --path '' > events/request.json
 	sam local invoke --event events/request.json RequestHandler
 
-code-quality: code-phpstan code-rector
+code-quality: code-phpcs code-phpstan code-rector
+
+code-phpcbf:
+	phpcbf $(APP_SOURCES)
+
+code-phpcs:
+	phpcs $(APP_SOURCES)
 
 code-phpstan:
-	phpstan analyse --level max app/ bootstrap/
+	phpstan analyse --level max $(APP_SOURCES)
 
 code-rector:
-	rector process app/ bootstrap/
+	rector process $(APP_SOURCES)
 
 require-handler:
 	composer clear-cache

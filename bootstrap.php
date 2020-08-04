@@ -14,72 +14,41 @@ use Invoker\ParameterResolver\Container\TypeHintContainerResolver;
 
 use Psr\Container\ContainerInterface;
 
-class Application
-{
-    private InvokerInterface $invoker;
+$builder = new ContainerBuilder();
 
-    public function __construct()
-    {
-        $container = $this->createContainer();
-        $this->addServiceProviders($container);
+$builder->enableCompilation('/tmp');
+$builder->writeProxiesToFile(true, '/tmp/proxies');
 
-        $this->invoker = $this->createInvoker($container);
-    }
+$directory = new RecursiveDirectoryIterator(
+    __DIR__ . '/config',
+    FilesystemIterator::SKIP_DOTS
+);
 
-    public function __invoke(): void
-    {
-        $this->invoker->call(RuntimeHandlerInterface::class);
-    }
+$iterator = new RecursiveIteratorIterator($directory);
 
-    private function createContainer(): ContainerInterface
-    {
-        $builder = new ContainerBuilder();
-        $builder->useAutowiring(false);
-
-        $this->addDefinitions($builder);
-
-        $container = $builder->build();
-        $this->addServiceProviders($container);
-
-        return $container;
-    }
-
-    private function addDefinitions(ContainerBuilder $builder): void
-    {
-        $directory = new RecursiveDirectoryIterator(
-            __DIR__ . '/config',
-            FilesystemIterator::SKIP_DOTS
-        );
-
-        $iterator = new RecursiveIteratorIterator($directory);
-
-        foreach ($iterator as $name => $object) {
-            $builder->addDefinitions($name);
-        }
-    }
-
-    private function addServiceProviders(ContainerInterface $container): void
-    {
-        foreach ($container->get('app.providers') as $providerClass) {
-            $provider = new $providerClass();
-            $builder->addDefinitions($provider->getFactories());
-        }
-    }
-
-    private function createInvoker(ContainerInterface $container): InvokerInterface
-    {
-        $invoker = new Invoker(null, $container);
-
-        $parameterResolver = $invoker->getParameterResolver();
-        $parameterResolver->prependResolver(
-            new ParameterNameContainerResolver($container)
-        );
-        $parameterResolver->prependResolver(
-            new TypeHintContainerResolver($container)
-        );
-
-        return $invoker;
-    }
+foreach ($iterator as $name => $object) {
+    $builder->addDefinitions($name);
 }
 
-(new Application())();
+$app = include_once __DIR__ . '/config/app.php';
+
+foreach ($app['app.providers'] as $providerClass) {
+    $provider = new $providerClass();
+    $builder->addDefinitions($provider->getFactories());
+}
+
+$container =  $builder->build();
+
+$invoker = new Invoker(null, $container);
+
+$parameterResolver = $invoker->getParameterResolver();
+
+$parameterResolver->prependResolver(
+    new ParameterNameContainerResolver($container)
+);
+
+$parameterResolver->prependResolver(
+    new TypeHintContainerResolver($container)
+);
+
+$invoker->call(RuntimeHandlerInterface::class);

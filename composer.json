@@ -2,6 +2,7 @@
     "name": "datashaman/phial-project",
     "license": "MIT",
     "require": {
+        "acclimate/container": "^2.0",
         "circli/event-dispatcher": "^2.2",
         "container-interop/service-provider": "^0.4.0",
         "datashaman/phial-handler": "dev-master",

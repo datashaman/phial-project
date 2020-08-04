@@ -4,8 +4,66 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5f84f958f26a6d4b9a8a7bb02cb383a1",
+    "content-hash": "492d6a24e743750252b27a498d996cf4",
     "packages": [
+        {
+            "name": "acclimate/container",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/AcclimateContainer/acclimate-container.git",
+                "reference": "ffc670f6cbfb743de8942b75d8a19cbef802151c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/AcclimateContainer/acclimate-container/zipball/ffc670f6cbfb743de8942b75d8a19cbef802151c",
+                "reference": "ffc670f6cbfb743de8942b75d8a19cbef802151c",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6.0",
+                "psr/container": "^1.0"
+            },
+            "require-dev": {
+                "aura/di": "^1.0",
+                "illuminate/container": "^4.0 || ^5.0",
+                "mnapoli/php-di": "^3.0",
+                "nette/nette": "^2.1",
+                "phpunit/phpunit": "^5.7 || ^6.0",
+                "pimple/pimple": "^3.0",
+                "symfony/dependency-injection": "^2.1 || ^3.0",
+                "zendframework/zend-di": "^2.0",
+                "zendframework/zend-servicemanager": "^2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Acclimate\\Container\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jeremy Lindblom",
+                    "email": "jeremeamia@gmail.com",
+                    "homepage": "http://webjeremy.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Provides adapters for various third-party service containers.",
+            "keywords": [
+                "adapter",
+                "container",
+                "decorator",
+                "dependency injection",
+                "interoperability",
+                "service locator"
+            ],
+            "time": "2017-05-06T18:05:40+00:00"
+        },
         {
             "name": "circli/event-dispatcher",
             "version": "2.2.1",
