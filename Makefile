@@ -10,12 +10,12 @@ BASE_ARTIFACTS = $(patsubst %,$(ARTIFACTS_DIR)/%,$(BASE_SOURCES))
 RUNTIME_SOURCES = .dockerignore Dockerfile php.ini .settings
 RUNTIME_ARTIFACTS = $(ARTIFACTS_DIR)/${PHP_PACKAGE}
 
-APP_SOURCES = bootstrap.php $(shell find app config -type f)
+APP_SOURCES = bootstrap.php cache $(shell find app config -type f)
 APP_ARTIFACTS = $(patsubst %,$(ARTIFACTS_DIR)/%,$(APP_SOURCES))
 
 $(BASE_ARTIFACTS): $(ARTIFACTS_DIR)/%: %
 	@mkdir -p $(dir $@)
-	cp $< $@
+	cp -a $< $@
 
 $(ARTIFACTS_DIR)/vendor: $(BASE_ARTIFACTS)
 	composer install --optimize-autoloader --working-dir="${ARTIFACTS_DIR}"
@@ -26,11 +26,12 @@ $(RUNTIME_ARTIFACTS): $(RUNTIME_SOURCES)
 
 $(SHARED_ARTIFACTS): $(SHARED_SOURCES)
 	@mkdir -p $(dir $@)
-	cp $< $@
+	cp -a $< $@
 
 $(APP_ARTIFACTS): $(ARTIFACTS_DIR)/%: %
 	@mkdir -p $(dir $@)
-	cp $< $@
+	cp -a $< $@
+	php build.php
 
 build-Runtime: $(RUNTIME_ARTIFACTS)
 build-RequestHandler: $(ARTIFACTS_DIR)/vendor $(APP_ARTIFACTS)
