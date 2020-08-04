@@ -6,7 +6,6 @@ require_once __DIR__ . '/cache/CompiledContainer.php';
 use Datashaman\Phial\RuntimeHandlerInterface;
 
 use Invoker\Invoker;
-use Invoker\InvokerInterface;
 use Invoker\ParameterResolver\Container\ParameterNameContainerResolver;
 use Invoker\ParameterResolver\Container\TypeHintContainerResolver;
 

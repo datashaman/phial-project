@@ -1,5 +1,7 @@
 include .settings
 
+default: docker-Runtime sam-build local-invoke-handler
+
 ARTIFACTS_DIR ?= /tmp/artifacts
 STACK_NAME ?= phial-project
 
@@ -9,12 +11,19 @@ BASE_ARTIFACTS = $(patsubst %,$(ARTIFACTS_DIR)/%,$(BASE_SOURCES))
 RUNTIME_SOURCES = .dockerignore Dockerfile php.ini .settings
 RUNTIME_ARTIFACTS = $(ARTIFACTS_DIR)/${PHP_PACKAGE}
 
-APP_SOURCES = bootstrap.php cache $(shell find app config -type f)
+APP_SOURCES = bootstrap.php $(shell find app config -type f)
 APP_ARTIFACTS = $(patsubst %,$(ARTIFACTS_DIR)/%,$(APP_SOURCES))
+
+echo:
+	echo $(APP_ARTIFACTS)
 
 $(BASE_ARTIFACTS): $(ARTIFACTS_DIR)/%: %
 	@mkdir -p $(dir $@)
 	cp -a $< $@
+
+$(ARTIFACTS_DIR)/cache/CompiledContainer.php: $(wildcard config/*.php) $(wildcard app/Providers/*ServiceProvider.php)
+	php build.php
+	cp -a cache $(ARTIFACTS_DIR)
 
 $(ARTIFACTS_DIR)/vendor: $(BASE_ARTIFACTS)
 	composer install --optimize-autoloader --working-dir="${ARTIFACTS_DIR}"
@@ -30,10 +39,9 @@ $(SHARED_ARTIFACTS): $(SHARED_SOURCES)
 $(APP_ARTIFACTS): $(ARTIFACTS_DIR)/%: %
 	@mkdir -p $(dir $@)
 	cp -a $< $@
-	php build.php
 
 build-Runtime: $(RUNTIME_ARTIFACTS)
-build-RequestHandler: $(ARTIFACTS_DIR)/vendor $(APP_ARTIFACTS)
+build-RequestHandler: $(ARTIFACTS_DIR)/cache/CompiledContainer.php $(ARTIFACTS_DIR)/vendor $(APP_ARTIFACTS)
 
 clean:
 	rm -rf $(ARTIFACTS_DIR)/*
