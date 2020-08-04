@@ -2,6 +2,9 @@
 
 require_once __DIR__ . '/vendor/autoload.php';
 
+use App\Http\Controllers\HomeController;
+use App\Router;
+
 use DI\Container;
 use DI\ContainerBuilder;
 

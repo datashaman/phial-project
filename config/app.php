@@ -10,5 +10,6 @@ return [
         App\Providers\HandlerServiceProvider::class,
         App\Providers\HttpServiceProvider::class,
         App\Providers\LogServiceProvider::class,
+        App\Providers\RouteServiceProvider::class,
     ],
 ];
