@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 return [
+    'app.debug' => false,
+
     'app.id' => 'phial-project',
 
     'app.providers' => [

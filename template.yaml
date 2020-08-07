@@ -11,7 +11,7 @@ Resources:
       ContentUri: .
     Metadata:
       BuildMethod: makefile
-  RequestHandler:
+  App:
     Type: AWS::Serverless::Function
     Properties:
       Events:
@@ -34,5 +34,5 @@ Resources:
       BuildMethod: makefile
 
 Outputs:
-  RequestHandlerApi:
+  AppApi:
     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"

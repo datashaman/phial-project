@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
-use App\Controllers\HomeController;
 use FastRoute\Dispatcher;
 use FastRoute\RouteCollector;
 use Interop\Container\ServiceProviderInterface;
@@ -19,11 +18,12 @@ class RouteServiceProvider implements ServiceProviderInterface
         return [
             Dispatcher::class => function (ContainerInterface $container) {
                 return cachedDispatcher(
-                    function(RouteCollector $r) {
-                        $r->addRoute('GET', '/', HelloController::class . '@hello');
+                    function (RouteCollector $r) {
+                        require base_dir('routes/web.php');
                     },
                     [
-                        'cacheFile' => 'cache/route',
+                        'cacheDisabled' => $container->get('app.debug'),
+                        'cacheFile' => base_dir('cache/routes.php'),
                     ]
                 );
             },

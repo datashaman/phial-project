@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
-use FastRoute\Dispatcher;
+use App\RequestHandler;
 use GuzzleHttp\Client;
 use Interop\Container\ServiceProviderInterface;
 use Laminas\Diactoros\RequestFactory;
@@ -27,9 +27,8 @@ class HttpServiceProvider implements ServiceProviderInterface
                 $container->get(Client::class),
             RequestFactoryInterface::class => fn(ContainerInterface $container) =>
                 $container->get(RequestFactory::class),
-            RequestHandlerInterface::class => function (ContainerInterface $container) {
-                return $container->get(Dispatcher::class);
-            },
+            RequestHandlerInterface::class => fn(ContainerInterface $container) =>
+                $container->get(RequestHandler::class),
             ServerRequestFactoryInterface::class => fn(ContainerInterface $container) =>
                 $container->get(ServerRequestFactory::class),
             StreamFactoryInterface::class => fn(ContainerInterface $container) =>

@@ -8,19 +8,17 @@ use Datashaman\Phial\RuntimeHandlerInterface;
 use Invoker\Invoker;
 use Invoker\ParameterResolver\Container\ParameterNameContainerResolver;
 use Invoker\ParameterResolver\Container\TypeHintContainerResolver;
+use Invoker\ParameterResolver\ResolverChain;
 
 $container = new CompiledContainer();
-
 $invoker = new Invoker(null, $container);
 
-$parameterResolver = $invoker->getParameterResolver();
+/** @var ResolverChain */
+$resolver = $invoker->getParameterResolver();
 
-$parameterResolver->prependResolver(
-    new ParameterNameContainerResolver($container)
-);
-
-$parameterResolver->prependResolver(
-    new TypeHintContainerResolver($container)
-);
+$resolver
+    ->prependResolver(
+        new TypeHintContainerResolver($container)
+    );
 
 $invoker->call(RuntimeHandlerInterface::class);

@@ -9,8 +9,13 @@ use Psr\Http\Message\ResponseInterface;
 
 class HomeController
 {
-    public function hello(): ResponseInterface
+    public function index(): ResponseInterface
     {
-        return new TextResponse('Hello World');
+        return new TextResponse('Welcome');
+    }
+
+    public function hello(string $name): ResponseInterface
+    {
+        return new TextResponse("Hello $name");
     }
 }
