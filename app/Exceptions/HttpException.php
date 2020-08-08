@@ -24,7 +24,7 @@ class HttpException extends Exception implements StatusCodeInterface
             $message = HttpStatus::getReasonPhrase($code);
         }
 
-        $exception = new self($message, $code, $previous);
+        $exception = new HttpException($message, $code, $previous);
 
         return $exception->withHeaders($headers);
     }

@@ -3,15 +3,17 @@
 declare(strict_types=1);
 
 use function DI\env;
+use function DI\get;
 
 return [
     'app.debug' => env('APP_DEBUG', true),
+    'app.env' => env('APP_ENV', 'local'),
 
     'app.id' => 'phial-project',
 
     'app.middleware' => [
-        App\Middleware\ExceptionMiddleware::class,
-        App\Middleware\RouteMiddleware::class,
+        get(App\Http\Middleware\ExceptionMiddleware::class),
+        get(App\Http\Middleware\RouteMiddleware::class),
     ],
 
     'app.providers' => [

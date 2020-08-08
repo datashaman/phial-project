@@ -8,8 +8,9 @@ use FastRoute\Dispatcher;
 use FastRoute\RouteCollector;
 use Interop\Container\ServiceProviderInterface;
 use Psr\Container\ContainerInterface;
+use Psr\Log\LoggerInterface;
 
-use function FastRoute\cachedDispatcher;
+use function FastRoute\simpleDispatcher;
 
 class RouteServiceProvider implements ServiceProviderInterface
 {
@@ -17,14 +18,10 @@ class RouteServiceProvider implements ServiceProviderInterface
     {
         return [
             Dispatcher::class => function (ContainerInterface $container) {
-                return cachedDispatcher(
+                return simpleDispatcher(
                     function (RouteCollector $r) {
                         require base_dir('routes/web.php');
-                    },
-                    [
-                        'cacheDisabled' => $container->get('app.debug'),
-                        'cacheFile' => base_dir('cache/routes.php'),
-                    ]
+                    }
                 );
             },
         ];

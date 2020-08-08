@@ -14,6 +14,11 @@ Resources:
   App:
     Type: AWS::Serverless::Function
     Properties:
+      Handler: Datashaman\Phial\RequestHandlerAdapter
+      Layers:
+        - !Ref Runtime
+      Runtime: provided
+      Tracing: Active
       Events:
         ProxyApi:
           Type: Api
@@ -25,11 +30,6 @@ Resources:
           Properties:
             Path: /{proxy+}
             Method: ANY
-      Handler: Datashaman\Phial\RequestHandlerAdapter
-      Layers:
-        - !Ref Runtime
-      Runtime: provided
-      Tracing: Active
     Metadata:
       BuildMethod: makefile
 

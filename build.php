@@ -29,7 +29,6 @@ use Psr\Container\ContainerInterface;
 $builder = new ContainerBuilder();
 
 $builder->enableDefinitionCache();
-
 $builder->enableCompilation('cache');
 $builder->writeProxiesToFile(true, 'cache');
 

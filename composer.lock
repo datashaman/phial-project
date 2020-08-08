@@ -93,16 +93,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/datashaman/phial-handler.git",
-                "reference": "11f6326c87bfb6a1a8614ef42cfd39fc664ac0f5"
+                "reference": "7afb72a69085b7897c0813545585570e92a07b19"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/datashaman/phial-handler/zipball/11f6326c87bfb6a1a8614ef42cfd39fc664ac0f5",
-                "reference": "11f6326c87bfb6a1a8614ef42cfd39fc664ac0f5",
+                "url": "https://api.github.com/repos/datashaman/phial-handler/zipball/7afb72a69085b7897c0813545585570e92a07b19",
+                "reference": "7afb72a69085b7897c0813545585570e92a07b19",
                 "shasum": ""
             },
             "require": {
-                "php-di/invoker": "^2.0",
+                "php-di/invoker": "^2.1",
                 "psr/event-dispatcher": "^1.0",
                 "psr/http-client": "^1.0",
                 "psr/http-factory": "^1.0",
@@ -120,7 +120,7 @@
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
-            "time": "2020-08-08T06:11:05+00:00"
+            "time": "2020-08-08T15:52:20+00:00"
         },
         {
             "name": "fig/http-message-util",

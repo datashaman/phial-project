@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App;
+namespace App\Http\RequestHandlers;
 
 use DI\FactoryInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -31,8 +31,7 @@ class QueueRequestHandler implements RequestHandlerInterface
             return $this->fallbackHandler->handle($request);
         }
 
-        $className = array_shift($this->middleware);
-        $middleware = $this->factory->make($className);
+        $middleware = array_shift($this->middleware);
 
         return $middleware->process($request, $this);
     }

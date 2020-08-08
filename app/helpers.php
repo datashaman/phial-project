@@ -16,6 +16,33 @@ if (!function_exists('abort')) {
     }
 }
 
+if (!function_exists('is_true')) {
+    function is_true($value): bool
+    {
+        $value = is_string($value)
+            ? mb_strtolower($value)
+            : $value;
+
+        $checks = [
+            null,
+            false,
+            'false',
+            'off',
+            'no',
+            '0',
+            '',
+            0,
+            0.0,
+        ];
+
+        return !in_array(
+            $value,
+            $checks,
+            true
+        );
+    }
+}
+
 if (!function_exists('base_dir')) {
     define('BASE_DIR', realpath(__DIR__ . '/../'));
 

@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace App\Middleware;
+namespace App\Http\Middleware;
 
-use Exception;
 use FastRoute\Dispatcher;
 use Fig\Http\Message\StatusCodeInterface;
 use Invoker\InvokerInterface;
@@ -36,6 +35,7 @@ class RouteMiddleware implements MiddlewareInterface, StatusCodeInterface
         $status = array_shift($resolved);
 
         $response = null;
+
         switch ($status) {
             case Dispatcher::FOUND:
                 [$handler, $vars] = $resolved;
@@ -44,10 +44,10 @@ class RouteMiddleware implements MiddlewareInterface, StatusCodeInterface
                 break;
             case Dispatcher::METHOD_NOT_ALLOWED:
                 [$allowedMethods] = $resolved;
+
                 abort(
-                    'Method Not Allowed',
                     self::STATUS_METHOD_NOT_ALLOWED,
-                    null,
+                    'Method Not Allowed',
                     [
                         'Allow' => implode(', ', $allowedMethods),
                     ]

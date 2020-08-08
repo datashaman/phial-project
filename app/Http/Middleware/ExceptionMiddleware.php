@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Middleware;
+namespace App\Http\Middleware;
 
 use App\Exceptions\HttpException;
 use Psr\Http\Message\ResponseInterface;
