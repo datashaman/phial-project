@@ -1,87 +1,55 @@
 include .settings
 
-default: docker-Runtime sam-build local-invoke-handler
+ARTIFACTS_DIR ?= .aws-sam/build
+INVOKE_PATH ?=
+SOURCES = app bootstrap.php config routes
 
-ARTIFACTS_DIR ?= /tmp/artifacts
-STACK_NAME ?= phial-project
+default: build
 
-BASE_SOURCES = composer.json composer.lock
-BASE_ARTIFACTS = $(patsubst %,$(ARTIFACTS_DIR)/%,$(BASE_SOURCES))
+build:
+	sam build
 
-RUNTIME_SOURCES = .dockerignore Dockerfile php.ini .settings
-RUNTIME_ARTIFACTS = $(ARTIFACTS_DIR)/${PHP_PACKAGE}
-
-APP_SOURCES = bootstrap.php $(shell find app config -type f)
-APP_ARTIFACTS = $(patsubst %,$(ARTIFACTS_DIR)/%,$(APP_SOURCES))
-
-echo:
-	echo $(APP_ARTIFACTS)
-
-$(BASE_ARTIFACTS): $(ARTIFACTS_DIR)/%: %
-	@mkdir -p $(dir $@)
-	cp -a $< $@
-
-$(ARTIFACTS_DIR)/cache/CompiledContainer.php: $(wildcard config/*.php) $(wildcard app/Providers/*ServiceProvider.php)
-	php build.php
-	cp -a cache $(ARTIFACTS_DIR)
-
-$(ARTIFACTS_DIR)/vendor: $(BASE_ARTIFACTS)
-	composer install --optimize-autoloader --working-dir="${ARTIFACTS_DIR}"
-
-$(RUNTIME_ARTIFACTS): $(RUNTIME_SOURCES)
-	CONTAINER_ID=$(shell docker run --detach --tty phial-project bash) \
-		bash -c 'docker cp "$${CONTAINER_ID}:/opt/$(PHP_PACKAGE)" $(ARTIFACTS_DIR); docker cp "$${CONTAINER_ID}:/opt/bootstrap" $(ARTIFACTS_DIR); docker rm --force $${CONTAINER_ID}'
-
-$(SHARED_ARTIFACTS): $(SHARED_SOURCES)
-	@mkdir -p $(dir $@)
-	cp -a $< $@
-
-$(APP_ARTIFACTS): $(ARTIFACTS_DIR)/%: %
-	@mkdir -p $(dir $@)
-	cp -a $< $@
-
-build-Runtime: $(RUNTIME_ARTIFACTS)
-build-RequestHandler: $(ARTIFACTS_DIR)/cache/CompiledContainer.php $(ARTIFACTS_DIR)/vendor $(APP_ARTIFACTS)
+rebuild: clean build
 
 clean:
-	rm -rf $(ARTIFACTS_DIR)/*
+	rm -rf cache/* $(ARTIFACTS_DIR)
+
+docker-run:
+	docker run -it --rm \
+		-v $(shell pwd):/var/task \
+		-v $(shell pwd)/php.ini:/opt/$(PHP_PACKAGE)/etc/php.d/phial-project.ini \
+		-w /var/task \
+		phial-project:$(PHP_PACKAGE)
 
 docker-Runtime:
-	docker build --build-arg PHP_PACKAGE=$(PHP_PACKAGE) --pull -t phial-project .
+	docker build --build-arg PHP_PACKAGE=$(PHP_PACKAGE) --pull -t phial-project:$(PHP_PACKAGE) .
+	CONTAINER_ID=$(shell docker run --detach --tty phial-project:$(PHP_PACKAGE) bash) \
+		bash -c 'docker cp "$${CONTAINER_ID}:/opt/$(PHP_PACKAGE)" "$(ARTIFACTS_DIR)"; docker cp "$${CONTAINER_ID}:/opt/bootstrap" "$(ARTIFACTS_DIR)"; docker rm --force $${CONTAINER_ID}'
+
+build-Runtime: docker-Runtime
+
+build-App:
+	mkdir -p "$(ARTIFACTS_DIR)"
+	cp -a app bootstrap.php cache composer.json composer.lock config routes "$(ARTIFACTS_DIR)"
+	composer install --no-dev --working-dir "$(ARTIFACTS_DIR)"
 
 local-api:
 	sam local start-api
 
-local-invoke-handler:
-	sam local generate-event apigateway aws-proxy --method GET --path '' > events/request.json
-	sam local invoke --event events/request.json RequestHandler
+local-invoke: build
+	sam local generate-event apigateway aws-proxy --method GET --path "$(INVOKE_PATH)" > events/request.json
+	sam local invoke --event events/request.json App
 
-code-quality: code-phpcs code-phpstan code-rector
+code-quality: code-phpstan code-rector code-phpcs
 
 code-phpcbf:
-	phpcbf $(APP_SOURCES)
+	phpcbf $(SOURCES)
 
 code-phpcs:
-	phpcs $(APP_SOURCES)
+	phpcs $(SOURCES)
 
 code-phpstan:
-	phpstan analyse --level max $(APP_SOURCES)
+	phpstan analyse --level max $(SOURCES)
 
 code-rector:
-	rector process $(APP_SOURCES)
-
-require-handler:
-	composer clear-cache
-	composer require datashaman/phial-handler:dev-master
-
-run:
-	docker run -it --rm phial-project bash
-
-sam-build:
-	sam build
-
-sam-deploy: sam-build
-	sam deploy
-
-sam-logs:
-	sam logs --name RequestHandler --stack-name $(STACK_NAME)
+	rector process $(SOURCES)

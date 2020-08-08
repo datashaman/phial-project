@@ -11,9 +11,14 @@ Resources:
       ContentUri: .
     Metadata:
       BuildMethod: makefile
-  RequestHandler:
+  App:
     Type: AWS::Serverless::Function
     Properties:
+      Handler: Datashaman\Phial\RequestHandlerAdapter
+      Layers:
+        - !Ref Runtime
+      Runtime: provided
+      Tracing: Active
       Events:
         ProxyApi:
           Type: Api
@@ -25,14 +30,9 @@ Resources:
           Properties:
             Path: /{proxy+}
             Method: ANY
-      Handler: Datashaman\Phial\RequestHandlerAdapter
-      Layers:
-        - !Ref Runtime
-      Runtime: provided
-      Tracing: Active
     Metadata:
       BuildMethod: makefile
 
 Outputs:
-  RequestHandlerApi:
+  AppApi:
     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
