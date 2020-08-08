@@ -12,7 +12,6 @@ use Interop\Container\ServiceProviderInterface;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\EventDispatcher\ListenerProviderInterface;
-use Psr\Log\LoggerInterface;
 
 class EventServiceProvider implements ServiceProviderInterface
 {

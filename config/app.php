@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use function DI\create;
+use function DI\autowire;
 use function DI\env;
 use function DI\get;
 
@@ -14,7 +14,7 @@ return [
 
     'app.middleware' => [
         get(App\Http\Middleware\ExceptionMiddleware::class),
-        create(Middlewares\JsonPayload::class)->method('associative', false),
+        get(Middlewares\JsonPayload::class),
         get(App\Http\Middleware\RouteMiddleware::class),
     ],
 

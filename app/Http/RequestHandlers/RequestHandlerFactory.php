@@ -4,32 +4,36 @@ declare(strict_types=1);
 
 namespace App\Http\RequestHandlers;
 
+use Datashaman\Phial\QueueRequestHandler;
 use Datashaman\Phial\RequestHandlerFactoryInterface;
-use DI\FactoryInterface;
+use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 class RequestHandlerFactory implements RequestHandlerFactoryInterface
 {
+    /**
+     * @var array<MiddlewareInterface>
+     */
     private array $middleware;
-    private RequestHandlerInterface $fallbackRequestHandler;
-    private FactoryInterface $factory;
 
+    private RequestHandlerInterface $fallback;
+
+    /**
+     * @param array<MiddlewareInterface> $middleware
+     */
     public function __construct(
         array $middleware,
-        RequestHandlerInterface $fallbackRequestHandler,
-        FactoryInterface $factory
+        RequestHandlerInterface $fallback
     ) {
         $this->middleware = $middleware;
-        $this->fallbackRequestHandler = $fallbackRequestHandler;
-        $this->factory = $factory;
+        $this->fallback = $fallback;
     }
 
     public function createRequestHandler(): RequestHandlerInterface
     {
         return new QueueRequestHandler(
             $this->middleware,
-            $this->fallbackRequestHandler,
-            $this->factory
+            $this->fallback
         );
     }
 }

@@ -32,12 +32,19 @@ class ExceptionMiddleware implements MiddlewareInterface, StatusCodeInterface
             // Do nothing
         } catch (Throwable $exception) {
             $exception = HttpException::create(
-                '',
+                $exception->getMessage(),
                 self::STATUS_INTERNAL_SERVER_ERROR,
                 $exception,
                 []
             );
         }
+
+        $this->logger->error(
+            $exception->getMessage(),
+            [
+                'exception' => $exception,
+            ]
+        );
 
         return $exception->toJsonResponse();
     }

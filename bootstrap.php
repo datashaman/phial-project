@@ -27,9 +27,7 @@ foreach ($iterator as $name => $object) {
 $config = include_once 'config/app.php';
 
 $providers = array_map(
-    function ($providerClass) {
-        return new $providerClass();
-    },
+    fn($providerClass) => new $providerClass(),
     $config['app.providers']
 );
 
