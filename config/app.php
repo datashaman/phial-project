@@ -7,6 +7,12 @@ return [
 
     'app.id' => 'phial-project',
 
+    'app.middleware' => [
+        Franzl\Middleware\Whoops\WhoopsMiddleware::class,
+        App\Middleware\TestMiddleware::class,
+        App\Middleware\RouteMiddleware::class,
+    ],
+
     'app.providers' => [
         App\Providers\EventServiceProvider::class,
         App\Providers\HandlerServiceProvider::class,
