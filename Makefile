@@ -1,8 +1,10 @@
 include .settings
 
-ARTIFACTS_DIR ?= /tmp/artifacts
+ARTIFACTS_DIR ?= .aws-sam/build
 INVOKE_PATH ?=
 SOURCES = app bootstrap.php config routes
+
+default: build local-invoke
 
 build:
 	sam build
@@ -22,14 +24,14 @@ build-Runtime: docker-Runtime
 build-App:
 	mkdir -p "$(ARTIFACTS_DIR)"
 	cp -a app bootstrap.php cache composer.json composer.lock config routes "$(ARTIFACTS_DIR)"
-	composer install --optimize-autoloader --working-dir="$(ARTIFACTS_DIR)"
+	composer install --optimize-autoloader --no-dev --working-dir="$(ARTIFACTS_DIR)"
 	php cache.php "$(ARTIFACTS_DIR)"
 
 local-api:
-	sam local start-api --static-dir public
+	sam local start-api --debug
 
 local-invoke:
-	sam local generate-event apigateway aws-proxy --method GET --path "$(INVOKE_PATH)" > events/request.json
+	sam local generate-event apigateway aws-proxy --method POST --path "$(INVOKE_PATH)" > events/request.json
 	sam local invoke --event events/request.json App
 
 code-quality: code-phpstan code-rector code-phpcs
