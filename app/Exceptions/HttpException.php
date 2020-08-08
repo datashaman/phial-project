@@ -43,8 +43,8 @@ class HttpException extends Exception implements StatusCodeInterface
             'trace' => $this->getTrace(),
         ];
 
-        if ($this->getPrevious()) {
-            $payload['previous'] = $this->getPrevious();
+        if ($previous = $this->getPrevious()) {
+            $payload['previous'] = $previous;
         }
 
         return new JsonResponse(
