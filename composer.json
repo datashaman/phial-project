@@ -9,6 +9,7 @@
         "fig/http-message-util": "^1.1",
         "guzzlehttp/guzzle": "^7.0",
         "laminas/laminas-diactoros": "^2.3",
+        "middlewares/payload": "^3.0",
         "monolog/monolog": "^2.1",
         "narrowspark/http-status": "^4.1",
         "nikic/fast-route": "^1.3",
