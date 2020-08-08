@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\RequestHandlers;
 
-use DI\FactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -17,12 +16,10 @@ class QueueRequestHandler implements RequestHandlerInterface
 
     public function __construct(
         array $middleware,
-        RequestHandlerInterface $fallbackHandler,
-        FactoryInterface $factory
+        RequestHandlerInterface $fallbackHandler
     ) {
         $this->middleware = $middleware;
         $this->fallbackHandler = $fallbackHandler;
-        $this->factory = $factory;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface

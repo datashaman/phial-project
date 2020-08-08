@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Middleware;
 
 use App\Exceptions\HttpException;
+use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -12,7 +13,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Log\LoggerInterface;
 use Throwable;
 
-class ExceptionMiddleware implements MiddlewareInterface
+class ExceptionMiddleware implements MiddlewareInterface, StatusCodeInterface
 {
     private LoggerInterface $logger;
 
@@ -28,11 +29,16 @@ class ExceptionMiddleware implements MiddlewareInterface
         try {
             return $handler->handle($request);
         } catch (HttpException $exception) {
-            return $exception->toJsonResponse();
+            // Do nothing
         } catch (Throwable $exception) {
-            $this->logger->error('Exception Caught in Middleware', ['exception' => $exception]);
-
-            throw $exception;
+            $exception = HttpException::create(
+                '',
+                self::STATUS_INTERNAL_SERVER_ERROR,
+                $exception,
+                []
+            );
         }
+
+        return $exception->toJsonResponse();
     }
 }
