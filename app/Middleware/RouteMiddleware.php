@@ -45,8 +45,9 @@ class RouteMiddleware implements MiddlewareInterface, StatusCodeInterface
             case Dispatcher::METHOD_NOT_ALLOWED:
                 [$allowedMethods] = $resolved;
                 abort(
-                    self::STATUS_METHOD_NOT_ALLOWED,
                     'Method Not Allowed',
+                    self::STATUS_METHOD_NOT_ALLOWED,
+                    null,
                     [
                         'Allow' => implode(', ', $allowedMethods),
                     ]

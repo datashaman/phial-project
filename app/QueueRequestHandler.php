@@ -31,11 +31,9 @@ class QueueRequestHandler implements RequestHandlerInterface
             return $this->fallbackHandler->handle($request);
         }
 
-        $middleware = array_shift($this->middleware);
+        $className = array_shift($this->middleware);
+        $middleware = $this->factory->make($className);
 
-        return $this
-            ->factory
-            ->make($middleware)
-            ->process($request, $this);
+        return $middleware->process($request, $this);
     }
 }

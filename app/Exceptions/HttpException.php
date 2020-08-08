@@ -6,23 +6,25 @@ namespace App\Exceptions;
 
 use Exception;
 use Fig\Http\Message\StatusCodeInterface;
+use Laminas\Diactoros\Response\JsonResponse;
+use Narrowspark\HttpStatus\HttpStatus;
+use Throwable;
 
 class HttpException extends Exception implements StatusCodeInterface
 {
-    private static array $classMap = [
-        self::STATUS_NOT_FOUND => NotFoundException::class,
-    ];
-
     private array $headers = [];
 
     public static function create(
-        int $statusCode,
-        string $reasonPhrase = '',
+        string $message = '',
+        int $code = 500,
+        Throwable $previous = null,
         array $headers = []
     ): self {
-        $exception = ($className = self::$classMap[$statusCode])
-            ? new $className($reasonPhrase)
-            : new self($reasonPhrase, $statusCode);
+        if (!$message) {
+            $message = HttpStatus::getReasonPhrase($code);
+        }
+
+        $exception = new self($message, $code, $previous);
 
         return $exception->withHeaders($headers);
     }
@@ -32,5 +34,23 @@ class HttpException extends Exception implements StatusCodeInterface
         $this->headers = $headers;
 
         return $this;
+    }
+
+    public function toJsonResponse(): JsonResponse
+    {
+        $payload = [
+            'message' => $this->getMessage(),
+            'trace' => $this->getTrace(),
+        ];
+
+        if ($this->getPrevious()) {
+            $payload['previous'] = $this->getPrevious();
+        }
+
+        return new JsonResponse(
+            $payload,
+            $this->getCode(),
+            $this->headers
+        );
     }
 }

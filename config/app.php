@@ -2,14 +2,15 @@
 
 declare(strict_types=1);
 
+use function DI\env;
+
 return [
-    'app.debug' => false,
+    'app.debug' => env('APP_DEBUG', true),
 
     'app.id' => 'phial-project',
 
     'app.middleware' => [
-        Franzl\Middleware\Whoops\WhoopsMiddleware::class,
-        App\Middleware\TestMiddleware::class,
+        App\Middleware\ExceptionMiddleware::class,
         App\Middleware\RouteMiddleware::class,
     ],
 

@@ -2,11 +2,17 @@
 
 if (!function_exists('abort')) {
     function abort(
-        int $statusCode,
-        string $reasonPhrase = '',
-        array $headers = []
+        int $code,
+        string $message = '',
+        array $headers = [],
+        ?Throwable $previous = null
     ): void {
-        throw App\Exceptions\HttpException::create($statusCode, $reasonPhrase, $headers);
+        throw App\Exceptions\HttpException::create(
+            $message,
+            $code,
+            $previous,
+            $headers
+        );
     }
 }
 

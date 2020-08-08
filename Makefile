@@ -31,7 +31,7 @@ local-api:
 	sam local start-api --debug
 
 local-invoke:
-	sam local generate-event apigateway aws-proxy --method POST --path "$(INVOKE_PATH)" > events/request.json
+	sam local generate-event apigateway aws-proxy --method GET --path "$(INVOKE_PATH)" > events/request.json
 	sam local invoke --event events/request.json App
 
 code-quality: code-phpstan code-rector code-phpcs
