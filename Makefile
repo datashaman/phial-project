@@ -56,4 +56,4 @@ code-phpstan:
 	phpstan analyse
 
 code-rector:
-	rector process $(SOURCES)
+	rector process

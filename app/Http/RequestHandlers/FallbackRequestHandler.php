@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\RequestHandlers;
 
+use App\Exceptions\HttpException;
 use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

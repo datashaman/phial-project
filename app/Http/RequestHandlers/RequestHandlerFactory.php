@@ -13,6 +13,7 @@ class RequestHandlerFactory implements RequestHandlerFactoryInterface
 {
     /**
      * @var array<MiddlewareInterface>
+     * @psalm-var list<MiddlewareInterface>
      */
     private array $middleware;
 
@@ -20,6 +21,7 @@ class RequestHandlerFactory implements RequestHandlerFactoryInterface
 
     /**
      * @param array<MiddlewareInterface> $middleware
+     * @psalm-param list<MiddlewareInterface> $middleware
      */
     public function __construct(
         array $middleware,

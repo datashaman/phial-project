@@ -17,7 +17,7 @@ class HomeController implements StatusCodeInterface
         return new TextResponse('Welcome');
     }
 
-    public function exception(): TextResponse
+    public function exception(): void
     {
         abort(self::STATUS_INTERNAL_SERVER_ERROR);
     }

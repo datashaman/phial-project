@@ -51,7 +51,7 @@ class HttpException extends Exception implements StatusCodeInterface
             'message' => $this->getMessage(),
         ];
 
-        $code = $this->getCode();
+        $code = (int) $this->getCode();
 
         if ($code === 500) {
             $payload['trace'] = $this->getTrace();
