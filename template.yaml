@@ -18,6 +18,7 @@ Resources:
       Layers:
         - !Ref Runtime
       Runtime: provided
+      Tracing: Active
       Events:
         ProxyApi:
           Type: Api
