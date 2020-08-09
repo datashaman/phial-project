@@ -93,12 +93,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/datashaman/phial-handler.git",
-                "reference": "343938c726045702203f0d5ef9115235984d07dd"
+                "reference": "2f315a48c3f1829f2362834769773e50024bb162"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/datashaman/phial-handler/zipball/343938c726045702203f0d5ef9115235984d07dd",
-                "reference": "343938c726045702203f0d5ef9115235984d07dd",
+                "url": "https://api.github.com/repos/datashaman/phial-handler/zipball/2f315a48c3f1829f2362834769773e50024bb162",
+                "reference": "2f315a48c3f1829f2362834769773e50024bb162",
                 "shasum": ""
             },
             "require": {
@@ -126,7 +126,7 @@
                 "MIT"
             ],
             "description": "Handler for phial.",
-            "time": "2020-08-08T21:25:00+00:00"
+            "time": "2020-08-09T05:22:49+00:00"
         },
         {
             "name": "fig/http-message-util",

@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use function DI\autowire;
 use function DI\env;
 use function DI\get;
 

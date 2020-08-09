@@ -12,7 +12,7 @@ use Fig\Http\Message\StatusCodeInterface;
 
 class HomeController implements StatusCodeInterface
 {
-    public function index(): TextResponse
+    public function index(ServerRequestInterface $request): TextResponse
     {
         return new TextResponse('Welcome');
     }
@@ -29,6 +29,11 @@ class HomeController implements StatusCodeInterface
 
     public function json(ServerRequestInterface $request): JsonResponse
     {
-        return new JsonResponse($request->getParsedBody());
+        return new JsonResponse(
+            [
+                'parsed' => $request->getParsedBody(),
+                'body' => (string) $request->getBody(),
+            ]
+        );
     }
 }

@@ -32,7 +32,7 @@ build-Runtime: docker-Runtime
 build-App:
 	mkdir -p "$(ARTIFACTS_DIR)"
 	cp -a app bootstrap.php composer.json composer.lock config routes "$(ARTIFACTS_DIR)"
-	composer install --no-dev --working-dir "$(ARTIFACTS_DIR)"
+	composer install --working-dir "$(ARTIFACTS_DIR)"
 
 local-api:
 	sam local start-api
