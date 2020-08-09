@@ -12,8 +12,14 @@ use Throwable;
 
 class HttpException extends Exception implements StatusCodeInterface
 {
+    /**
+     * @var array<string,string|array<string,string>>
+     */
     private array $headers = [];
 
+    /**
+     * @param array<string,string|array<string,string>> $headers
+     */
     public static function create(
         string $message = '',
         int $code = 500,
@@ -29,6 +35,9 @@ class HttpException extends Exception implements StatusCodeInterface
         return $exception->withHeaders($headers);
     }
 
+    /**
+     * @param array<string,string|array<string,string>> $headers
+     */
     public function withHeaders(array $headers): self
     {
         $this->headers = $headers;

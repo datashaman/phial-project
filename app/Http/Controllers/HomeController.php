@@ -7,6 +7,7 @@ namespace App\Http\Controllers;
 use Laminas\Diactoros\Response\JsonResponse;
 use Laminas\Diactoros\Response\TextResponse;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Fig\Http\Message\StatusCodeInterface;
 
 class HomeController implements StatusCodeInterface

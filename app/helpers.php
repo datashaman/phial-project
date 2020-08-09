@@ -1,6 +1,9 @@
 <?php
 
 if (!function_exists('abort')) {
+    /**
+     * @param array<string,string|array<string,string>> $headers
+     */
     function abort(
         int $code,
         string $message = '',
@@ -17,6 +20,9 @@ if (!function_exists('abort')) {
 }
 
 if (!function_exists('is_true')) {
+    /**
+     * @param mixed $value
+     */
     function is_true($value): bool
     {
         $value = is_string($value)

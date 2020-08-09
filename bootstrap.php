@@ -59,4 +59,9 @@ $resolver
         new TypeHintContainerResolver($container)
     );
 
-$invoker->call(RuntimeHandlerInterface::class);
+/**
+ * @var callable
+ */
+$handler = RuntimeHandlerInterface::class;
+
+$invoker->call($handler);
