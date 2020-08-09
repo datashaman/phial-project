@@ -18,16 +18,8 @@ class EventServiceProvider implements ServiceProviderInterface
     public function getFactories()
     {
         return [
-            ListenerProviderInterface::class => function (ContainerInterface $container) {
-                $provider = new ContainerListenerProvider($container);
-
-                $provider->addService(
-                    RequestEvent::class,
-                    SetRequestAndContext::class
-                );
-
-                return $provider;
-            },
+            ListenerProviderInterface::class => fn(ContainerInterface $container) =>
+                $container->get(ContainerListenerProvider::class),
             EventDispatcherInterface::class => fn(ContainerInterface $container) =>
                 $container->get(EventDispatcher::class),
         ];
@@ -35,6 +27,12 @@ class EventServiceProvider implements ServiceProviderInterface
 
     public function getExtensions()
     {
-        return [];
+        return [
+            ListenerProviderInterface::class => function (ContainerInterface $container, $provider) {
+                $provider->addService(RequestEvent::class, SetRequestAndContext::class);
+
+                return $provider;
+            },
+        ];
     }
 }
