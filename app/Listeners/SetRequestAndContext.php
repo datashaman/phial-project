@@ -9,7 +9,7 @@ use Datashaman\Phial\Events\RequestEvent;
 use DI\Container;
 use Psr\Http\Message\ServerRequestInterface;
 
-class RequestEventListener
+class SetRequestAndContext
 {
     private Container $container;
 

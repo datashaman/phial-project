@@ -23,5 +23,6 @@ return [
         App\Providers\HttpServiceProvider::class,
         App\Providers\LogServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\TraceServiceProvider::class,
     ],
 ];

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
-use App\Listeners\RequestEventListener;
+use App\Listeners\SetRequestAndContext;
 use Circli\EventDispatcher\EventDispatcher;
 use Circli\EventDispatcher\ListenerProvider\ContainerListenerProvider;
 use Datashaman\Phial\Events\RequestEvent;
@@ -23,7 +23,7 @@ class EventServiceProvider implements ServiceProviderInterface
 
                 $provider->addService(
                     RequestEvent::class,
-                    RequestEventListener::class
+                    SetRequestAndContext::class
                 );
 
                 return $provider;

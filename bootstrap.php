@@ -44,7 +44,7 @@ foreach ($providers as $provider) {
 
     foreach ($extensions as $key => $callable) {
         $previous = $container->get($key);
-        $extended = call_user_func($callable, $previous);
+        $extended = call_user_func($callable, $container, $previous);
         $container->set($key, $extended);
     }
 }
