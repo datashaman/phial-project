@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "21070ca29b3add5ad452c31ff8980142",
+    "content-hash": "d3aa12a32bd347472a51130c3c244cb6",
     "packages": [
         {
             "name": "async-aws/cloud-watch-logs",
@@ -266,16 +266,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/datashaman/phial-handler.git",
-                "reference": "f0ae609a03dbd2a221e9fb35adf25263dff36527"
+                "reference": "0a748cdd6f349180503d20ebb86963eb6b9b6b11"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/datashaman/phial-handler/zipball/f0ae609a03dbd2a221e9fb35adf25263dff36527",
-                "reference": "f0ae609a03dbd2a221e9fb35adf25263dff36527",
+                "url": "https://api.github.com/repos/datashaman/phial-handler/zipball/0a748cdd6f349180503d20ebb86963eb6b9b6b11",
+                "reference": "0a748cdd6f349180503d20ebb86963eb6b9b6b11",
                 "shasum": ""
             },
             "require": {
                 "kriswallsmith/buzz": "^1.1",
+                "northwoods/broker": "^3.0",
+                "northwoods/lazy-middleware": "^2.0",
                 "nyholm/psr7": "^1.3",
                 "php-di/invoker": "^2.1",
                 "pkerrigan/xray": "^1.2",
@@ -299,7 +301,7 @@
                 "MIT"
             ],
             "description": "Handler for phial.",
-            "time": "2020-08-09T06:45:59+00:00"
+            "time": "2020-08-10T08:07:47+00:00"
         },
         {
             "name": "fig/http-message-util",
@@ -572,114 +574,81 @@
             "time": "2020-05-20T16:45:56+00:00"
         },
         {
-            "name": "middlewares/payload",
-            "version": "v3.0.0",
+            "name": "latte/latte",
+            "version": "v2.8.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/middlewares/payload.git",
-                "reference": "9a3f312b7989ab9ead69a73c4b3477c2bac8ed21"
+                "url": "https://github.com/nette/latte.git",
+                "reference": "fc94bd63fe995b40cb219109026e76f281c709c2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/middlewares/payload/zipball/9a3f312b7989ab9ead69a73c4b3477c2bac8ed21",
-                "reference": "9a3f312b7989ab9ead69a73c4b3477c2bac8ed21",
+                "url": "https://api.github.com/repos/nette/latte/zipball/fc94bd63fe995b40cb219109026e76f281c709c2",
+                "reference": "fc94bd63fe995b40cb219109026e76f281c709c2",
                 "shasum": ""
             },
             "require": {
-                "middlewares/utils": "^3.0",
-                "php": "^7.2",
-                "psr/http-server-middleware": "^1.0"
+                "ext-json": "*",
+                "ext-tokenizer": "*",
+                "php": ">=7.1"
+            },
+            "conflict": {
+                "nette/application": "<2.4.1"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "^2.0",
-                "oscarotero/php-cs-fixer-config": "^1.0",
-                "phpunit/phpunit": "^8.1",
-                "squizlabs/php_codesniffer": "^3.0",
-                "zendframework/zend-diactoros": "^2.2"
+                "nette/php-generator": "^3.3.4",
+                "nette/tester": "~2.0",
+                "nette/utils": "^3.0",
+                "phpstan/phpstan": "^0.12",
+                "tracy/tracy": "^2.3"
             },
             "suggest": {
-                "middlewares/csv-payload": "Adds support for parsing CSV body of request"
+                "ext-fileinfo": "to use filter |datastream",
+                "ext-iconv": "to use filters |reverse, |substring",
+                "ext-mbstring": "to use filters like lower, upper, capitalize, ...",
+                "nette/php-generator": "to use tag {templatePrint}",
+                "nette/utils": "to use filter |webalize"
             },
             "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Middlewares\\": "src/"
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.8-dev"
                 }
+            },
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "MIT"
+                "BSD-3-Clause",
+                "GPL-2.0-only",
+                "GPL-3.0-only"
             ],
-            "description": "Middleware to parse the body of the request with support for json, csv and url-encode",
-            "homepage": "https://github.com/middlewares/payload",
-            "keywords": [
-                "http",
-                "json",
-                "middleware",
-                "payload",
-                "psr-15",
-                "psr-7",
-                "server",
-                "url-encode"
-            ],
-            "time": "2019-11-29T17:20:58+00:00"
-        },
-        {
-            "name": "middlewares/utils",
-            "version": "v3.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/middlewares/utils.git",
-                "reference": "13689487e8f3bba10b6cc66ed206efc8b874163e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/middlewares/utils/zipball/13689487e8f3bba10b6cc66ed206efc8b874163e",
-                "reference": "13689487e8f3bba10b6cc66ed206efc8b874163e",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.2",
-                "psr/container": "^1.0",
-                "psr/http-factory": "^1.0",
-                "psr/http-message": "^1.0",
-                "psr/http-server-middleware": "^1.0"
-            },
-            "require-dev": {
-                "friendsofphp/php-cs-fixer": "^2.0",
-                "guzzlehttp/psr7": "dev-master",
-                "laminas/laminas-diactoros": "^2.2",
-                "nyholm/psr7": "^1.0",
-                "oscarotero/php-cs-fixer-config": "^1.0",
-                "phpunit/phpunit": "^8.1",
-                "slim/psr7": "~0.3",
-                "squizlabs/php_codesniffer": "^3.0",
-                "sunrise/http-message": "^1.0",
-                "sunrise/http-server-request": "^1.0",
-                "sunrise/stream": "^1.0",
-                "sunrise/uri": "^1.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Middlewares\\Utils\\": "src/"
+            "authors": [
+                {
+                    "name": "David Grudl",
+                    "homepage": "https://davidgrudl.com"
+                },
+                {
+                    "name": "Nette Community",
+                    "homepage": "https://nette.org/contributors"
                 }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
             ],
-            "description": "Common utils for PSR-15 middleware packages",
-            "homepage": "https://github.com/middlewares/utils",
+            "description": "☕ Latte: the intuitive and fast template engine for those who want the most secure PHP sites. Introduces context-sensitive escaping.",
+            "homepage": "https://latte.nette.org",
             "keywords": [
-                "PSR-11",
-                "http",
-                "middleware",
-                "psr-15",
-                "psr-17",
-                "psr-7"
+                "context-sensitive",
+                "engine",
+                "escaping",
+                "html",
+                "nette",
+                "security",
+                "template",
+                "twig"
             ],
-            "time": "2020-01-19T00:30:41+00:00"
+            "time": "2020-05-12T11:07:07+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -881,6 +850,120 @@
                 "routing"
             ],
             "time": "2018-02-13T20:26:39+00:00"
+        },
+        {
+            "name": "northwoods/broker",
+            "version": "3.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/northwoods/broker.git",
+                "reference": "5866b4a84e838bc9871c399bddda1250e83425e9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/northwoods/broker/zipball/5866b4a84e838bc9871c399bddda1250e83425e9",
+                "reference": "5866b4a84e838bc9871c399bddda1250e83425e9",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1",
+                "psr/http-server-middleware": "^1.0"
+            },
+            "require-dev": {
+                "eloquent/phony-phpunit": "^4.0",
+                "eloquent/phpstan-phony": "^0.3.0",
+                "phpstan/phpstan": "^0.10.3",
+                "phpstan/phpstan-phpunit": "^0.10.0",
+                "phpunit/phpunit": "^7.3",
+                "squizlabs/php_codesniffer": "^3.3"
+            },
+            "suggest": {
+                "northwoods/conditional-middleware": "Execute middleware based on request conditions",
+                "northwoods/lazy-middleware": "Lazy load middleware from a container"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Northwoods\\Broker\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Woody Gilk",
+                    "email": "woody.gilk@gmail.com"
+                }
+            ],
+            "description": "Dead simple PSR-15 middleware dispatcher",
+            "keywords": [
+                "dispatch",
+                "dispatcher",
+                "http",
+                "middleware",
+                "psr-15",
+                "psr15",
+                "server"
+            ],
+            "time": "2018-10-17T16:10:39+00:00"
+        },
+        {
+            "name": "northwoods/lazy-middleware",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/northwoods/lazy-middleware.git",
+                "reference": "995d0f538c29b88fca1fb8534c0be7213ff81aee"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/northwoods/lazy-middleware/zipball/995d0f538c29b88fca1fb8534c0be7213ff81aee",
+                "reference": "995d0f538c29b88fca1fb8534c0be7213ff81aee",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.2",
+                "psr/container": "^1.0",
+                "psr/http-server-middleware": "^1.0"
+            },
+            "require-dev": {
+                "nyholm/psr7": "^1.1",
+                "phpstan/extension-installer": "^1.0",
+                "phpstan/phpstan": "^0.11",
+                "phpstan/phpstan-phpunit": "^0.11",
+                "phpunit/phpunit": "^8.3",
+                "squizlabs/php_codesniffer": "^3.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Northwoods\\Middleware\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Woody Gilk",
+                    "email": "woody.gilk@gmail.com"
+                }
+            ],
+            "description": "Lazy loading for middleware and request handlers",
+            "keywords": [
+                "container",
+                "handler",
+                "http",
+                "lazy",
+                "middleware",
+                "proxy",
+                "psr-15",
+                "request"
+            ],
+            "time": "2019-08-10T15:58:25+00:00"
         },
         {
             "name": "nyholm/psr7",

@@ -47,7 +47,7 @@ Resources:
   App:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: Datashaman\Phial\RequestHandlerAdapter
+      Handler: Datashaman\Phial\Http\Adapter
       Layers:
         - !Ref Runtime
       Runtime: provided

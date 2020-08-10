@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Listeners;
 
-use Datashaman\Phial\ContextInterface;
-use Datashaman\Phial\Events\RequestEvent;
+use Datashaman\Phial\Lambda\ContextInterface;
+use Datashaman\Phial\Http\Events\RequestEvent;
 use DI\Container;
 use Psr\Http\Message\ServerRequestInterface;
 

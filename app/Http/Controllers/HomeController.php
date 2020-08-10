@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use Datashaman\Phial\ContextInterface;
+use App\Templates\TemplateEngineInterface;
+use Datashaman\Phial\Lambda\ContextInterface;
+use Laminas\Diactoros\Response\HtmlResponse;
 use Laminas\Diactoros\Response\JsonResponse;
 use Laminas\Diactoros\Response\TextResponse;
 use PDO;
@@ -71,5 +73,10 @@ class HomeController implements StatusCodeInterface
         $db = null;
 
         return new JsonResponse($tables);
+    }
+
+    public function template(string $name, TemplateEngineInterface $engine): HtmlResponse
+    {
+        return new HtmlResponse($engine->render('welcome.latte', ['name' => $name]));
     }
 }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Listeners;
 
-use Datashaman\Phial\Events\ResponseEvent;
+use Datashaman\Phial\Http\Events\ResponseEvent;
 use Pkerrigan\Xray\Submission\DaemonSegmentSubmitter;
 use Pkerrigan\Xray\Trace;
 

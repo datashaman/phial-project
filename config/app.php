@@ -12,9 +12,6 @@ return [
     'app.id' => 'phial-project',
 
     'app.middleware' => [
-        get(App\Http\Middleware\ExceptionMiddleware::class),
-        get(Middlewares\JsonPayload::class),
-        get(App\Http\Middleware\RouteMiddleware::class),
     ],
 
     'app.providers' => [
@@ -24,6 +21,7 @@ return [
         App\Providers\HttpServiceProvider::class,
         App\Providers\LogServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\TemplateServiceProvider::class,
         App\Providers\TraceServiceProvider::class,
     ],
 ];

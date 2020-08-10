@@ -7,7 +7,7 @@ namespace App\Providers;
 use App\Listeners\SetRequestAndContext;
 use Circli\EventDispatcher\EventDispatcher;
 use Circli\EventDispatcher\ListenerProvider\ContainerListenerProvider;
-use Datashaman\Phial\Events\RequestEvent;
+use Datashaman\Phial\Http\Events\RequestEvent;
 use Interop\Container\ServiceProviderInterface;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;

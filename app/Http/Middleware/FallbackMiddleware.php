@@ -2,18 +2,21 @@
 
 declare(strict_types=1);
 
-namespace App\Http\RequestHandlers;
+namespace App\Http\Middleware;
 
 use App\Exceptions\HttpException;
 use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-class FallbackRequestHandler implements RequestHandlerInterface, StatusCodeInterface
+class FallbackMiddleware implements MiddlewareInterface, StatusCodeInterface
 {
-    public function handle(ServerRequestInterface $request): ResponseInterface
-    {
+    public function process(
+        ServerRequestInterface $request,
+        RequestHandlerInterface $handler
+    ): ResponseInterface {
         abort(self::STATUS_NOT_FOUND);
     }
 }

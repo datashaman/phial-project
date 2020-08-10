@@ -17,13 +17,25 @@ Example project for phial.
 * Adapt bootstrap process in _bootstrap.php_ to suit your needs.
 * Set your function _handler_ in _template.yaml_ to be anything invokable.
 
+## handlers
+
+Regular handlers have the following signature:
+
+```
+myHandler(array $event, ContextInterface $context);
+```
+
+Parameters are optional, you can type-hint anything from the container.
+
+If you are developing an _HTTP API_, use the `RequestHandlerAdapter` which marshals the _request_ and _reponse_ to and from a _PSR-17_ `RequestHandlerInterface`.
+
 ## workflow
 
 ```
 sam build
+sam deploy --guided
 sam local start-api
 sam local invoke
-sam deploy --guided
 ```
 
 ## moving parts
@@ -36,10 +48,9 @@ To replace the _DI_ container with another implementation, build one in [bootstr
 
 The following _PSR_ interfaces are supported; any compatible implementation can be used, just pass parameters into the handler constructor or use your DI container to autowire it up.
 
-Also listed is the implementation used in this project. The implementations are wired up in [config.php](config.php).
+Also listed is the implementation used in this project. The implementations are configured in the config folder, and wired up in service providers.
 
 * [PSR-3 Logger Interface](https://www.php-fig.org/psr/psr-3) - [monolog/monolog](https://packagist.org/packages/monolog/monolog)
 * [PSR-7 HTTP Message Interface](https://www.php-fig.org/psr/psr-7) - [laminas/laminas-diactoros](https://packagist.org/packages/laminas/laminas-diactoros)
 * [PSR-11 Container Interface](https://www.php-fig.org/psr/psr-11) - [php-di/php-di](https://packagist.org/packages/php-di/php-di)
 * [PSR-17 HTTP Factories](https://www.php-fig.org/psr/psr-17) - [laminas/laminas-diactoros](https://packagist.org/packages/laminas/laminas-diactoros)
-* [PSR-18 HTTP Client](https://www.php-fig.org/psr/psr-18) - [guzzlehttp/guzzle](https://packagist.org/packages/guzzlehttp/guzzle)

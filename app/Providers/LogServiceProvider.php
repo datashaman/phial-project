@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
-use AsyncAws\CloudWatchLogs\CloudWatchLogsClient;
-use AsyncAws\Monolog\CloudWatch\CloudWatchLogsHandler;
 use Interop\Container\ServiceProviderInterface;
+use Monolog\Formatter\LineFormatter;
+use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
+use Monolog\Processor\PsrLogMessageProcessor;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 
@@ -16,15 +17,24 @@ class LogServiceProvider implements ServiceProviderInterface
     public function getFactories()
     {
         return [
-            CloudWatchLogsHandler::class => fn(ContainerInterface $container) =>
-                new CloudWatchLogsHandler(
-                    $container->get(CloudWatchLogsClient::class),
-                    $container->get('log.cloudwatch.handler')
+            LineFormatter::class => fn(ContainerInterface $container) =>
+                new LineFormatter(
+                    $container->get('log.format'),
+                    null,
+                    false,
+                    true
                 ),
             Logger::class => fn(ContainerInterface $container) =>
                 new Logger($container->get('app.id')),
-            LoggerInterface::class => fn(ContainerInterface $container) =>
+            LoggerInterface::class => fn(ContainerInterface $container): LoggerInterface =>
                 $container->get(Logger::class),
+            StreamHandler::class => function (ContainerInterface $container) {
+                $handler = new StreamHandler($container->get('log.stream'), $container->get('log.level'));
+                $handler->setFormatter($container->get(LineFormatter::class));
+                $handler->pushProcessor($container->get(PsrLogMessageProcessor::class));
+
+                return $handler;
+            },
         ];
     }
 
@@ -32,7 +42,7 @@ class LogServiceProvider implements ServiceProviderInterface
     {
         return [
             Logger::class => fn(ContainerInterface $container, Logger $logger) =>
-                $logger->pushHandler($container->get(CloudWatchLogsHandler::class)),
+                $logger->pushHandler($container->get(StreamHandler::class)),
         ];
     }
 }

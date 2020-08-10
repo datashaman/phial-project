@@ -51,7 +51,7 @@ build-Runtime: docker-Runtime
 
 build-App:
 	mkdir -p "$(ARTIFACTS_DIR)"
-	cp -a app bootstrap.php composer.json composer.lock config routes "$(ARTIFACTS_DIR)"
+	cp -a app bootstrap.php composer.json composer.lock config routes templates "$(ARTIFACTS_DIR)"
 	composer install --working-dir "$(ARTIFACTS_DIR)"
 
 code-quality: code-phpstan code-rector code-phpcs

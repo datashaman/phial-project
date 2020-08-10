@@ -4,38 +4,44 @@ declare(strict_types=1);
 
 namespace App\Http\RequestHandlers;
 
-use Datashaman\Phial\QueueRequestHandler;
-use Datashaman\Phial\RequestHandlerFactoryInterface;
+use Northwoods\Broker\Broker;
+use Northwoods\Middleware\LazyMiddlewareFactory;
+use Datashaman\Phial\Http\RequestHandlerFactoryInterface;
+use Psr\Container\ContainerInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 class RequestHandlerFactory implements RequestHandlerFactoryInterface
 {
     /**
-     * @var array<MiddlewareInterface>
-     * @psalm-var list<MiddlewareInterface>
+     * @var array<string>
+     * @psalm-var list<string>
      */
     private array $middleware;
 
-    private RequestHandlerInterface $fallback;
+    private ContainerInterface $container;
 
     /**
-     * @param array<MiddlewareInterface> $middleware
-     * @psalm-param list<MiddlewareInterface> $middleware
+     * @param array<string> $middleware
+     * @psalm-param list<string> $middleware
      */
     public function __construct(
         array $middleware,
-        RequestHandlerInterface $fallback
+        ContainerInterface $container
     ) {
         $this->middleware = $middleware;
-        $this->fallback = $fallback;
+        $this->container = $container;
     }
 
     public function createRequestHandler(): RequestHandlerInterface
     {
-        return new QueueRequestHandler(
-            $this->middleware,
-            $this->fallback
-        );
+        $broker = new Broker();
+        $factory = new LazyMiddlewareFactory($this->container);
+
+        foreach ($this->middleware as $middleware) {
+            $broker->append($factory->defer($middleware));
+        }
+
+        return $broker;
     }
 }
