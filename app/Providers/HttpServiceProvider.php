@@ -14,30 +14,12 @@ use Psr\Container\ContainerInterface;
 
 class HttpServiceProvider implements ServiceProviderInterface
 {
-    /**
-     * @var array<string,array<string>>
-     */
-    protected $middleware = [
-        'before' => [
-            ExceptionMiddleware::class,
-        ],
-
-        'after' => [
-            RouteMiddleware::class,
-            FallbackMiddleware::class,
-        ],
-    ];
-
     public function getFactories()
     {
         return [
             RequestHandlerFactoryInterface::class => function (ContainerInterface $container) {
                 return new RequestHandlerFactory(
-                    array_merge(
-                        $this->middleware['before'],
-                        $container->get('app.middleware'),
-                        $this->middleware['after'],
-                    ),
+                    $container->get('http.middleware'),
                     $container
                 );
             }
