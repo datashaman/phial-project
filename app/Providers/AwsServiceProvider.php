@@ -13,9 +13,8 @@ class AwsServiceProvider implements ServiceProviderInterface
     public function getFactories()
     {
         return [
-            Configuration::class => function (ContainerInterface $container) {
-                return Configuration::create($container->get('aws.core.configuration'));
-            },
+            Configuration::class => fn(ContainerInterface $container) =>
+                Configuration::create($container->get('aws.core.configuration')),
         ];
     }
 

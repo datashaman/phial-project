@@ -16,11 +16,12 @@ class RouteServiceProvider implements ServiceProviderInterface
     public function getFactories()
     {
         return [
-            Dispatcher::class => fn(ContainerInterface $container) => simpleDispatcher(
-                function (RouteCollector $r) {
-                    require base_dir('routes/web.php');
-                }
-            ),
+            Dispatcher::class => fn(ContainerInterface $container) =>
+                simpleDispatcher(
+                    function (RouteCollector $r) {
+                        require base_dir('routes/web.php');
+                    }
+                ),
         ];
     }
 

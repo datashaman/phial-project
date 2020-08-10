@@ -39,15 +39,19 @@ class HomeController implements StatusCodeInterface
         );
     }
 
-    public function database(ServerRequestInterface $request, ContextInterface $context): JsonResponse
+    public function env(ServerRequestInterface $request, ContextInterface $context): JsonResponse
     {
-        $logger = $context->getLogger();
-
         $env = getenv();
         ksort($env);
 
+        $logger = $context->getLogger();
         $logger->debug('Environment', $env);
 
+        return new JsonResponse($env);
+    }
+
+    public function database(ServerRequestInterface $request, ContextInterface $context): JsonResponse
+    {
         $tables = [];
 
         $db = new PDO(

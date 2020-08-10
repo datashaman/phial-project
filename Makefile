@@ -20,10 +20,20 @@ sam-build:
 sam-deploy: sam-build
 	sam deploy
 
-rebuild: clean build
+sam-local-api:
+	sam local start-api
+
+sam-local-invoke: sam-build
+	sam local generate-event apigateway aws-proxy --method GET --path "$(INVOKE_PATH)" > events/request.json
+	sam local invoke --event events/request.json App
+
+sam-logs:
+	sam logs -n App --stack-name $(PROJECT) --tail
 
 clean:
 	rm -rf cache/* $(ARTIFACTS_DIR)
+
+rebuild: clean build
 
 docker-run:
 	docker run -it --rm \
@@ -43,16 +53,6 @@ build-App:
 	mkdir -p "$(ARTIFACTS_DIR)"
 	cp -a app bootstrap.php composer.json composer.lock config routes "$(ARTIFACTS_DIR)"
 	composer install --working-dir "$(ARTIFACTS_DIR)"
-
-local-api:
-	sam local start-api --parameter-overrides $(PARAMETER_OVERRIDES)
-
-local-invoke: sam-build
-	sam local generate-event apigateway aws-proxy --method GET --path "$(INVOKE_PATH)" > events/request.json
-	sam local invoke --event events/request.json App
-
-logs:
-	sam logs -n App --stack-name $(PROJECT) --tail
 
 code-quality: code-phpstan code-rector code-phpcs
 

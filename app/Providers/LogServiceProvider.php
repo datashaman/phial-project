@@ -16,23 +16,23 @@ class LogServiceProvider implements ServiceProviderInterface
     public function getFactories()
     {
         return [
-            CloudWatchLogsHandler::class => function (ContainerInterface $container) {
-                return new CloudWatchLogsHandler(
+            CloudWatchLogsHandler::class => fn(ContainerInterface $container) =>
+                new CloudWatchLogsHandler(
                     $container->get(CloudWatchLogsClient::class),
-                    $container->get('log.handler')
-                );
-            },
-            LoggerInterface::class => function (ContainerInterface $container) {
-                $handler = $container->get(CloudWatchLogsHandler::class);
-
-                return (new Logger($container->get('app.id')))
-                    ->pushHandler($handler);
-            },
+                    $container->get('log.cloudwatch.handler')
+                ),
+            Logger::class => fn(ContainerInterface $container) =>
+                new Logger($container->get('app.id')),
+            LoggerInterface::class => fn(ContainerInterface $container) =>
+                $container->get(Logger::class),
         ];
     }
 
     public function getExtensions()
     {
-        return [];
+        return [
+            Logger::class => fn(ContainerInterface $container, Logger $logger) =>
+                $logger->pushHandler($container->get(CloudWatchLogsHandler::class)),
+        ];
     }
 }
