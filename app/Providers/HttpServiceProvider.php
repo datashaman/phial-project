@@ -11,18 +11,23 @@ use App\Http\RequestHandlers\RequestHandlerFactory;
 use Datashaman\Phial\Http\RequestHandlerFactoryInterface;
 use Interop\Container\ServiceProviderInterface;
 use Psr\Container\ContainerInterface;
+use Psr\Log\LoggerInterface;
 
 class HttpServiceProvider implements ServiceProviderInterface
 {
     public function getFactories()
     {
         return [
-            RequestHandlerFactoryInterface::class => function (ContainerInterface $container) {
-                return new RequestHandlerFactory(
+            ExceptionMiddleware::class => fn(ContainerInterface $container)  =>
+                new ExceptionMiddleware(
+                    $container->get(LoggerInterface::class),
+                    $container->get('app.debug')
+                ),
+            RequestHandlerFactoryInterface::class => fn(ContainerInterface $container) =>
+                new RequestHandlerFactory(
                     $container->get('http.middleware'),
                     $container
-                );
-            }
+                ),
         ];
     }
 

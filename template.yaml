@@ -57,6 +57,7 @@ Resources:
         SubnetIds: !Ref rdsSubnetIds
       Environment:
         Variables:
+          APP_DEBUG: true
           RDS_DATABASE: !Ref rdsDatabase
           RDS_HOST: !Ref rdsHost
           RDS_PASSWORD: !Ref rdsPassword

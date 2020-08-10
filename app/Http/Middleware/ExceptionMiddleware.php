@@ -16,10 +16,14 @@ use Throwable;
 class ExceptionMiddleware implements MiddlewareInterface, StatusCodeInterface
 {
     private LoggerInterface $logger;
+    private bool $debug;
 
-    public function __construct(LoggerInterface $logger)
-    {
+    public function __construct(
+        LoggerInterface $logger,
+        bool $debug = false
+    ) {
         $this->logger = $logger;
+        $this->debug = $debug;
     }
 
     public function process(
@@ -46,6 +50,8 @@ class ExceptionMiddleware implements MiddlewareInterface, StatusCodeInterface
             ]
         );
 
-        return $exception->toJsonResponse();
+        return $exception
+            ->debug($this->debug)
+            ->toJsonResponse();
     }
 }

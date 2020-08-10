@@ -17,6 +17,8 @@ class HttpException extends Exception implements StatusCodeInterface
      */
     private array $headers = [];
 
+    private bool $debug;
+
     /**
      * @param array<string,string|array<string,string>> $headers
      */
@@ -45,6 +47,13 @@ class HttpException extends Exception implements StatusCodeInterface
         return $this;
     }
 
+    public function debug(bool $debug): self
+    {
+        $this->debug = $debug;
+
+        return $this;
+    }
+
     public function toJsonResponse(): JsonResponse
     {
         $payload = [
@@ -53,12 +62,14 @@ class HttpException extends Exception implements StatusCodeInterface
 
         $code = (int) $this->getCode();
 
-        if ($code === 500) {
-            $payload['trace'] = $this->getTrace();
-        }
+        if ($this->debug) {
+            if ($code === 500) {
+                $payload['trace'] = $this->getTrace();
+            }
 
-        if ($previous = $this->getPrevious()) {
-            $payload['previous'] = $previous;
+            if ($previous = $this->getPrevious()) {
+                $payload['previous'] = $previous;
+            }
         }
 
         return new JsonResponse(
