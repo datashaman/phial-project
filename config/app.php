@@ -11,6 +11,8 @@ return [
     'app.id' => 'phial-project',
 
     'app.providers' => [
+        App\Providers\AwsServiceProvider::class,
+        App\Providers\CacheServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\HandlerServiceProvider::class,
         App\Providers\HttpServiceProvider::class,

@@ -20,7 +20,7 @@ sam-build:
 sam-deploy: sam-build
 	sam deploy
 
-sam-local-api:
+sam-local-api: sam-build
 	sam local start-api
 
 sam-local-invoke: sam-build
