@@ -21,7 +21,7 @@ class HttpServiceProvider implements ServiceProviderInterface
             ExceptionMiddleware::class => fn(ContainerInterface $container)  =>
                 new ExceptionMiddleware(
                     $container->get(LoggerInterface::class),
-                    $container->get('app.debug')
+                    is_true($container->get('app.debug'))
                 ),
             RequestHandlerFactoryInterface::class => fn(ContainerInterface $container) =>
                 new RequestHandlerFactory(
