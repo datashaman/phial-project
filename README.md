@@ -77,6 +77,8 @@ Also listed is the implementation used in this project. The implementations are 
 
 ### todo
 
+#### general
+
 - [ ] Cache.
 - [ ] CORS.
 - [ ] Form method spoofing.
