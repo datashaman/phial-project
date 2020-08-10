@@ -18,6 +18,7 @@ return [
     ],
 
     'app.providers' => [
+        App\Providers\AwsServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\HandlerServiceProvider::class,
         App\Providers\HttpServiceProvider::class,
