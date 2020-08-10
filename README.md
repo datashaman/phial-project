@@ -54,3 +54,41 @@ Also listed is the implementation used in this project. The implementations are 
 * [PSR-7 HTTP Message Interface](https://www.php-fig.org/psr/psr-7) - [laminas/laminas-diactoros](https://packagist.org/packages/laminas/laminas-diactoros)
 * [PSR-11 Container Interface](https://www.php-fig.org/psr/psr-11) - [php-di/php-di](https://packagist.org/packages/php-di/php-di)
 * [PSR-17 HTTP Factories](https://www.php-fig.org/psr/psr-17) - [laminas/laminas-diactoros](https://packagist.org/packages/laminas/laminas-diactoros)
+
+## roadmap
+
+### done
+
+* Configuration - [PHP-DI](https://php-di.org/) stores configuration in [config](config) folder.
+* Service providers - [Standard service providers](https://github.com/container-interop/service-provider/) wire up required classes using _PHP-DI_. Don't forget to add new providers to `app.providers` config in `config/app.php`.
+* Global middleware - [Broker](https://github.com/northwoods/broker) handles _PSR-15_ middleware pipeline.
+* Logging - [Monolog](https://github.com/Seldaek/monolog) sends to the `stderr` stream which is relayed to _CloudWatch_ by _AWS Lambda_.
+* Routing - [FastRoute](https://github.com/nikic/FastRoute) are defined in [routes](routes) folder.
+* Templating - [Latte](latte.nette.org/) for rendering templates.
+
+### todo
+
+* Cache.
+* Named routes.
+* Rate limiting.
+* Form method spoofing.
+* CORS.
+* Route middleware.
+* Middleware groups.
+* Middleware priority.
+* Controller middleware.
+* Resource controllers.
+* Route cache.
+* Uploaded files.
+* File downloads.
+* File responses.
+* Reverse routing (URL generation).
+* Validation.
+* Content negotiation.
+
+## bottom of the list
+
+* Cookies.
+* CSRF protection.
+* Session.
+
