@@ -68,6 +68,7 @@ Also listed is the implementation used in this project. The implementations are 
 * Logging - [Monolog](https://github.com/Seldaek/monolog) sends logs to the `stderr` stream which is relayed to _CloudWatch_ by _AWS Lambda_.
 * Routing - [FastRoute](https://github.com/nikic/FastRoute) routes are defined in [routes](routes) folder.
 * Templating - [Latte](latte.nette.org/) for rendering templates in [templates](templates) folder.
+* Database - _PDO_ connections and queries work as expected. The function must be in the same `VPC` as the `RDS` cluster.
 
 ### todo
 
