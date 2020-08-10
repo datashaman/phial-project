@@ -78,26 +78,35 @@ Also listed is the implementation used in this project. The implementations are 
 ### todo
 
 - [ ] Cache.
-- [ ] Named routes.
-- [ ] Rate limiting.
-- [ ] Form method spoofing.
 - [ ] CORS.
+- [ ] Form method spoofing.
+- [ ] Validation.
+- [ ] Content negotiation.
+
+#### routing
+
+- [ ] Named routes.
+- [ ] Reverse routing (URL generation).
 - [ ] Route middleware.
+- [ ] Rate limiting.
+- [ ] Route cache.
+- [ ] Resource controllers.
+
+#### middleware
+
 - [ ] Middleware groups.
 - [ ] Middleware priority.
 - [ ] Controller middleware.
-- [ ] Resource controllers.
-- [ ] Route cache.
+
+#### files
+
 - [ ] Uploaded files.
 - [ ] File downloads.
 - [ ] File responses.
-- [ ] Reverse routing (URL generation).
-- [ ] Validation.
-- [ ] Content negotiation.
+- [ ] Static assets via S3.
 
 ## bottom of the list
 
 - [ ] Cookies.
 - [ ] CSRF protection.
 - [ ] Session.
-
