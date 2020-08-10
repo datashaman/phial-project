@@ -61,9 +61,9 @@ Also listed is the implementation used in this project. The implementations are 
 
 * Configuration - [PHP-DI](https://php-di.org/) stores configuration in [config](config) folder.
 * Service providers - [Standard service providers](https://github.com/container-interop/service-provider/) wire up required classes using _PHP-DI_.
-  Define service providers in [app/Providers](app/Providers) folder, and add the class to `app.providers` config in `config/app.php`.
+  Define service providers in [app/Providers](app/Providers) folder, and add the class to `app.providers` config in [config/app.php](config/app.php).
 * Global middleware - [Broker](https://github.com/northwoods/broker) handles _PSR-15_ middleware pipeline.
-  Define middleware in [app/Http/Middleware](app/Http/Middleware) folder, and add the class to `http.middleware` config in `config/http.php`.
+  Define middleware in [app/Http/Middleware](app/Http/Middleware) folder, and add the class to `http.middleware` config in [config/http.php](config/http.php).
   Ensure that the first middleware handles exceptions, and the last one handles routing.
 * Logging - [Monolog](https://github.com/Seldaek/monolog) sends logs to the `stderr` stream which is relayed to _CloudWatch_ by _AWS Lambda_.
 * Routing - [FastRoute](https://github.com/nikic/FastRoute) routes are defined in [routes](routes) folder.
