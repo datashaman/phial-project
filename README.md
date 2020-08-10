@@ -53,27 +53,34 @@ Also listed is the implementation used in this project. The implementations are 
 * [PSR-3 Logger Interface](https://www.php-fig.org/psr/psr-3) - [monolog/monolog](https://packagist.org/packages/monolog/monolog)
 * [PSR-7 HTTP Message Interface](https://www.php-fig.org/psr/psr-7) - [laminas/laminas-diactoros](https://packagist.org/packages/laminas/laminas-diactoros)
 * [PSR-11 Container Interface](https://www.php-fig.org/psr/psr-11) - [php-di/php-di](https://packagist.org/packages/php-di/php-di)
+* [PSR-14 Event Dispatcher](https://www.php-fig.org/psr/psr-14) - [circli/event-dispatcher](https://packagist.org/packages/circli/event-dispatcher)
+* [PSR-15 Server Request Handlers](https://www.php-fig.org/psr/psr-15) - [northwoods/broker](https://packagist.org/packages/northwoods/broker)
 * [PSR-17 HTTP Factories](https://www.php-fig.org/psr/psr-17) - [laminas/laminas-diactoros](https://packagist.org/packages/laminas/laminas-diactoros)
 
 ## roadmap
 
 ### done
 
-- [x]  Configuration - [PHP-DI](https://php-di.org/) stores configuration in [config](config) folder.
-- [x]  Service providers - [Standard service providers](https://github.com/container-interop/service-provider/) wire up required classes using _PHP-DI_.
+- [x] Configuration - [PHP-DI](https://php-di.org/) stores configuration in [config](config) folder.
+- [x] Service providers - [Standard service providers](https://github.com/container-interop/service-provider/) wire up required classes using _PHP-DI_.
 
   Define service providers in [app/Providers](app/Providers) folder, and add the class to `app.providers` config in [config/app.php](config/app.php).
 
-- [x]  Global middleware - [Broker](https://github.com/northwoods/broker) handles _PSR-15_ middleware pipeline.
+- [x] Global middleware - [Broker](https://github.com/northwoods/broker) handles _PSR-15_ middleware pipeline.
 
   Define middleware in [app/Http/Middleware](app/Http/Middleware) folder, and add the class to `http.middleware` config in [config/http.php](config/http.php).
 
   Ensure that the first middleware handles exceptions, and the last one handles routing.
 
-- [x]  Logging - [Monolog](https://github.com/Seldaek/monolog) sends logs to the `stderr` stream which is relayed to _CloudWatch_ by _AWS Lambda_.
-- [x]  Routing - [FastRoute](https://github.com/nikic/FastRoute) routes are defined in [routes](routes) folder.
-- [x]  Templating - [Latte](latte.nette.org/) for rendering templates in [templates](templates) folder.
-- [x]  Database - _PDO_ connections and queries work as expected. The function must be in the same `VPC` as the `RDS` cluster.
+- [x] Logging - [Monolog](https://github.com/Seldaek/monolog) sends logs to the `stderr` stream which is relayed to _CloudWatch_ by _AWS Lambda_.
+- [x] Routing - [FastRoute](https://github.com/nikic/FastRoute) routes are defined in [routes](routes) folder.
+- [x] Templating - [Latte](latte.nette.org/) for rendering templates in [templates](templates) folder.
+- [x] Database - _PDO_ connections and queries work as expected. The function must be in the same `VPC` as the `RDS` cluster.
+- [x] Event Handling - Add new event listeners by extending `ListenerProviderInterface` in a service provider.
+
+  Look at [app/Providers/EventServiceProvider.php](app/Providers/EventServiceProvider.php) for an example of how to add a listener.
+
+  Type-hint `Psr\EventDispatcher\EventDispatcherInterface` to get a dispatcher and dispatch as per _PSR-14_: `$dispatcher->dispatch(new MyEvent());`
 
 ### todo
 
@@ -84,6 +91,7 @@ Also listed is the implementation used in this project. The implementations are 
 - [ ] Form method spoofing.
 - [ ] Validation.
 - [ ] Content negotiation.
+- [ ] Ad-hoc commands.
 
 #### routing
 
@@ -99,6 +107,8 @@ Also listed is the implementation used in this project. The implementations are 
 - [ ] Middleware groups.
 - [ ] Middleware priority.
 - [ ] Controller middleware.
+- [ ] Authentication middleware using Cognito.
+- [ ] Basic authentication.
 
 #### files
 

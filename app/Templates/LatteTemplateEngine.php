@@ -14,12 +14,10 @@ class LatteTemplateEngine implements TemplateEngineInterface
     public function __construct(
         string $baseDirectory,
         string $tempDirectory
-    )
-    {
+    ) {
         $this->engine = (new Engine())
             ->setLoader(new FileLoader($baseDirectory))
             ->setTempDirectory($tempDirectory);
-
     }
 
     public function render(string $template, array $params = []): string
