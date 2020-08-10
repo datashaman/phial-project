@@ -76,11 +76,15 @@ Also listed is the implementation used in this project. The implementations are 
 - [x] Routing - [FastRoute](https://github.com/nikic/FastRoute) routes are defined in [routes](routes) folder.
 - [x] Templating - [Latte](latte.nette.org/) for rendering templates in [templates](templates) folder.
 - [x] Database - _PDO_ connections and queries work as expected. The function must be in the same `VPC` as the `RDS` cluster.
+
+  There is also [AsyncAws RDS Data Service](https://packagist.org/packages/async-aws/rds-data-service).
+
 - [x] Event Handling - Add new event listeners by extending `ListenerProviderInterface` in a service provider.
 
   Look at [app/Providers/EventServiceProvider.php](app/Providers/EventServiceProvider.php) for an example of how to add a listener.
 
   Type-hint `Psr\EventDispatcher\EventDispatcherInterface` to get a dispatcher and dispatch as per _PSR-14_: `$dispatcher->dispatch(new MyEvent());`
+- [x] Queues - A regular event handler with an SQS event source works as expected.
 
 ### todo
 
@@ -122,3 +126,6 @@ Also listed is the implementation used in this project. The implementations are 
 - [ ] Cookies.
 - [ ] CSRF protection.
 - [ ] Session.
+- [ ] Scheduler.
+- [ ] Migrations.
+- [ ] ORM.
