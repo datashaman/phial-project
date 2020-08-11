@@ -89,7 +89,7 @@ Also listed is the implementation used in this project. The implementations are 
 
   Type-hint `Psr\EventDispatcher\EventDispatcherInterface` to get a dispatcher and dispatch as per _PSR-14_: `$dispatcher->dispatch(new MyEvent());`
 - [x] Queues - A regular event handler with an SQS event source works as expected.
-- [x] Cache. PSR-16 _DynamoDB_ cache in [app/Caches/DynamoDbCache.php](app/Caches/DynamoDbCache.php).
+- [x] Cache - _PSR-16_ _DynamoDB_ cache in [app/Caches/DynamoDbCache.php](app/Caches/DynamoDbCache.php).
 
   Type-hint is `Psr\SimpleCache\CacheInterface`. Look in [template.yaml](template.yaml#L47) at the definition of the _SimpleTable_.
 
