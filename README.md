@@ -90,7 +90,7 @@ Also listed is the implementation used in this project. The implementations are 
 
 #### general
 
-- [ ] Cache.
+- [x] Cache. PSR-16 DynamoDB cache in [app/Caches/DynamoDbCache.php](app/Caches/DynamoDbCache.php). Type-hint for `Psr\SimpleCache\CacheInterface`.
 - [ ] CORS.
 - [ ] Form method spoofing.
 - [ ] Validation.
