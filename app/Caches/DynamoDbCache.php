@@ -6,10 +6,13 @@ namespace App\Caches;
 
 use AsyncAws\Core\AwsClientFactory;
 use AsyncAws\DynamoDb\DynamoDbClient;
+use AsyncAws\DynamoDb\Input\BatchWriteItemInput;
 use AsyncAws\DynamoDb\Input\CreateTableInput;
 use AsyncAws\DynamoDb\Input\DescribeTableInput;
+use AsyncAws\DynamoDb\Input\DeleteItemInput;
 use AsyncAws\DynamoDb\Input\GetItemInput;
 use AsyncAws\DynamoDb\Input\PutItemInput;
+use AsyncAws\DynamoDb\Input\ScanInput;
 use AsyncAws\DynamoDb\ValueObject\AttributeDefinition;
 use AsyncAws\DynamoDb\ValueObject\AttributeValue;
 use AsyncAws\DynamoDb\ValueObject\KeySchemaElement;
@@ -83,10 +86,58 @@ class DynamoDbCache implements CacheInterface
 
     public function delete($key)
     {
+        $this->client->putItem(
+            new DeleteItemInput(
+                [
+                    'TableName' => $this->tableName,
+                    'Key' => [
+                        'id' => new AttributeValue(['S' => $key]),
+                    ]
+                ]
+            )
+        );
+
+        return true;
     }
 
     public function clear()
     {
+        $result = $this->client->scan(
+            new ScanInput(
+                [
+                    'TableName' => $this->tableName,
+                    'AttributesToGet' => [
+                        'id',
+                    ],
+                ]
+            )
+        );
+
+        $items = [];
+
+        foreach ($result->getItems() as $item) {
+            $items[] = [
+                'DeleteRequest' => [
+                    'Key' => [
+                        'id' => $item['id'],
+                    ],
+                ]
+            ];
+        }
+
+        if ($items) {
+            $result = $this->client->batchWriteItem(
+                new BatchWriteItemInput(
+                    [
+                        'RequestItems' => [
+                            $this->tableName => $items,
+                        ],
+                    ]
+                ),
+            );
+        }
+
+        return true;
     }
 
     public function getMultiple($keys, $default = null)
@@ -103,5 +154,20 @@ class DynamoDbCache implements CacheInterface
 
     public function has($key)
     {
+        $result = $this->client->getItem(
+            new GetItemInput(
+                [
+                    'TableName' => $this->tableName,
+                    'Key' => [
+                        'id' => new AttributeValue(['S' => $key]),
+                    ],
+                    'AttributesToGet' => [
+                        'id',
+                    ],
+                ]
+            )
+        );
+
+        return (bool) $result->getItem();
     }
 }

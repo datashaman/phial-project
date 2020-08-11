@@ -40,9 +40,16 @@ class HomeController implements StatusCodeInterface
 
     public function hello(string $name, ContextInterface $context): HtmlResponse
     {
-        // $html = $this->engine->render('welcome.latte', ['name' => $name]);
+        // $this->cache->clear();
+
+        if ($this->cache->has('html')) {
+            $html = $this->cache->get('html');
+        } else {
+            $html = $this->engine->render('welcome.latte', ['name' => $name]);
+        }
+
         // $this->cache->set('html', $html);
-        $html = $this->cache->get('html');
+        // $html = $this->cache->get('html');
 
         return new HtmlResponse($html);
     }
