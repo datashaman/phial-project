@@ -45,7 +45,7 @@ class DynamoDbCache implements CacheInterface
                 [
                     'TableName' => $this->tableName,
                     'Key' => [
-                        'id' => new AttributeValue(['S' => $key]),
+                        'key' => new AttributeValue(['S' => $key]),
                     ],
                 ]
             )
@@ -65,7 +65,7 @@ class DynamoDbCache implements CacheInterface
                 [
                     'TableName' => $this->tableName,
                     'Item' => [
-                        'id' => new AttributeValue(['S' => $key]),
+                        'key' => new AttributeValue(['S' => $key]),
                         'value' => new AttributeValue(['B' => $this->encode($value)]),
                     ]
                 ]
@@ -82,7 +82,7 @@ class DynamoDbCache implements CacheInterface
                 [
                     'TableName' => $this->tableName,
                     'Key' => [
-                        'id' => new AttributeValue(['S' => $key]),
+                        'key' => new AttributeValue(['S' => $key]),
                     ]
                 ]
             )
@@ -98,7 +98,7 @@ class DynamoDbCache implements CacheInterface
                 [
                     'TableName' => $this->tableName,
                     'AttributesToGet' => [
-                        'id',
+                        'key',
                     ],
                 ]
             )
@@ -110,7 +110,7 @@ class DynamoDbCache implements CacheInterface
                     return [
                         'DeleteRequest' => [
                             'Key' => [
-                                'id' => $item['id'],
+                                'key' => $item['key'],
                             ],
                         ]
                     ];
@@ -137,7 +137,7 @@ class DynamoDbCache implements CacheInterface
         $keyValues = array_map(
             function ($key) {
                 return [
-                    'id' => new AttributeValue(['S' => $key]),
+                    'key' => new AttributeValue(['S' => $key]),
                 ];
             },
             $keys
@@ -170,7 +170,7 @@ class DynamoDbCache implements CacheInterface
 
         $responsesByKey = [];
         foreach ($responses as $response) {
-            $responsesByKey[$response['id']->getS()] = $this->decode($response['value']->getB());
+            $responsesByKey[$response['key']->getS()] = $this->decode($response['value']->getB());
         }
 
         $values = [];
@@ -193,7 +193,7 @@ class DynamoDbCache implements CacheInterface
                     return [
                         'PutRequest' => [
                             'Item' => [
-                                'id' => new AttributeValue(['S' => $key]),
+                                'key' => new AttributeValue(['S' => $key]),
                                 'value' => new AttributeValue(['B' => $this->encode($values[$key])]),
                             ],
                         ]
@@ -224,7 +224,7 @@ class DynamoDbCache implements CacheInterface
                     return [
                         'DeleteRequest' => [
                             'Key' => [
-                                'id' => new AttributeValue(['S' => $key]),
+                                'key' => new AttributeValue(['S' => $key]),
                             ],
                         ]
                     ];
@@ -251,10 +251,10 @@ class DynamoDbCache implements CacheInterface
                 [
                     'TableName' => $this->tableName,
                     'Key' => [
-                        'id' => new AttributeValue(['S' => $key]),
+                        'key' => new AttributeValue(['S' => $key]),
                     ],
                     'AttributesToGet' => [
-                        'id',
+                        'key',
                     ],
                 ]
             )
