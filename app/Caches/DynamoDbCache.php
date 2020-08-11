@@ -6,6 +6,7 @@ namespace App\Caches;
 
 use AsyncAws\Core\AwsClientFactory;
 use AsyncAws\DynamoDb\DynamoDbClient;
+use AsyncAws\DynamoDb\Input\BatchGetItemInput;
 use AsyncAws\DynamoDb\Input\BatchWriteItemInput;
 use AsyncAws\DynamoDb\Input\CreateTableInput;
 use AsyncAws\DynamoDb\Input\DescribeTableInput;
@@ -50,21 +51,11 @@ class DynamoDbCache implements CacheInterface
             )
         );
 
-        $item = $result->getItem();
-
-        if (!$item) {
-            throw new InvalidArgumentException(
-                sprintf("'%s' is not a valid cache key.", $key)
-            );
+        if ($item = $result->getItem()) {
+            return $this->decode($item['value']->getB());
         }
 
-        return unserialize(
-            gzuncompress(
-                base64_decode(
-                    $item['value']->getB()
-                )
-            )
-        );
+        return $default;
     }
 
     public function set($key, $value, $ttl = null)
@@ -75,7 +66,7 @@ class DynamoDbCache implements CacheInterface
                     'TableName' => $this->tableName,
                     'Item' => [
                         'id' => new AttributeValue(['S' => $key]),
-                        'value' => new AttributeValue(['B' => gzcompress(serialize($value))]),
+                        'value' => new AttributeValue(['B' => $this->encode($value)]),
                     ]
                 ]
             )
@@ -113,28 +104,29 @@ class DynamoDbCache implements CacheInterface
             )
         );
 
-        $items = [];
+        $requestItems = [
+            $this->tableName => array_map(
+                function ($item) {
+                    return [
+                        'DeleteRequest' => [
+                            'Key' => [
+                                'id' => $item['id'],
+                            ],
+                        ]
+                    ];
+                },
+                $result->getItems()
+            ),
+        ];
 
-        foreach ($result->getItems() as $item) {
-            $items[] = [
-                'DeleteRequest' => [
-                    'Key' => [
-                        'id' => $item['id'],
-                    ],
-                ]
-            ];
-        }
+        if ($requestItems) {
+            do {
+                $result = $this->client->batchWriteItem(
+                    new BatchWriteItemInput(['RequestItems' => $requestItems])
+                );
 
-        if ($items) {
-            $result = $this->client->batchWriteItem(
-                new BatchWriteItemInput(
-                    [
-                        'RequestItems' => [
-                            $this->tableName => $items,
-                        ],
-                    ]
-                ),
-            );
+                $requestItems = $result->getUnprocessedItems();
+            } while ($requestItems);
         }
 
         return true;
@@ -142,14 +134,114 @@ class DynamoDbCache implements CacheInterface
 
     public function getMultiple($keys, $default = null)
     {
+        $keyValues = array_map(
+            function ($key) {
+                return [
+                    'id' => new AttributeValue(['S' => $key]),
+                ];
+            },
+            $keys
+        );
+
+        $responses = [];
+
+        if ($keyValues) {
+            $requestItems = [
+                $this->tableName => [
+                    'Keys' => $keyValues,
+                ],
+            ];
+
+            do {
+                $result = $this->client->batchGetItem(
+                    new BatchGetItemInput(['RequestItems' => $requestItems])
+                );
+
+                $responses = array_merge(
+                    $responses,
+                    $result->getResponses()
+                );
+
+                $requestItems = $result->getUnprocessedKeys();
+            } while ($requestItems);
+        }
+
+        $responses = $responses[$this->tableName] ?? [];
+
+        $responsesByKey = [];
+        foreach ($responses as $response) {
+            $responsesByKey[$response['id']->getS()] = $this->decode($response['value']->getB());
+        }
+
+        $values = [];
+        foreach ($keys as $key) {
+            if (isset($responsesByKey[$key])) {
+                $values[$key] = $responsesByKey[$key];
+            } else {
+                $values[$key] = $default;
+            }
+        }
+
+        return $values;
     }
 
     public function setMultiple($values, $ttl = null)
     {
+        $requestItems = [
+            $this->tableName => array_map(
+                function ($key) use ($values) {
+                    return [
+                        'PutRequest' => [
+                            'Item' => [
+                                'id' => new AttributeValue(['S' => $key]),
+                                'value' => new AttributeValue(['B' => $this->encode($values[$key])]),
+                            ],
+                        ]
+                    ];
+                },
+                array_keys($values)
+            ),
+        ];
+
+        if ($requestItems) {
+            do {
+                $result = $this->client->batchWriteItem(
+                    new BatchWriteItemInput(['RequestItems' => $requestItems])
+                );
+
+                $requestItems = $result->getUnprocessedItems();
+            } while ($requestItems);
+        }
+
+        return true;
     }
 
     public function deleteMultiple($keys)
     {
+        $requestItems = [
+            $this->tableName => array_map(
+                function ($key) {
+                    return [
+                        'DeleteRequest' => [
+                            'Key' => [
+                                'id' => new AttributeValue(['S' => $key]),
+                            ],
+                        ]
+                    ];
+                },
+                $keys
+            ),
+        ];
+
+        do {
+            $result = $this->client->batchWriteItem(
+                new BatchWriteItemInput(['RequestItems' => $requestItems])
+            );
+
+            $requestItems = $result->getUnprocessedItems();
+        } while ($requestItems);
+
+        return true;
     }
 
     public function has($key)
@@ -169,5 +261,21 @@ class DynamoDbCache implements CacheInterface
         );
 
         return (bool) $result->getItem();
+    }
+
+    /**
+     * @param mixed $value
+     */
+    private function encode($value): string
+    {
+        return gzcompress(serialize($value));
+    }
+
+    /**
+     * @return mixed
+     */
+    private function decode(string $value)
+    {
+        return unserialize(gzuncompress(base64_decode($value)));
     }
 }

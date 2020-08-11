@@ -38,8 +38,50 @@ class HomeController implements StatusCodeInterface
         abort(self::STATUS_INTERNAL_SERVER_ERROR);
     }
 
-    public function hello(string $name, ContextInterface $context): HtmlResponse
+    public function hello(string $name, ContextInterface $context): JsonResponse
     {
+        $this->cache->get('slarti');
+
+        $this->cache->setMultiple(
+            [
+                'a' => 'A',
+                'b' => 'B',
+                'c' => 'C',
+            ]
+        );
+
+        $result1 = $this->cache->getMultiple(
+            [
+                'a',
+                'b',
+                'c',
+                'd',
+            ]
+        );
+
+        $this->cache->deleteMultiple(
+            [
+                'a',
+                'b',
+                'c',
+            ]
+        );
+
+        $result2 = $this->cache->getMultiple(
+            [
+                'a',
+                'b',
+                'c',
+            ]
+        );
+
+        return new JsonResponse(
+            [
+                'result1' => $result1,
+                'result2' => $result2,
+            ]
+        );
+
         // $this->cache->clear();
 
         if ($this->cache->has('html')) {
