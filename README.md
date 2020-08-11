@@ -57,7 +57,7 @@ Also listed is the implementation used in this project. The implementations are 
 * [PSR-15 Server Request Handlers](https://www.php-fig.org/psr/psr-15) - [northwoods/broker](https://packagist.org/packages/northwoods/broker)
 * [PSR-16 Common Interface for Caching Libraries](https://www.php-fig.org/psr/psr-16)
 
-  * DynamoDB - [app/Caches/DynamoDbCache.php](app/Caches/DynamoDbCache.php)
+  * _DynamoDB_ - [app/Caches/DynamoDbCache.php](app/Caches/DynamoDbCache.php)
 
 * [PSR-17 HTTP Factories](https://www.php-fig.org/psr/psr-17) - [laminas/laminas-diactoros](https://packagist.org/packages/laminas/laminas-diactoros)
 
@@ -89,12 +89,16 @@ Also listed is the implementation used in this project. The implementations are 
 
   Type-hint `Psr\EventDispatcher\EventDispatcherInterface` to get a dispatcher and dispatch as per _PSR-14_: `$dispatcher->dispatch(new MyEvent());`
 - [x] Queues - A regular event handler with an SQS event source works as expected.
+- [x] Cache. PSR-16 _DynamoDB_ cache in [app/Caches/DynamoDbCache.php](app/Caches/DynamoDbCache.php).
+
+  Type-hint is `Psr\SimpleCache\CacheInterface`. Look in [template.yaml](template.yaml#L47) at the definition of the _SimpleTable_.
+
+  The default key created is `id`, and the cached value is stored in `value` as a _gzip_ compressed serialized version of the data.
 
 ### todo
 
 #### general
 
-- [x] Cache. PSR-16 DynamoDB cache in [app/Caches/DynamoDbCache.php](app/Caches/DynamoDbCache.php). Type-hint for `Psr\SimpleCache\CacheInterface`.
 - [ ] Cache TTL.
 - [ ] CORS.
 - [ ] Form method spoofing.
