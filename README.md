@@ -55,6 +55,10 @@ Also listed is the implementation used in this project. The implementations are 
 * [PSR-11 Container Interface](https://www.php-fig.org/psr/psr-11) - [php-di/php-di](https://packagist.org/packages/php-di/php-di)
 * [PSR-14 Event Dispatcher](https://www.php-fig.org/psr/psr-14) - [circli/event-dispatcher](https://packagist.org/packages/circli/event-dispatcher)
 * [PSR-15 Server Request Handlers](https://www.php-fig.org/psr/psr-15) - [northwoods/broker](https://packagist.org/packages/northwoods/broker)
+* [PSR-16 Common Interface for Caching Libraries](https://www.php-fig.org/psr/psr-16)
+
+  * DynamoDB - [app/Caches/DynamoDbCache.php](app/Caches/DynamoDbCache.php)
+
 * [PSR-17 HTTP Factories](https://www.php-fig.org/psr/psr-17) - [laminas/laminas-diactoros](https://packagist.org/packages/laminas/laminas-diactoros)
 
 ## roadmap
@@ -91,6 +95,7 @@ Also listed is the implementation used in this project. The implementations are 
 #### general
 
 - [x] Cache. PSR-16 DynamoDB cache in [app/Caches/DynamoDbCache.php](app/Caches/DynamoDbCache.php). Type-hint for `Psr\SimpleCache\CacheInterface`.
+- [ ] Cache TTL.
 - [ ] CORS.
 - [ ] Form method spoofing.
 - [ ] Validation.
