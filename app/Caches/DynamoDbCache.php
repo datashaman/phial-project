@@ -77,6 +77,8 @@ class DynamoDbCache implements CacheInterface
                 ]
             )
         );
+
+        return true;
     }
 
     public function delete($key)

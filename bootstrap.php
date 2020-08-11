@@ -2,6 +2,8 @@
 
 require_once __DIR__ . '/vendor/autoload.php';
 
+// Extra line
+
 use Datashaman\Phial\Lambda\EventHandler;
 use DI\ContainerBuilder;
 use Invoker\Invoker;

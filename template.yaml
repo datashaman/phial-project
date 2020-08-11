@@ -24,7 +24,7 @@ Resources:
         - !Ref Runtime
       Runtime: provided
       ReservedConcurrentExecutions: 10
-      Tracing: Active
+      # Tracing: Active
       Environment:
         Variables:
           APP_DEBUG: true
