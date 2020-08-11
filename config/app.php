@@ -19,6 +19,6 @@ return [
         App\Providers\LogServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\TemplateServiceProvider::class,
-        // App\Providers\TraceServiceProvider::class,
+        App\Providers\TraceServiceProvider::class,
     ],
 ];

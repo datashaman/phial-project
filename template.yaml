@@ -3,34 +3,6 @@ Transform: AWS::Serverless-2016-10-31
 
 Description: phial-project
 
-Parameters:
-  rdsSecurityGroupIds:
-    Type: CommaDelimitedList
-    Description: Existing VPC security groups ID's that your Amazon RDS Aurora databse has access to. Separated by commas.
-  rdsSubnetIds:
-    Type: CommaDelimitedList
-    Description: An array of SubnetIds that your Amazon Aurora database has access to. Separated by commas.
-  rdsHost:
-    Type: String
-    Description: The Endpoint of your RDS Proxy
-  rdsUser:
-    Type: String
-    Description: The connection Username for your DB or Cluster
-  rdsPassword:
-    Type: String
-    Description: The connection Password for your DB or Cluster
-  rdsDatabase:
-    Type: String
-    Description: The Name of your Database instance
-    Default: mysql
-  rdsPort:
-    Type: String
-    Description: Connection port number for your RDS Proxy
-    Default: 3306
-  rdsRegion:
-    Type: String
-    Description: The AWS Region for your DB Proxy
-
 Globals:
   Function:
     Timeout: 5
@@ -52,18 +24,10 @@ Resources:
         - !Ref Runtime
       Runtime: provided
       ReservedConcurrentExecutions: 10
-      VpcConfig:
-        SecurityGroupIds: !Ref rdsSecurityGroupIds
-        SubnetIds: !Ref rdsSubnetIds
+      Tracing: Active
       Environment:
         Variables:
           APP_DEBUG: true
-          RDS_DATABASE: !Ref rdsDatabase
-          RDS_HOST: !Ref rdsHost
-          RDS_PASSWORD: !Ref rdsPassword
-          RDS_PORT: !Ref rdsPort
-          RDS_REGION: !Ref rdsRegion
-          RDS_USER: !Ref rdsUser
       Events:
         ProxyApi:
           Type: Api
@@ -75,8 +39,15 @@ Resources:
           Properties:
             Path: /{proxy+}
             Method: ANY
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref PhialProjectCache
     Metadata:
       BuildMethod: makefile
+  PhialProjectCache:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      TableName: PhialProjectCache
 
 Outputs:
   AppApi:

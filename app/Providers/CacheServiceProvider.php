@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use App\Caches\DynamoDbCache;
-use AsyncAws\DynamoDb\DynamoDbClient;
+use AsyncAws\Core\AwsClientFactory;
 use Interop\Container\ServiceProviderInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
@@ -19,8 +19,8 @@ class CacheServiceProvider implements ServiceProviderInterface
             CacheInterface::class => fn(ContainerInterface $container) =>
                 new DynamoDbCache(
                     $container->get('cache.dynamodb.tableName'),
-                    $container->get(DynamoDbClient::class),
-                    $container->get(LoggerInterface::class)
+                    $container->get(LoggerInterface::class),
+                    $container->get(AwsClientFactory::class)
                 ),
         ];
     }

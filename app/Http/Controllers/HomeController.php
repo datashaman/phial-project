@@ -46,4 +46,12 @@ class HomeController implements StatusCodeInterface
 
         return new HtmlResponse($html);
     }
+
+    public function env()
+    {
+        $env = getenv();
+        ksort($env);
+
+        return new JsonResponse($env);
+    }
 }
