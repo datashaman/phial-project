@@ -18,6 +18,8 @@ use AsyncAws\DynamoDb\ValueObject\AttributeDefinition;
 use AsyncAws\DynamoDb\ValueObject\AttributeValue;
 use AsyncAws\DynamoDb\ValueObject\KeySchemaElement;
 use AsyncAws\DynamoDb\ValueObject\ProvisionedThroughput;
+use DateInterval;
+use DateTime;
 use Psr\Log\LoggerInterface;
 use Psr\SimpleCache\CacheInterface;
 use Traversable;
@@ -64,6 +66,7 @@ class DynamoDbCache implements CacheInterface
     public function set($key, $value, $ttl = null)
     {
         $this->validateKey($key);
+        $ttl = $this->calculateTtl($ttl);
 
         $this->client->putItem(
             new PutItemInput(
@@ -72,6 +75,7 @@ class DynamoDbCache implements CacheInterface
                     'Item' => [
                         'key' => new AttributeValue(['S' => $key]),
                         'value' => new AttributeValue(['B' => $this->encode($value)]),
+                        'ttl' => $ttl,
                     ]
                 ]
             )
@@ -197,15 +201,17 @@ class DynamoDbCache implements CacheInterface
     public function setMultiple($values, $ttl = null)
     {
         $this->validateValues($values);
+        $ttl = $this->calculateTtl($ttl);
 
         $requestItems = [
             $this->tableName => array_map(
-                function ($key) use ($values) {
+                function ($key) use ($ttl, $values) {
                     return [
                         'PutRequest' => [
                             'Item' => [
                                 'key' => new AttributeValue(['S' => $key]),
                                 'value' => new AttributeValue(['B' => $this->encode($values[$key])]),
+                                'ttl' => $ttl,
                             ],
                         ]
                     ];
@@ -327,6 +333,21 @@ class DynamoDbCache implements CacheInterface
     }
 
     /**
+     * @param mixed $ttl
+     */
+    private function validateTtl($ttl): void
+    {
+        if (
+            is_int($ttl)
+            || $ttl instanceof DateInterval
+        ) {
+            return;
+        }
+
+        throw new InvalidArgumentException('TTL argument is invalid: ' . json_encode($ttl));
+    }
+
+    /**
      * @param mixed $values
      */
     private function validateValues($values): void
@@ -341,5 +362,27 @@ class DynamoDbCache implements CacheInterface
         } else {
             throw new InvalidArgumentException('Values argument is invalid: ' . json_encode($values));
         }
+    }
+
+    /**
+     * Inappropriately named, DynamoDB ttl attribute is actually a timestamp since Epoch (in seconds).
+     *
+     * @param mixed $ttl
+     */
+    private function calculateTtl($ttl): ?int
+    {
+        if (is_null($ttl)) {
+            return null;
+        }
+
+        $this->validateTtl($ttl);
+
+        if (is_int($ttl)) {
+            $ttl = new DateInterval(sprintf('T%dS', $ttl));
+        }
+
+        return (new DateTime())
+            ->add($ttl)
+            ->getTimestamp();
     }
 }
