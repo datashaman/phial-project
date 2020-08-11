@@ -46,6 +46,7 @@ class HomeController implements StatusCodeInterface
             $html = $this->cache->get('html');
         } else {
             $html = $this->engine->render('welcome.latte', ['name' => $name]);
+            $this->cache->set('html', $html);
         }
 
         // $this->cache->set('html', $html);
