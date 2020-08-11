@@ -59,26 +59,9 @@ class HomeController implements StatusCodeInterface
             ]
         );
 
-        $this->cache->deleteMultiple(
-            [
-                'a',
-                'b',
-                'c',
-            ]
-        );
-
-        $result2 = $this->cache->getMultiple(
-            [
-                'a',
-                'b',
-                'c',
-            ]
-        );
-
         return new JsonResponse(
             [
                 'result1' => $result1,
-                'result2' => $result2,
             ]
         );
 

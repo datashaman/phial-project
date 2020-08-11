@@ -28,7 +28,7 @@ Resources:
       Environment:
         Variables:
           APP_DEBUG: true
-          CACHE_DYNAMODB_TABLE_NAME: !Ref Table
+          CACHE_DYNAMODB_TABLE_NAME: !Ref CacheTable
       Events:
         ProxyApi:
           Type: Api
@@ -42,11 +42,11 @@ Resources:
             Method: ANY
       Policies:
         - DynamoDBCrudPolicy:
-            TableName: !Ref Table
+            TableName: !Ref CacheTable
     Metadata:
       BuildMethod: makefile
 
-  Table:
+  CacheTable:
     Type: AWS::DynamoDB::Table
     Properties:
       AttributeDefinitions:
@@ -56,7 +56,7 @@ Resources:
         - AttributeName: key
           KeyType: HASH
       BillingMode: PAY_PER_REQUEST
-      TableName: PhialProjectCacheTtl
+      TableName: PhialProjectCache
       TimeToLiveSpecification:
         AttributeName: ttl
         Enabled: true

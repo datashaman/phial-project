@@ -20,6 +20,7 @@ use AsyncAws\DynamoDb\ValueObject\KeySchemaElement;
 use AsyncAws\DynamoDb\ValueObject\ProvisionedThroughput;
 use Psr\Log\LoggerInterface;
 use Psr\SimpleCache\CacheInterface;
+use Traversable;
 
 class DynamoDbCache implements CacheInterface
 {
@@ -40,6 +41,8 @@ class DynamoDbCache implements CacheInterface
 
     public function get($key, $default = null)
     {
+        $this->validateKey($key);
+
         $result = $this->client->getItem(
             new GetItemInput(
                 [
@@ -60,6 +63,8 @@ class DynamoDbCache implements CacheInterface
 
     public function set($key, $value, $ttl = null)
     {
+        $this->validateKey($key);
+
         $this->client->putItem(
             new PutItemInput(
                 [
@@ -77,6 +82,8 @@ class DynamoDbCache implements CacheInterface
 
     public function delete($key)
     {
+        $this->validateKey($key);
+
         $this->client->putItem(
             new DeleteItemInput(
                 [
@@ -134,6 +141,8 @@ class DynamoDbCache implements CacheInterface
 
     public function getMultiple($keys, $default = null)
     {
+        $this->validateKeys($keys);
+
         $keyValues = array_map(
             function ($key) {
                 return [
@@ -187,6 +196,8 @@ class DynamoDbCache implements CacheInterface
 
     public function setMultiple($values, $ttl = null)
     {
+        $this->validateValues($values);
+
         $requestItems = [
             $this->tableName => array_map(
                 function ($key) use ($values) {
@@ -218,6 +229,8 @@ class DynamoDbCache implements CacheInterface
 
     public function deleteMultiple($keys)
     {
+        $this->validateKeys($keys);
+
         $requestItems = [
             $this->tableName => array_map(
                 function ($key) {
@@ -246,6 +259,8 @@ class DynamoDbCache implements CacheInterface
 
     public function has($key)
     {
+        $this->validateKey($key);
+
         $result = $this->client->getItem(
             new GetItemInput(
                 [
@@ -277,5 +292,54 @@ class DynamoDbCache implements CacheInterface
     private function decode(string $value)
     {
         return unserialize(gzuncompress(base64_decode($value)));
+    }
+
+    /**
+     * @param mixed $key
+     */
+    private function validateKey($key): void
+    {
+        if (
+            is_string($key)
+            && preg_match('/^[A-Za-z0-9_\.]+$/', $key)
+        ) {
+            return;
+        }
+
+        throw new InvalidArgumentException('Key argument is invalid: ' . json_encode($key));
+    }
+
+    /**
+     * @param mixed $keys
+     */
+    private function validateKeys($keys): void
+    {
+        if (
+            is_array($keys)
+            || $keys instanceof Traversable
+        ) {
+            foreach ($keys as $key) {
+                $this->validateKey($key);
+            }
+        } else {
+            throw new InvalidArgumentException('Keys argument is invalid: ' . json_encode($keys));
+        }
+    }
+
+    /**
+     * @param mixed $values
+     */
+    private function validateValues($values): void
+    {
+        if (
+            is_array($values)
+            || $values instanceof Traversable
+        ) {
+            foreach (array_keys($values) as $key) {
+                $this->validateKey($key);
+            }
+        } else {
+            throw new InvalidArgumentException('Values argument is invalid: ' . json_encode($values));
+        }
     }
 }
