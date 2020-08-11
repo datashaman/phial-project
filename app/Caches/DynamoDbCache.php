@@ -66,20 +66,17 @@ class DynamoDbCache implements CacheInterface
     public function set($key, $value, $ttl = null)
     {
         $this->validateKey($key);
-        $ttl = $this->calculateTtl($ttl);
 
-        $this->client->putItem(
-            new PutItemInput(
-                [
-                    'TableName' => $this->tableName,
-                    'Item' => [
-                        'key' => new AttributeValue(['S' => $key]),
-                        'value' => new AttributeValue(['B' => $this->encode($value)]),
-                        'ttl' => $ttl,
-                    ]
-                ]
-            )
-        );
+        $item = [
+            'key' => new AttributeValue(['S' => $key]),
+            'value' => new AttributeValue(['B' => $this->encode($value)]),
+        ];
+
+        if ($ttl = $this->calculateTtl($ttl)) {
+            $item['ttl'] = $ttl;
+        }
+
+        $this->client->putItem(new PutItemInput($item));
 
         return true;
     }
@@ -206,13 +203,18 @@ class DynamoDbCache implements CacheInterface
         $requestItems = [
             $this->tableName => array_map(
                 function ($key) use ($ttl, $values) {
+                    $item = [
+                        'key' => new AttributeValue(['S' => $key]),
+                        'value' => new AttributeValue(['B' => $this->encode($values[$key])]),
+                    ];
+
+                    if ($ttl) {
+                        $item['ttl'] = $ttl;
+                    }
+
                     return [
                         'PutRequest' => [
-                            'Item' => [
-                                'key' => new AttributeValue(['S' => $key]),
-                                'value' => new AttributeValue(['B' => $this->encode($values[$key])]),
-                                'ttl' => $ttl,
-                            ],
+                            'Item' => $item,
                         ]
                     ];
                 },
