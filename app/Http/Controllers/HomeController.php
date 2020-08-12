@@ -42,6 +42,8 @@ class HomeController implements StatusCodeInterface
     {
         $logger = $context->getLogger();
 
+        $this->cache->delete('xyz');
+
         if (!$this->cache->has('a')) {
             $logger->debug('Set a');
             $this->cache->set('a', 'AAA', 30);

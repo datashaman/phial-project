@@ -67,6 +67,10 @@ class DynamoDbCache implements CacheInterface
 
     public function set($key, $value, $ttl = null)
     {
+        if (is_int($ttl) && $ttl <= 0) {
+            return $this->delete($key);
+        }
+
         $this->validateKey($key);
 
         $item = [
@@ -94,7 +98,7 @@ class DynamoDbCache implements CacheInterface
     {
         $this->validateKey($key);
 
-        $this->client->putItem(
+        $this->client->deleteItem(
             new DeleteItemInput(
                 [
                     'TableName' => $this->tableName,
@@ -207,6 +211,10 @@ class DynamoDbCache implements CacheInterface
 
     public function setMultiple($values, $ttl = null)
     {
+        if (is_int($ttl) && $ttl <= 0) {
+            return $this->deleteMultiple(array_keys($values));
+        }
+
         $this->validateValues($values);
         $expiresAt = $this->calculateExpiresAt($ttl);
 
