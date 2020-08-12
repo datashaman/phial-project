@@ -93,13 +93,13 @@ Also listed is the implementation used in this project. The implementations are 
 
   Type-hint is `Psr\SimpleCache\CacheInterface`. Look in [template.yaml](template.yaml#L47) at the definition of the _SimpleTable_.
 
-  The default key created is `id`, and the cached value is stored in `value` as a _gzip_ compressed serialized version of the data.
+  The key created is `key`, the cached value is stored in `value` as a _gzip_ compressed serialized version of the data, and the `expires_at` value store a _UNIX_ timestamp in seconds.
 
 ### todo
 
 #### general
 
-- [ ] Cache TTL.
+- [x] Cache TTL.
 - [ ] CORS.
 - [ ] Form method spoofing.
 - [ ] Validation.
