@@ -56,7 +56,9 @@ class DynamoDbCache implements CacheInterface
             )
         );
 
-        if ($item = $result->getItem()) {
+        $item = $result->getItem();
+
+        if ($this->isHit($item)) {
             return $this->decode($item['value']->getB());
         }
 
@@ -72,11 +74,18 @@ class DynamoDbCache implements CacheInterface
             'value' => new AttributeValue(['B' => $this->encode($value)]),
         ];
 
-        if ($ttl = $this->calculateTtl($ttl)) {
-            $item['ttl'] = $ttl;
+        if ($expiresAt = $this->calculateExpiresAt($ttl)) {
+            $item['expires_at'] = new AttributeValue(['N' => $expiresAt]);
         }
 
-        $this->client->putItem(new PutItemInput($item));
+        $this->client->putItem(
+            new PutItemInput(
+                [
+                    'TableName' => $this->tableName,
+                    'Item' => $item,
+                ]
+            )
+        );
 
         return true;
     }
@@ -177,19 +186,20 @@ class DynamoDbCache implements CacheInterface
         }
 
         $responses = $responses[$this->tableName] ?? [];
+        $now = (new DateTime())->getTimestamp();
 
         $responsesByKey = [];
         foreach ($responses as $response) {
-            $responsesByKey[$response['key']->getS()] = $this->decode($response['value']->getB());
+            if ($this->isHit($response)) {
+                $responsesByKey[$response['key']->getS()] = $this->decode($response['value']->getB());
+            }
         }
 
         $values = [];
         foreach ($keys as $key) {
-            if (isset($responsesByKey[$key])) {
-                $values[$key] = $responsesByKey[$key];
-            } else {
-                $values[$key] = $default;
-            }
+            $values[$key] = isset($responsesByKey[$key])
+                ? $responsesByKey[$key]
+                : $default;
         }
 
         return $values;
@@ -198,18 +208,18 @@ class DynamoDbCache implements CacheInterface
     public function setMultiple($values, $ttl = null)
     {
         $this->validateValues($values);
-        $ttl = $this->calculateTtl($ttl);
+        $expiresAt = $this->calculateExpiresAt($ttl);
 
         $requestItems = [
             $this->tableName => array_map(
-                function ($key) use ($ttl, $values) {
+                function ($key) use ($expiresAt, $values) {
                     $item = [
                         'key' => new AttributeValue(['S' => $key]),
                         'value' => new AttributeValue(['B' => $this->encode($values[$key])]),
                     ];
 
-                    if ($ttl) {
-                        $item['ttl'] = $ttl;
+                    if ($expiresAt) {
+                        $item['expires_at'] = new AttributeValue(['N' => $expiresAt]);
                     }
 
                     return [
@@ -278,12 +288,13 @@ class DynamoDbCache implements CacheInterface
                     ],
                     'AttributesToGet' => [
                         'key',
+                        'expires_at',
                     ],
                 ]
             )
         );
 
-        return (bool) $result->getItem();
+        return $this->isHit($result->getItem());
     }
 
     /**
@@ -370,8 +381,11 @@ class DynamoDbCache implements CacheInterface
      * Inappropriately named, DynamoDB ttl attribute is actually a timestamp since Epoch (in seconds).
      *
      * @param mixed $ttl
+     *
+     * @return ?string DynamoDB expects N datatype to be sent in string format to avoid loss of precision.
+     *                 https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Programming.LowLevelAPI.html#Programming.LowLevelAPI.Numbers
      */
-    private function calculateTtl($ttl): ?int
+    private function calculateExpiresAt($ttl): ?string
     {
         if (is_null($ttl)) {
             return null;
@@ -380,11 +394,23 @@ class DynamoDbCache implements CacheInterface
         $this->validateTtl($ttl);
 
         if (is_int($ttl)) {
-            $ttl = new DateInterval(sprintf('T%dS', $ttl));
+            $ttl = new DateInterval(sprintf('PT%dS', $ttl));
         }
 
         return (new DateTime())
             ->add($ttl)
-            ->getTimestamp();
+            ->format('U');
+    }
+
+    private function isHit(array $item): bool
+    {
+        if (!$item) {
+            return false;
+        }
+
+        $now = (new DateTime())->getTimestamp();
+
+        return !isset($item['expires_at'])
+            || $item['expires_at']->getN() > $now;
     }
 }

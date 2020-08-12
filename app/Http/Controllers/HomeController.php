@@ -40,44 +40,20 @@ class HomeController implements StatusCodeInterface
 
     public function hello(string $name, ContextInterface $context): JsonResponse
     {
-        $this->cache->get('slarti');
+        $logger = $context->getLogger();
 
-        $this->cache->setMultiple(
-            [
-                'a' => 'A',
-                'b' => 'B',
-                'c' => 'C',
-            ]
-        );
+        if (!$this->cache->has('a')) {
+            $logger->debug('Set a');
+            $this->cache->set('a', 'AAA', 30);
+        }
 
-        $result1 = $this->cache->getMultiple(
-            [
-                'a',
-                'b',
-                'c',
-                'd',
-            ]
-        );
+        $a = $this->cache->get('a');
 
         return new JsonResponse(
             [
-                'result1' => $result1,
+                'a' => $a,
             ]
         );
-
-        // $this->cache->clear();
-
-        if ($this->cache->has('html')) {
-            $html = $this->cache->get('html');
-        } else {
-            $html = $this->engine->render('welcome.latte', ['name' => $name]);
-            $this->cache->set('html', $html);
-        }
-
-        // $this->cache->set('html', $html);
-        // $html = $this->cache->get('html');
-
-        return new HtmlResponse($html);
     }
 
     public function env(ServerRequestInterface $request, ContextInterface $context)
