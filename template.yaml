@@ -23,7 +23,7 @@ Resources:
       Layers:
         - !Ref Runtime
       Runtime: provided
-      ReservedConcurrentExecutions: 10
+      # ReservedConcurrentExecutions: 10
       # Tracing: Active
       Environment:
         Variables:
