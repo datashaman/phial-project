@@ -6,7 +6,7 @@ namespace App\Http\RequestHandlers;
 
 use Northwoods\Broker\Broker;
 use Northwoods\Middleware\LazyMiddlewareFactory;
-use Datashaman\Phial\Http\RequestHandlerFactoryInterface;
+use Datashaman\Phial\Http\Factories\RequestHandlerFactoryInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;

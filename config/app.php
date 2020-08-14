@@ -11,14 +11,13 @@ return [
     'app.id' => 'phial-project',
 
     'app.providers' => [
+        Datashaman\Phial\Providers\HandlerServiceProvider::class,
+        Datashaman\Phial\Http\Providers\HttpServiceProvider::class,
+
         App\Providers\AwsServiceProvider::class,
         App\Providers\CacheServiceProvider::class,
-        App\Providers\EventServiceProvider::class,
-        App\Providers\HandlerServiceProvider::class,
-        App\Providers\HttpServiceProvider::class,
         App\Providers\LogServiceProvider::class,
-        App\Providers\RouteServiceProvider::class,
         App\Providers\TemplateServiceProvider::class,
-        App\Providers\TraceServiceProvider::class,
+        // App\Providers\TraceServiceProvider::class,
     ],
 ];

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "313b20e3f445e36094997f8426ec0cee",
+    "content-hash": "5f2b0b22b851bf41a56cb2c28cc7ce1b",
     "packages": [
         {
             "name": "async-aws/core",
@@ -212,12 +212,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/datashaman/phial-handler.git",
-                "reference": "694e2046e7c96fe98f868ab71b8df06d4a030c9d"
+                "reference": "540190f9c7e78bd89c76abc8f4fffe3286761af6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/datashaman/phial-handler/zipball/694e2046e7c96fe98f868ab71b8df06d4a030c9d",
-                "reference": "694e2046e7c96fe98f868ab71b8df06d4a030c9d",
+                "url": "https://api.github.com/repos/datashaman/phial-handler/zipball/540190f9c7e78bd89c76abc8f4fffe3286761af6",
+                "reference": "540190f9c7e78bd89c76abc8f4fffe3286761af6",
                 "shasum": ""
             },
             "require": {
@@ -226,8 +226,6 @@
                 "php-di/invoker": "^2.1",
                 "psr/event-dispatcher": "^1.0",
                 "psr/http-message": "^1.0",
-                "psr/http-server-handler": "^1.0",
-                "psr/http-server-middleware": "^1.0",
                 "psr/log": "^1.1"
             },
             "type": "library",
@@ -241,7 +239,56 @@
                 "MIT"
             ],
             "description": "Handler for phial.",
-            "time": "2020-08-13T04:16:52+00:00"
+            "time": "2020-08-14T11:03:26+00:00"
+        },
+        {
+            "name": "datashaman/phial-http",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/datashaman/phial-http.git",
+                "reference": "cb26654802fc10cd31526b150920e8deeb53c981"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/datashaman/phial-http/zipball/cb26654802fc10cd31526b150920e8deeb53c981",
+                "reference": "cb26654802fc10cd31526b150920e8deeb53c981",
+                "shasum": ""
+            },
+            "require": {
+                "container-interop/service-provider": "^0.4.0",
+                "datashaman/phial-handler": "dev-master",
+                "fig/http-message-util": "^1.1",
+                "laminas/laminas-diactoros": "^2.3",
+                "narrowspark/http-status": "^4.1",
+                "nikic/fast-route": "^1.3",
+                "northwoods/broker": "^3.0",
+                "northwoods/lazy-middleware": "^2.0",
+                "psr/container": "^1.0",
+                "psr/event-dispatcher": "^1.0",
+                "psr/http-message": "^1.0",
+                "psr/http-server-handler": "^1.0",
+                "psr/http-server-middleware": "^1.0",
+                "psr/log": "^1.1"
+            },
+            "require-dev": {
+                "symfony/var-dumper": "^5.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Datashaman\\Phial\\Http\\": "src/"
+                },
+                "files": [
+                    "src/helpers.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "HTTP handlers for Phial.",
+            "time": "2020-08-14T13:41:01+00:00"
         },
         {
             "name": "fig/http-message-util",
@@ -980,16 +1027,16 @@
         },
         {
             "name": "opis/closure",
-            "version": "3.5.5",
+            "version": "3.5.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opis/closure.git",
-                "reference": "dec9fc5ecfca93f45cd6121f8e6f14457dff372c"
+                "reference": "e8d34df855b0a0549a300cb8cb4db472556e8aa9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opis/closure/zipball/dec9fc5ecfca93f45cd6121f8e6f14457dff372c",
-                "reference": "dec9fc5ecfca93f45cd6121f8e6f14457dff372c",
+                "url": "https://api.github.com/repos/opis/closure/zipball/e8d34df855b0a0549a300cb8cb4db472556e8aa9",
+                "reference": "e8d34df855b0a0549a300cb8cb4db472556e8aa9",
                 "shasum": ""
             },
             "require": {
@@ -1037,7 +1084,7 @@
                 "serialization",
                 "serialize"
             ],
-            "time": "2020-06-17T14:59:55+00:00"
+            "time": "2020-08-11T08:46:50+00:00"
         },
         {
             "name": "php-di/invoker",
@@ -1342,6 +1389,53 @@
                 "promise"
             ],
             "time": "2020-07-07T09:29:14+00:00"
+        },
+        {
+            "name": "pkerrigan/xray",
+            "version": "v1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/patrickkerrigan/php-xray.git",
+                "reference": "8febd5a5902c83f8ac9cc732deb85ba241eea040"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/patrickkerrigan/php-xray/zipball/8febd5a5902c83f8ac9cc732deb85ba241eea040",
+                "reference": "8febd5a5902c83f8ac9cc732deb85ba241eea040",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": ">=7.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^6"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Pkerrigan\\Xray\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Patrick Kerrigan",
+                    "homepage": "https://patrickkerrigan.uk/"
+                }
+            ],
+            "description": "A basic PHP instrumentation library for AWS X-Ray",
+            "keywords": [
+                "AWS X-Ray",
+                "X-Ray",
+                "apm",
+                "aws",
+                "tracing"
+            ],
+            "time": "2019-01-24T16:06:28+00:00"
         },
         {
             "name": "psr/cache",
@@ -2366,53 +2460,6 @@
     ],
     "packages-dev": [
         {
-            "name": "pkerrigan/xray",
-            "version": "v1.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/patrickkerrigan/php-xray.git",
-                "reference": "8febd5a5902c83f8ac9cc732deb85ba241eea040"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/patrickkerrigan/php-xray/zipball/8febd5a5902c83f8ac9cc732deb85ba241eea040",
-                "reference": "8febd5a5902c83f8ac9cc732deb85ba241eea040",
-                "shasum": ""
-            },
-            "require": {
-                "ext-json": "*",
-                "php": ">=7.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^6"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Pkerrigan\\Xray\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Patrick Kerrigan",
-                    "homepage": "https://patrickkerrigan.uk/"
-                }
-            ],
-            "description": "A basic PHP instrumentation library for AWS X-Ray",
-            "keywords": [
-                "AWS X-Ray",
-                "X-Ray",
-                "apm",
-                "aws",
-                "tracing"
-            ],
-            "time": "2019-01-24T16:06:28+00:00"
-        },
-        {
             "name": "symfony/polyfill-mbstring",
             "version": "v1.18.1",
             "source": {
@@ -2583,7 +2630,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "datashaman/phial-handler": 20
+        "datashaman/phial-http": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

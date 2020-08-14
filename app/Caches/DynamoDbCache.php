@@ -20,6 +20,7 @@ use AsyncAws\DynamoDb\ValueObject\KeySchemaElement;
 use AsyncAws\DynamoDb\ValueObject\ProvisionedThroughput;
 use DateInterval;
 use DateTime;
+use Exception;
 use Psr\Log\LoggerInterface;
 use Psr\SimpleCache\CacheInterface;
 use Traversable;
@@ -59,7 +60,11 @@ class DynamoDbCache implements CacheInterface
         $item = $result->getItem();
 
         if ($this->isHit($item)) {
-            return $this->decode($item['value']->getB());
+            $value = $item['value']->getB();
+
+            if (!is_null($value)) {
+                return $this->decode($value);
+            }
         }
 
         return $default;
@@ -125,20 +130,16 @@ class DynamoDbCache implements CacheInterface
             )
         );
 
-        $requestItems = [
-            $this->tableName => array_map(
-                function ($item) {
-                    return [
-                        'DeleteRequest' => [
-                            'Key' => [
-                                'key' => $item['key'],
-                            ],
-                        ]
-                    ];
-                },
-                $result->getItems()
-            ),
-        ];
+        $requestItems = [];
+        foreach ($result->getItems() as $item) {
+            $requestItems[] = [
+                'DeleteRequest' => [
+                    'Key' => [
+                        'key' => $item['key'],
+                    ],
+                ]
+            ];
+        }
 
         if ($requestItems) {
             do {
@@ -153,18 +154,22 @@ class DynamoDbCache implements CacheInterface
         return true;
     }
 
+    /**
+     * @param array<string> $keys
+     *
+     * @return array<string,mixed>
+     */
     public function getMultiple($keys, $default = null)
     {
         $this->validateKeys($keys);
 
-        $keyValues = array_map(
-            function ($key) {
-                return [
-                    'key' => new AttributeValue(['S' => $key]),
-                ];
-            },
-            $keys
-        );
+        $keyValues = [];
+
+        foreach ($keys as $key) {
+            $keyValues[] = [
+                'key' => new AttributeValue(['S' => $key]),
+            ];
+        }
 
         $responses = [];
 
@@ -195,7 +200,11 @@ class DynamoDbCache implements CacheInterface
         $responsesByKey = [];
         foreach ($responses as $response) {
             if ($this->isHit($response)) {
-                $responsesByKey[$response['key']->getS()] = $this->decode($response['value']->getB());
+                $undecoded = $response['value']->getB();
+
+                if (!is_null($undecoded)) {
+                    $responsesByKey[$response['key']->getS()] = $this->decode($undecoded);
+                }
             }
         }
 
@@ -209,6 +218,9 @@ class DynamoDbCache implements CacheInterface
         return $values;
     }
 
+    /**
+     * @param array<string,mixed> $values
+     */
     public function setMultiple($values, $ttl = null)
     {
         if (is_int($ttl) && $ttl <= 0) {
@@ -218,29 +230,29 @@ class DynamoDbCache implements CacheInterface
         $this->validateValues($values);
         $expiresAt = $this->calculateExpiresAt($ttl);
 
-        $requestItems = [
-            $this->tableName => array_map(
-                function ($key) use ($expiresAt, $values) {
-                    $item = [
-                        'key' => new AttributeValue(['S' => $key]),
-                        'value' => new AttributeValue(['B' => $this->encode($values[$key])]),
-                    ];
+        $tableItems = [];
+        foreach ($values as $key => $value) {
+            $item = [
+                'key' => new AttributeValue(['S' => $key]),
+                'value' => new AttributeValue(['B' => $this->encode($value)]),
+            ];
 
-                    if ($expiresAt) {
-                        $item['expires_at'] = new AttributeValue(['N' => $expiresAt]);
-                    }
+            if ($expiresAt) {
+                $item['expires_at'] = new AttributeValue(['N' => $expiresAt]);
+            }
 
-                    return [
-                        'PutRequest' => [
-                            'Item' => $item,
-                        ]
-                    ];
-                },
-                array_keys($values)
-            ),
-        ];
+            $tableItems[] = [
+                'PutRequest' => [
+                    'Item' => $item,
+                ]
+            ];
+        }
 
-        if ($requestItems) {
+        if ($tableItems) {
+            $requestItems = [
+                $this->tableName => $tableItems,
+            ];
+
             do {
                 $result = $this->client->batchWriteItem(
                     new BatchWriteItemInput(['RequestItems' => $requestItems])
@@ -253,23 +265,27 @@ class DynamoDbCache implements CacheInterface
         return true;
     }
 
+    /**
+     * @param array<string> $keys
+     */
     public function deleteMultiple($keys)
     {
         $this->validateKeys($keys);
 
+        $tableItems = [];
+
+        foreach ($keys as $key) {
+            $tableItems[] = [
+                'DeleteRequest' => [
+                    'Key' => [
+                        'key' => new AttributeValue(['S' => $key]),
+                    ],
+                ],
+            ];
+        }
+
         $requestItems = [
-            $this->tableName => array_map(
-                function ($key) {
-                    return [
-                        'DeleteRequest' => [
-                            'Key' => [
-                                'key' => new AttributeValue(['S' => $key]),
-                            ],
-                        ]
-                    ];
-                },
-                $keys
-            ),
+            $this->tableName => $tableItems,
         ];
 
         do {
@@ -310,7 +326,13 @@ class DynamoDbCache implements CacheInterface
      */
     private function encode($value): string
     {
-        return gzcompress(serialize($value));
+        $uncompressed = gzcompress(serialize($value));
+
+        if ($uncompressed !== false) {
+            return $uncompressed;
+        }
+
+        throw new Exception('Uncompression failed');
     }
 
     /**
@@ -318,7 +340,13 @@ class DynamoDbCache implements CacheInterface
      */
     private function decode(string $value)
     {
-        return unserialize(gzuncompress(base64_decode($value)));
+        $serialized = gzuncompress(base64_decode($value));
+
+        if ($serialized !== false) {
+            return unserialize($serialized);
+        }
+
+        throw new Exception('Uncompression failed');
     }
 
     /**
@@ -377,7 +405,7 @@ class DynamoDbCache implements CacheInterface
             is_array($values)
             || $values instanceof Traversable
         ) {
-            foreach (array_keys($values) as $key) {
+            foreach ($values as $key => $_) {
                 $this->validateKey($key);
             }
         } else {
@@ -410,6 +438,9 @@ class DynamoDbCache implements CacheInterface
             ->format('U');
     }
 
+    /**
+     * @param array<string,AttributeValue> $item
+     */
     private function isHit(array $item): bool
     {
         if (!$item) {
