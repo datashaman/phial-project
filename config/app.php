@@ -16,6 +16,7 @@ return [
 
         App\Providers\AwsServiceProvider::class,
         App\Providers\CacheServiceProvider::class,
+        App\Providers\EventServiceProvider::class,
         App\Providers\LogServiceProvider::class,
         App\Providers\TemplateServiceProvider::class,
         // App\Providers\TraceServiceProvider::class,

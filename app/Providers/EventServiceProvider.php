@@ -5,24 +5,16 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use App\Listeners\SetRequestAndContext;
-use Circli\EventDispatcher\EventDispatcher;
-use Circli\EventDispatcher\ListenerProvider\ContainerListenerProvider;
 use Datashaman\Phial\Http\Events\RequestEvent;
 use Interop\Container\ServiceProviderInterface;
 use Psr\Container\ContainerInterface;
-use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\EventDispatcher\ListenerProviderInterface;
 
 class EventServiceProvider implements ServiceProviderInterface
 {
     public function getFactories()
     {
-        return [
-            ListenerProviderInterface::class => fn(ContainerInterface $container) =>
-                $container->get(ContainerListenerProvider::class),
-            EventDispatcherInterface::class => fn(ContainerInterface $container) =>
-                $container->get(EventDispatcher::class),
-        ];
+        return [];
     }
 
     public function getExtensions()
