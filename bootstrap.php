@@ -11,6 +11,8 @@ use Invoker\ParameterResolver\Container\TypeHintContainerResolver;
 use Invoker\ParameterResolver\ResolverChain;
 use Psr\Log\LoggerInterface;
 
+define('BASE_DIR', getcwd());
+
 $builder = new ContainerBuilder();
 
 $builder->enableDefinitionCache();

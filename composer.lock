@@ -212,15 +212,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/datashaman/phial-handler.git",
-                "reference": "f6cf77f8ad4d49bf35f3c52840b9427807abfbb6"
+                "reference": "94d413479ced1ac1f3fd2a9086a5d16162a7ebd2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/datashaman/phial-handler/zipball/f6cf77f8ad4d49bf35f3c52840b9427807abfbb6",
-                "reference": "f6cf77f8ad4d49bf35f3c52840b9427807abfbb6",
+                "url": "https://api.github.com/repos/datashaman/phial-handler/zipball/94d413479ced1ac1f3fd2a9086a5d16162a7ebd2",
+                "reference": "94d413479ced1ac1f3fd2a9086a5d16162a7ebd2",
                 "shasum": ""
             },
             "require": {
+                "circli/event-dispatcher": "^2.2",
+                "container-interop/service-provider": "^0.4.0",
                 "kriswallsmith/buzz": "^1.1",
                 "nyholm/psr7": "^1.3",
                 "php-di/invoker": "^2.1",
@@ -233,14 +235,17 @@
             "autoload": {
                 "psr-4": {
                     "Datashaman\\Phial\\": "src/"
-                }
+                },
+                "files": [
+                    "src/helpers.php"
+                ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
             "description": "Handler for phial.",
-            "time": "2020-08-14T14:53:53+00:00"
+            "time": "2020-08-14T16:22:31+00:00"
         },
         {
             "name": "datashaman/phial-http",
@@ -248,12 +253,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/datashaman/phial-http.git",
-                "reference": "9dbcd49c852ce82aeadf96aee9e4f3f055ef2025"
+                "reference": "cbd4fadebdd09b8c53d28949f1a59c5d30de2410"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/datashaman/phial-http/zipball/9dbcd49c852ce82aeadf96aee9e4f3f055ef2025",
-                "reference": "9dbcd49c852ce82aeadf96aee9e4f3f055ef2025",
+                "url": "https://api.github.com/repos/datashaman/phial-http/zipball/cbd4fadebdd09b8c53d28949f1a59c5d30de2410",
+                "reference": "cbd4fadebdd09b8c53d28949f1a59c5d30de2410",
                 "shasum": ""
             },
             "require": {
@@ -290,7 +295,7 @@
                 "MIT"
             ],
             "description": "HTTP handlers for Phial.",
-            "time": "2020-08-14T15:14:10+00:00"
+            "time": "2020-08-14T16:04:29+00:00"
         },
         {
             "name": "fig/http-message-util",
