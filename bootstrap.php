@@ -4,7 +4,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 // Extra line
 
-use Datashaman\Phial\Lambda\EventHandler;
+use Datashaman\Phial\RuntimeHandler;
 use DI\ContainerBuilder;
 use Invoker\Invoker;
 use Invoker\ParameterResolver\Container\TypeHintContainerResolver;
@@ -66,6 +66,6 @@ $resolver
 /**
  * @var callable
  */
-$handler = EventHandler::class;
+$handler = RuntimeHandler::class;
 
 $invoker->call($handler);

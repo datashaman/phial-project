@@ -212,12 +212,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/datashaman/phial-handler.git",
-                "reference": "94d413479ced1ac1f3fd2a9086a5d16162a7ebd2"
+                "reference": "3f635cbe032115be4828093fffd56cf3f7ac5ab7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/datashaman/phial-handler/zipball/94d413479ced1ac1f3fd2a9086a5d16162a7ebd2",
-                "reference": "94d413479ced1ac1f3fd2a9086a5d16162a7ebd2",
+                "url": "https://api.github.com/repos/datashaman/phial-handler/zipball/3f635cbe032115be4828093fffd56cf3f7ac5ab7",
+                "reference": "3f635cbe032115be4828093fffd56cf3f7ac5ab7",
                 "shasum": ""
             },
             "require": {
@@ -245,7 +245,7 @@
                 "MIT"
             ],
             "description": "Handler for phial.",
-            "time": "2020-08-14T16:22:31+00:00"
+            "time": "2020-08-14T21:00:39+00:00"
         },
         {
             "name": "datashaman/phial-http",
@@ -253,12 +253,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/datashaman/phial-http.git",
-                "reference": "cbd4fadebdd09b8c53d28949f1a59c5d30de2410"
+                "reference": "79d76b7c02a66b7fefb93366870faa99471933ab"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/datashaman/phial-http/zipball/cbd4fadebdd09b8c53d28949f1a59c5d30de2410",
-                "reference": "cbd4fadebdd09b8c53d28949f1a59c5d30de2410",
+                "url": "https://api.github.com/repos/datashaman/phial-http/zipball/79d76b7c02a66b7fefb93366870faa99471933ab",
+                "reference": "79d76b7c02a66b7fefb93366870faa99471933ab",
                 "shasum": ""
             },
             "require": {
@@ -295,7 +295,7 @@
                 "MIT"
             ],
             "description": "HTTP handlers for Phial.",
-            "time": "2020-08-14T16:04:29+00:00"
+            "time": "2020-08-14T21:04:26+00:00"
         },
         {
             "name": "fig/http-message-util",
