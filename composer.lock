@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0a92dd92fa436f68eacc5c270ffd6e95",
+    "content-hash": "b39d8f9e7b2d96855e84f411be7cf6bb",
     "packages": [
         {
             "name": "async-aws/core",
@@ -212,12 +212,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/datashaman/phial-handler.git",
-                "reference": "3f635cbe032115be4828093fffd56cf3f7ac5ab7"
+                "reference": "c64b7f1eec60b01000423d0da34274b42c7bf97b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/datashaman/phial-handler/zipball/3f635cbe032115be4828093fffd56cf3f7ac5ab7",
-                "reference": "3f635cbe032115be4828093fffd56cf3f7ac5ab7",
+                "url": "https://api.github.com/repos/datashaman/phial-handler/zipball/c64b7f1eec60b01000423d0da34274b42c7bf97b",
+                "reference": "c64b7f1eec60b01000423d0da34274b42c7bf97b",
                 "shasum": ""
             },
             "require": {
@@ -245,7 +245,7 @@
                 "MIT"
             ],
             "description": "Handler for phial.",
-            "time": "2020-08-14T21:00:39+00:00"
+            "time": "2020-08-16T04:32:39+00:00"
         },
         {
             "name": "datashaman/phial-http",
@@ -2637,6 +2637,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
+        "datashaman/phial-handler": 20,
         "datashaman/phial-http": 20
     },
     "prefer-stable": true,

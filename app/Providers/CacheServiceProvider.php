@@ -18,7 +18,7 @@ class CacheServiceProvider implements ServiceProviderInterface
         return [
             CacheInterface::class => fn(ContainerInterface $container) =>
                 new DynamoDbCache(
-                    $container->get('cache.dynamodb.tableName'),
+                    $container->get('cacheDynamodbTableName'),
                     $container->get(LoggerInterface::class),
                     $container->get(AwsClientFactory::class)
                 ),

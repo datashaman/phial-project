@@ -15,6 +15,7 @@ VPC_SUBNET_IDS = $(shell aws ec2 describe-subnets --filter Name=vpc-id,Values=$(
 default: sam-build
 
 sam-build:
+	sam validate
 	sam build
 
 sam-deploy: sam-build
@@ -28,7 +29,7 @@ sam-local-invoke: sam-build
 	sam local invoke --event events/request.json App
 
 sam-logs:
-	sam logs -n App --stack-name $(PROJECT) --tail
+	sam logs -n EventReceivedHandler --stack-name $(PROJECT) --tail
 
 clean:
 	rm -rf cache/* $(ARTIFACTS_DIR)
@@ -51,7 +52,12 @@ build-Runtime: docker-Runtime
 
 build-App:
 	mkdir -p "$(ARTIFACTS_DIR)"
-	cp -a app bootstrap.php composer.json composer.lock config routes templates "$(ARTIFACTS_DIR)"
+	cp -a app bootstrap.php composer.json composer.lock config routes "$(ARTIFACTS_DIR)"
+	composer install --working-dir "$(ARTIFACTS_DIR)"
+
+build-EventReceivedHandler:
+	mkdir -p "$(ARTIFACTS_DIR)"
+	cp -a app bootstrap.php composer.json composer.lock config "$(ARTIFACTS_DIR)"
 	composer install --working-dir "$(ARTIFACTS_DIR)"
 
 code-quality: code-phpstan code-rector code-phpcs

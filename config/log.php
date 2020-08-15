@@ -5,7 +5,7 @@ declare(strict_types=1);
 use Monolog\Logger;
 
 return [
-    'log.format' => "%level_name% %message% %context% %extra%\n",
-    'log.level' => Logger::DEBUG,
-    'log.stream' => 'php://stderr',
+    'logFormat' => "%level_name% %message% %context% %extra%\n",
+    'logLevel' => Logger::DEBUG,
+    'logStream' => 'php://stderr',
 ];

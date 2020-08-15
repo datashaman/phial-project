@@ -19,17 +19,17 @@ class LogServiceProvider implements ServiceProviderInterface
         return [
             LineFormatter::class => fn(ContainerInterface $container) =>
                 new LineFormatter(
-                    $container->get('log.format'),
+                    $container->get('logFormat'),
                     null,
                     false,
                     true
                 ),
             Logger::class => fn(ContainerInterface $container) =>
-                new Logger($container->get('app.id')),
+                new Logger($container->get('appId')),
             LoggerInterface::class => fn(ContainerInterface $container): LoggerInterface =>
                 $container->get(Logger::class),
             StreamHandler::class => function (ContainerInterface $container) {
-                $handler = new StreamHandler($container->get('log.stream'), $container->get('log.level'));
+                $handler = new StreamHandler($container->get('logStream'), $container->get('logLevel'));
                 $handler->setFormatter($container->get(LineFormatter::class));
                 $handler->pushProcessor($container->get(PsrLogMessageProcessor::class));
 

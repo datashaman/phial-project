@@ -5,12 +5,12 @@ declare(strict_types=1);
 use function DI\env;
 
 return [
-    'app.debug' => env('APP_DEBUG', true),
-    'app.env' => env('APP_ENV', 'local'),
+    'appDebug' => env('APP_DEBUG', true),
+    'appEnv' => env('APP_ENV', 'local'),
 
-    'app.id' => 'phial-project',
+    'appId' => 'phial-project',
 
-    'app.providers' => [
+    'appProviders' => [
         Datashaman\Phial\Providers\HandlerServiceProvider::class,
         Datashaman\Phial\Http\Providers\HttpServiceProvider::class,
 

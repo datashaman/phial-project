@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 return [
-    'http.middleware' => [
+    'httpMiddleware' => [
         // This should be first to capture any exceptions
         // from middleware further down the pipeline.
         App\Http\Middleware\ExceptionMiddleware::class,

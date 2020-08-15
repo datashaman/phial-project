@@ -16,8 +16,8 @@ class TemplateServiceProvider implements ServiceProviderInterface
         return [
             TemplateEngineInterface::class => fn(ContainerInterface $container) =>
                 new LatteTemplateEngine(
-                    $container->get('template.baseDirectory'),
-                    $container->get('template.tempDirectory')
+                    $container->get('templateBaseDirectory'),
+                    $container->get('templateTempDirectory')
                 ),
         ];
     }
