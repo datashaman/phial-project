@@ -29,7 +29,7 @@ Resources:
       Environment:
         Variables:
           APP_DEBUG: true
-          CACHE_DYNAMODB_TABLE_NAME: !Ref CacheTable
+          CACHE_DYNAMODB_TABLE: !Ref CacheTable
       Events:
         ProxyApi:
           Type: Api
@@ -46,53 +46,6 @@ Resources:
             TableName: !Ref CacheTable
     Metadata:
       BuildMethod: makefile
-
-  EventReceivedTopic:
-    Type: AWS::SNS::Topic
-    Properties:
-      Subscription:
-        - Endpoint: !GetAtt EventReceivedQueue.Arn
-          Protocol: sqs
-
-  EventReceivedQueue:
-    Type: AWS::SQS::Queue
-    Properties:
-      RedrivePolicy:
-        deadLetterTargetArn: !GetAtt DeadLetterQueue.Arn
-        maxReceiveCount: 3
-
-  EventReceivedQueuePolicy:
-    Type: AWS::SQS::QueuePolicy
-    Properties:
-      PolicyDocument:
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service: sns.amazonaws.com
-            Action:
-              - sqs:SendMessage
-            Resource: "*"
-            Condition:
-              ArnEquals:
-                "aws:SourceArn": !Ref EventReceivedTopic
-      Queues:
-        - !Ref EventReceivedQueue
-
-  EventReceivedHandler:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: App\Handlers\EventReceivedHandler::handle
-      Layers:
-        - !Ref Runtime
-      Runtime: provided
-      Events:
-        SQSEvent:
-          Type: SQS
-          Properties:
-            Queue: !GetAtt EventReceivedQueue.Arn
-
-  DeadLetterQueue:
-    Type: AWS::SQS::Queue
 
   CacheTable:
     Type: AWS::DynamoDB::Table
@@ -112,7 +65,3 @@ Resources:
 Outputs:
   AppApi:
     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
-  EventReceivedTopic:
-    Value: !Ref EventReceivedTopic
-  EventReceivedQueue:
-    Value: !Ref EventReceivedQueue

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 return [
-    'routeFiles' => [
+    'files' => [
         base_dir('routes/web.php'),
     ],
 ];

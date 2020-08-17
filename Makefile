@@ -55,11 +55,6 @@ build-App:
 	cp -a app bootstrap.php composer.json composer.lock config routes "$(ARTIFACTS_DIR)"
 	composer install --working-dir "$(ARTIFACTS_DIR)"
 
-build-EventReceivedHandler:
-	mkdir -p "$(ARTIFACTS_DIR)"
-	cp -a app bootstrap.php composer.json composer.lock config "$(ARTIFACTS_DIR)"
-	composer install --working-dir "$(ARTIFACTS_DIR)"
-
 code-quality: code-phpstan code-rector code-phpcs
 
 code-phpcbf:

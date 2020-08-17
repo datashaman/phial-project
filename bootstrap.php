@@ -2,8 +2,6 @@
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-// Extra line
-
 use Datashaman\Phial\RuntimeHandler;
 use DI\ContainerBuilder;
 use Invoker\Invoker;
@@ -14,7 +12,6 @@ use Psr\Log\LoggerInterface;
 define('BASE_DIR', getcwd());
 
 $builder = new ContainerBuilder();
-
 $builder->enableDefinitionCache();
 
 $directory = new RecursiveDirectoryIterator(
@@ -32,7 +29,7 @@ $config = include_once 'config/app.php';
 
 $providers = array_map(
     fn($providerClass) => new $providerClass(),
-    $config['app.providers']
+    $config['providers']
 );
 
 foreach ($providers as $provider) {
@@ -40,8 +37,6 @@ foreach ($providers as $provider) {
 }
 
 $container = $builder->build();
-
-$logger = $container->get(LoggerInterface::class);
 
 foreach ($providers as $provider) {
     $extensions = $provider->getExtensions();
